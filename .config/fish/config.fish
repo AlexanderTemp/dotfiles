@@ -50,3 +50,10 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# dotnet
+set --export DOTNET_ROOT "$HOME/.dotnet"
+set --export PATH $PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
+
+# php
+set -gx PATH $PATH $HOME/.config/herd-lite/bin $PATH
