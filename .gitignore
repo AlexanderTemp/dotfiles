@@ -8,4 +8,4 @@
 !.config/alacritty/**
 
 !.tmux.conf
-
+!git-alias

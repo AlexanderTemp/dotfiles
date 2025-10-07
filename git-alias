@@ -1,0 +1,8 @@
+alias.pod=pull origin develop
+alias.pom=pull origin main
+alias.st=status -s
+alias.sw=switch
+alias.co=checkout -b
+alias.logs=log --graph --decorate --all
+alias.b=branch
+alias.br=branch -r
