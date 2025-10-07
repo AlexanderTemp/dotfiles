@@ -1,4 +1,6 @@
+
 if status is-interactive # Starship Prompt
+	
     starship init fish | source
 
     # Aliases
@@ -18,6 +20,7 @@ if status is-interactive # Starship Prompt
     # ripgrep
     alias rgf="rg --files | rg" 
     alias fd="fdfind"
+    alias qw="ls -alt | head -n 10"
 
    
 
@@ -29,13 +32,8 @@ if status is-interactive # Starship Prompt
     
 
     function fzf-lovely
-      set preview '[[ $(file --mime {}) =~ binary ]] &&
-      echo {} is a binary file ||
-      (batcat --style=numbers --color=always {} ||
-      highlight -O ansi -l {} ||
-      coderay {} ||
-      rougify {} ||
-      cat {}) 2> /dev/null | head -500'
+      set preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file ||
+      (batcat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500'
       if test "$argv[1]" = "h"
     	fzf -m --reverse --preview-window down:20 --preview "$preview"
       else
@@ -50,3 +48,6 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+
+
