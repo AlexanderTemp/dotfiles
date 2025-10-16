@@ -1,5 +1,4 @@
 #!/bin/bash
-
 BLUE='\033[1;34m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
@@ -12,8 +11,12 @@ NC='\033[0m'
 
 dps() {
     local SHOW_ALL=false
+    local SHOW_RESUME=false
     
     if [[ "$1" == "-a" ]]; then
+        SHOW_ALL=true
+    elif [[ "$1" == "-r" ]]; then
+        SHOW_RESUME=true
         SHOW_ALL=true
     fi
     
@@ -38,6 +41,38 @@ dps() {
         return
     fi
     
+    if [ "$SHOW_RESUME" = true ]; then
+        echo -e "\n${WHITE}🐳 RESUMEN DOCKER${NC} ${GRAY}(Total: ${CYAN}$TOTAL${GRAY} | ${GREEN}$RUNNING${GRAY} activos | ${RED}$STOPPED${GRAY} detenidos)${NC}\n"
+        echo -e "${CYAN}┌────────────────────────────────────────────────────────────────┐${NC}"
+        printf "${CYAN}│${NC} %-40s ${CYAN}│${NC} %-18s ${CYAN}│${NC}\n" "NOMBRE" "ESTADO"
+        echo -e "${CYAN}├────────────────────────────────────────────────────────────────┤${NC}"
+        
+        $CMD --format "{{.Names}}|{{.Status}}" | while IFS='|' read -r name status; do
+            if [[ $status == *"Up"* ]]; then
+                status_color=$GREEN
+                status_icon="✓"
+                status_text="Activo"
+            elif [[ $status == *"Exited"* ]]; then
+                status_color=$RED
+                status_icon="✗"
+                status_text="Detenido"
+            elif [[ $status == *"Paused"* ]]; then
+                status_color=$YELLOW
+                status_icon="⏸"
+                status_text="Pausado"
+            else
+                status_color=$GRAY
+                status_icon="○"
+                status_text="Desconocido"
+            fi
+            
+            printf "${CYAN}│${NC} %-40s ${CYAN}│${NC} ${status_color}%-2s %-15s${NC} ${CYAN}│${NC}\n" "$name" "$status_icon" "$status_text"
+        done
+        
+        echo -e "${CYAN}└────────────────────────────────────────────────────────────────┘${NC}\n"
+        return
+    fi
+    
     if [ "$SHOW_ALL" = true ]; then
         echo -e "\n${WHITE}🐳 DOCKER CONTAINERS${NC} ${GRAY}(Total: ${CYAN}$TOTAL${GRAY} | ${GREEN}$RUNNING${GRAY} activos | ${RED}$STOPPED${GRAY} detenidos)${NC}\n"
     else
@@ -54,11 +89,11 @@ dps() {
         elif [[ $status == *"Exited"* ]]; then
             status_color=$RED
             status_icon="✗"
-            name_icon="⏹️ "
+            name_icon="⏹️  "
         elif [[ $status == *"Paused"* ]]; then
             status_color=$YELLOW
             status_icon="⏸"
-            name_icon="⏸️ "
+            name_icon="⏸️  "
         else
             status_color=$GRAY
             status_icon="○"
@@ -72,10 +107,8 @@ dps() {
         fi
         
         echo -e "${CYAN}│${NC} ${GRAY}├─${NC} ${WHITE}Imagen:${NC} ${MAGENTA}$image${NC}"
-        
         id_short=$(echo "$id" | cut -c1-12)
         echo -e "${CYAN}│${NC} ${GRAY}├─${NC} ${WHITE}ID:${NC} ${YELLOW}$id_short${NC}"
-        
         echo -e "${CYAN}│${NC} ${GRAY}├─${NC} ${WHITE}Estado:${NC} ${status_color}$status_icon $status${NC}"
         
         if [[ $status == *"Up"* ]]; then

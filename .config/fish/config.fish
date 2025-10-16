@@ -25,6 +25,7 @@ if status is-interactive # Starship Prompt
     # docker 
     alias dps="~/docker-ps-visual.sh"
     alias dpa="~/docker-ps-visual.sh -a"
+    alias dpar="~/docker-ps-visual.sh -r"
    
 
     # Cargar NVM
