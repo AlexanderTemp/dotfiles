@@ -22,6 +22,9 @@ if status is-interactive # Starship Prompt
     alias fd="fdfind"
     alias qw="ls -alt | head -n 10"
 
+    # docker 
+    alias dps="~/docker-ps-visual.sh"
+    alias dpa="~/docker-ps-visual.sh -a"
    
 
     # Cargar NVM
