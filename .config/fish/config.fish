@@ -10,6 +10,9 @@ if status is-interactive # Starship Prompt
     alias x="exit"
     
     alias t="tmux"
+    alias muxi="tmuxifier"
+    alias muxi-load="tmuxifier load-session "
+
     alias ii="npm install"
     alias dev="npm run dev"
 
@@ -34,6 +37,8 @@ if status is-interactive # Starship Prompt
     
     # path nvim 
     alias nv="nvim"
+
+
     
 
     function fzf-lovely
@@ -53,3 +58,7 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# tmuxifier
+set -gx PATH "$HOME/.tmuxifier/bin" $PATH 
+

@@ -6,3 +6,4 @@ alias.co=checkout -b
 alias.logs=log --graph --decorate --all
 alias.b=branch
 alias.br=branch -r
+alias.cm=commit -m 
