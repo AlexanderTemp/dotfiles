@@ -62,3 +62,13 @@ set --export PATH $BUN_INSTALL/bin $PATH
 # tmuxifier
 set -gx PATH "$HOME/.tmuxifier/bin" $PATH 
 
+# go 
+set -gx GOROOT /usr/local/go
+set -gx GOPATH "$HOME/go"
+set -gx PATH $PATH /usr/local/go/bin $GOPATH/bin
+
+# dotnet 
+set --export DOTNET_ROOT "$HOME/.dotnet"
+set --export PATH $PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
+
+
