@@ -31,7 +31,7 @@ if status is-interactive # Starship Prompt
    
 
     # Cargar NVM
-    nvm use v20
+    nvm use alias
     
     # path nvim 
     alias nv="nvim"
