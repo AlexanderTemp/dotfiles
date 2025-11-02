@@ -48,4 +48,6 @@ set -gx PATH "$HOME/.tmuxifier/bin" $PATH
 # laravel
 set -gx PATH "$HOME/.config/herd-lite/bin" $PATH
 
+# neovim
+set -gx PATH "$HOME/neovim/bin" $PATH
 
