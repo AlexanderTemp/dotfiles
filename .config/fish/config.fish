@@ -18,8 +18,6 @@ if status is-interactive # Starship Prompt
 
     alias v="vim"
 
-    alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
-
     # ripgrep
     alias rgf="rg --files | rg" 
     alias fd="fdfind"
@@ -38,22 +36,7 @@ if status is-interactive # Starship Prompt
     # path nvim 
     alias nv="nvim"
 
-
-    
-
-    function fzf-lovely
-      set preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file ||
-      (batcat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500'
-      if test "$argv[1]" = "h"
-    	fzf -m --reverse --preview-window down:20 --preview "$preview"
-      else
-    	fzf -m --preview "$preview"
-      end
-    end
-    set -gx PATH "/home/alexander/.config/herd-lite/bin" $PATH
-
 end
-
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
@@ -61,4 +44,8 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 # tmuxifier
 set -gx PATH "$HOME/.tmuxifier/bin" $PATH 
+
+# laravel
+set -gx PATH "$HOME/.config/herd-lite/bin" $PATH
+
 
