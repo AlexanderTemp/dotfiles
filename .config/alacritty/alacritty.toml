@@ -1,0 +1,21 @@
+[window]
+opacity = 0.95
+padding.x = 10
+padding.y = 10
+
+decorations = "Full"
+decorations_theme_variant = "Light" # "Dark"
+
+[font]
+
+normal = { family = "FantasqueSansM Nerd Font Propo", style="Regular" }
+size = 13.0
+
+[mouse]
+bindings = [
+	{ mouse = "Forward", action = "ScrollPageUp" },
+	{ mouse = "Back", action = "ScrollPageDown" }
+]
+
+[scrolling]
+history = 10000
