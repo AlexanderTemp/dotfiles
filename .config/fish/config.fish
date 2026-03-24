@@ -8,8 +8,6 @@ if status is-interactive
     alias d="docker"
     alias x="exit"
 
-    alias t="tmux"
-    alias tn="tmux new -s "
     alias muxi="tmuxifier"
     alias muxi-load="tmuxifier load-session"
     alias muxi-new="tmuxifier new-layout"
@@ -29,8 +27,14 @@ if status is-interactive
     alias dpa="~/docker-ps-visual.sh -a"
     alias dpar="~/docker-ps-visual.sh -a -r"
 
+    # tmux customization
+    alias t="tmux"
+    alias tn="tmux new -s "
     function tn
         tmux new -s $argv
+    end
+    function tw
+        tmux new-window -n $argv
     end
 end
 
