@@ -9,6 +9,7 @@ if status is-interactive
     alias x="exit"
 
     alias t="tmux"
+    alias tn="tmux new -s "
     alias muxi="tmuxifier"
     alias muxi-load="tmuxifier load-session"
     alias muxi-new="tmuxifier new-layout"
@@ -27,6 +28,10 @@ if status is-interactive
     alias dpr="~/docker-ps-visual.sh -r"
     alias dpa="~/docker-ps-visual.sh -a"
     alias dpar="~/docker-ps-visual.sh -a -r"
+
+    function tn
+        tmux new -s $argv
+    end
 end
 
 set -Ux fish_user_paths \
