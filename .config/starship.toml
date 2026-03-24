@@ -439,3 +439,4 @@ style = "fg:color_other"
 format = '[($symbol $output )]($style)'
 when = '[ "${STARSHIP_COCKPIT_KEYBOARD_LAYOUT_ENABLED:-false}" = "true" ]'
 disabled = false
+
