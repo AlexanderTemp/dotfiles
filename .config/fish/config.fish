@@ -20,7 +20,7 @@ if status is-interactive
 
     alias rgf="rg --files | rg"
     alias fd="fdfind"
-    alias qw="ls -alt | head -n"
+    alias qw="ls -alth | head -n"
 
     alias dps="~/docker-ps-visual.sh"
     alias dpr="~/docker-ps-visual.sh -r"
