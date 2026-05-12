@@ -1,0 +1,15 @@
+set number
+set relativenumber
+
+set ignorecase
+set smartcase
+
+let mapleader=" "
+
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+
+set surround
+set quickscope
+
+map <leader>s <Action>(flash.search)
