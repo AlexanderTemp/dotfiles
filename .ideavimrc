@@ -3,13 +3,42 @@ set relativenumber
 
 set ignorecase
 set smartcase
+set incsearch
+set hlsearch
+
+set clipboard+=unnamed
 
 let mapleader=" "
 
 nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 
+" escape rápido
+inoremap jk <Esc>
+
+" navegación splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" splits
+map <leader>sv <Action>(SplitVertically)
+map <leader>sh <Action>(SplitHorizontally)
+map <leader>su <Action>(Unsplit)
+
+" navegación IDE
+map <leader>ff <Action>(GotoFile)
+map <leader>fg <Action>(FindInPath)
+map <leader>rn <Action>(RenameElement)
+map <leader>ca <Action>(ShowIntentionActions)
+
+map gd <Action>(GotoDeclaration)
+map gr <Action>(FindUsages)
+
+" plugins
 set surround
 set quickscope
 
-map <leader>s <Action>(flash.search)
+" flash
+map <leader>f <Action>(flash.search)
