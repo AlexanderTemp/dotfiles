@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SOCK="unix:/tmp/kitty-socket"
+
+if kitty @ --to "$SOCK" ls >/dev/null 2>&1; then
+  kitty @ --to "$SOCK" focus-window >/dev/null 2>&1
+else
+  kitty --listen-on="$SOCK" &
+fi
+

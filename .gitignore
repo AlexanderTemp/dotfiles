@@ -1,0 +1,28 @@
+# FISH
+.config/fish/fish_variables*
+.config/fish/fish_history
+
+# RUNTIME STATE
+.cache/
+.local/share/
+.run/
+
+# EDITORES
+.vscode/
+.idea/
+
+# SYSTEM FILES
+.DS_Store
+*.swp
+*.log
+
+# SSH KEYS (si están en repo accidentalmente)
+*.key
+*.pem
+
+
+# TMUXIFIER (STATE)
+.tmuxifier/tmp*
+.tmuxifier/*.log
+.tmuxifier/*.cache
+.tmuxifier/.last_session
