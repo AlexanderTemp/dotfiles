@@ -1,6 +1,9 @@
 if status is-interactive
     starship init fish | source
-    zoxide init fish | source
+
+    if type -q zoxide
+        zoxide init fish --cmd cd | source
+    end
 
     alias g="git"
     alias ga="git add ."
@@ -16,25 +19,42 @@ if status is-interactive
     alias rgf="rg --files | rg"
     alias fd="fdfind"
 
-    alias lf="eza --group-directories-first --icons --git"
-    alias la="eza -lah --group-directories-first --icons --git"
-    alias ll="eza -lh --group-directories-first --icons --git"
+    if type -q eza
+        alias ls="eza --group-directories-first --icons --git"
+        alias lf="eza --group-directories-first --icons --git"
+        alias la="eza -lah --group-directories-first --icons --git"
+        alias ll="eza -lh --group-directories-first --icons --git"
 
-    function qw
-        set -l n 10
+        function qw
+            set -l n 10
 
-        if test (count $argv) -ge 1
-            set n $argv[1]
+            if test (count $argv) -ge 1
+                set n $argv[1]
+            end
+
+            eza \
+                -lah \
+                --sort=modified \
+                --reverse \
+                --group-directories-first \
+                --icons=always \
+                --color=always \
+                --git \
+                | head -n $n
         end
+    else
+        alias la="ls -lah --color=auto"
+        alias ll="ls -lh --color=auto"
 
-        eza \
-            -lah \
-            --sort=modified \
-            --reverse \
-            --group-directories-first \
-            --icons \
-            --git \
-            | head -n $n
+        function qw
+            set -l n 10
+
+            if test (count $argv) -ge 1
+                set n $argv[1]
+            end
+
+            ls -laht --color=always | head -n $n
+        end
     end
 
     alias dps="~/docker-ps-visual.sh"
