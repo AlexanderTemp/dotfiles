@@ -1,6 +1,6 @@
 # FISH
-.config/fish/fish_variables*
-.config/fish/fish_history
+fish/.config/fish/fish_variables*
+fish/.config/fish/fish_history
 
 # RUNTIME STATE
 .cache/
@@ -19,10 +19,3 @@
 # SSH KEYS (si están en repo accidentalmente)
 *.key
 *.pem
-
-
-# TMUXIFIER (STATE)
-.tmuxifier/tmp*
-.tmuxifier/*.log
-.tmuxifier/*.cache
-.tmuxifier/.last_session

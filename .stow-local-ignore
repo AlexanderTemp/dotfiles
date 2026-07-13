@@ -16,9 +16,6 @@ _darcs
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
-^/README.*
-^/LICENSE.*
-^/COPYING
-
-^/TODO.md
-^/assets
+README\.md
+TODO\.md
+git-aliases\.md
