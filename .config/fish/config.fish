@@ -1,7 +1,6 @@
 if status is-interactive
     starship init fish | source
     zoxide init fish | source
-    nvm use 24
 
     alias g="git"
     alias ga="git add ."
@@ -20,7 +19,27 @@ if status is-interactive
 
     alias rgf="rg --files | rg"
     alias fd="fdfind"
-    alias qw="ls -alth | head -n"
+
+    alias lf="eza --group-directories-first --icons --git"
+    alias la="eza -lah --group-directories-first --icons --git"
+    alias ll="eza -lh --group-directories-first --icons --git"
+
+    function qw
+        set -l n 10
+
+        if test (count $argv) -ge 1
+            set n $argv[1]
+        end
+
+        eza \
+            -lah \
+            --sort=modified \
+            --reverse \
+            --group-directories-first \
+            --icons \
+            --git \
+            | head -n $n
+    end
 
     alias dps="~/docker-ps-visual.sh"
     alias dpr="~/docker-ps-visual.sh -r"
@@ -52,3 +71,6 @@ set -gx DOTNET_ROOT $HOME/.dotnet
 
 # BUN
 set -gx BUN_INSTALL $HOME/.bun
+
+# opencode
+fish_add_path /home/attemptx/.opencode/bin
