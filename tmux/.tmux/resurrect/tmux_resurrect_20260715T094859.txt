@@ -1,0 +1,17 @@
+pane	chamba	1	0	:	1	~/D/p/pdf-inspector	:/home/attemptx-wk/Desktop/pki-estado/pdf-inspector	1	fish	:
+pane	chamba	2	1	:*	1	npm run dev ~/D/tsu-signer	:/home/attemptx-wk/Desktop/tsu-signer	1	npm	:npm run dev
+pane	chamba	2	1	:*	2	~/D/p/tsu-signer	:/home/attemptx-wk/Desktop/pki-estado/tsu-signer	0	fish	:
+pane	chamba	3	0	:	1	nv ~/D/p/tsu-signer	:/home/attemptx-wk/Desktop/pki-estado/tsu-signer	1	nvim	:nvim
+pane	chamba	4	0	:-	1	~/Downloads	:/home/attemptx-wk/Downloads	1	fish	:
+pane	chamba	4	0	:-	2	~/Downloads	:/home/attemptx-wk/Downloads	0	fish	:
+pane	chamba	5	0	:	1	npm run dev ~/D/o/one-shot-cliente-backend	:/home/attemptx-wk/Desktop/one-shot/one-shot-cliente-backend	0	npm	:npm run dev
+pane	chamba	5	0	:	2	npm run dev ~/D/o/one-shot-cliente-frontend	:/home/attemptx-wk/Desktop/one-shot/one-shot-cliente-frontend	1	npm	:npm run dev
+pane	chamba	5	0	:	3	~/D/tsu-signer	:/home/attemptx-wk/Desktop/tsu-signer	0	fish	:
+pane	chamba	7	0	:	1	docker run --rm -it  ~/D/p/pdf-inspector	:/home/attemptx-wk/Desktop/pki-estado/pdf-inspector	1	docker	:docker run --rm -it --network host -e IMMUCLIENT_IMMUDB_ADDRESS=127.0.0.1 -e IMMUCLIENT_IMMUDB_PORT=3322 -e IMMUCLIENT_USERNAME=immudb -e IMMUCLIENT_PASSWORD=immudb -e IMMUCLIENT_DATABASE=tsuaudit codenotary/immuclient:latest
+window	chamba	1	:nuevo	0	:	6ab0,189x49,0,0,30	off
+window	chamba	2	:tsa	1	:*	dfe2,189x49,0,0{93x49,0,0,2,95x49,94,0,18}	off
+window	chamba	3	:capar	0	:	6ab5,189x49,0,0,35	off
+window	chamba	4	:test	0	:-	db4f,189x49,0,0{94x49,0,0,38,94x49,95,0,39}	off
+window	chamba	5	:ocsp	0	:	ed89,189x49,0,0{94x49,0,0[94x24,0,0,6,94x24,0,25,11],94x49,95,0,41}	off
+window	chamba	7	:audit	0	:	eab5,189x49,0,0,26	off
+state	chamba	
