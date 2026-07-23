@@ -7,6 +7,9 @@ fish/.config/fish/fish_history
 .local/share/
 .run/
 
+# TMUX RESURRECT (estado local por máquina, no se comparte)
+tmux/.tmux/resurrect/
+
 # EDITORES
 .vscode/
 .idea/
