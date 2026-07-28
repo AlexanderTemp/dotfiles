@@ -140,31 +140,7 @@ color_vimcmd_visual = '#d79921'
 [os]
 disabled = false
 style = "bold fg:color_os"
-format = '[$symbol ]($style)'
-
-[os.symbols]
-Windows = "󰍲"
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = "󰀵"
-Manjaro = ""
-Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-Arch = "󰣇"
-Artix = "󰣇"
-EndeavourOS = ""
-CentOS = ""
-# Debian = "󰣚"
-Debian = "🤠"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
-Pop = ""
+format = '[🤠 ]($style)'
 
 [username]
 show_always = false
