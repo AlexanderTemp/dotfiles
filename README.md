@@ -21,6 +21,7 @@ dotfiles/
 ├── starship/    -> ~/.config/starship.toml
 ├── sway/        -> ~/.config/sway
 ├── waybar/      -> ~/.config/waybar
+├── fuzzel/      -> ~/.config/fuzzel
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
 └── scripts/     -> ~/docker-ps-visual.sh, ~/toggle-kitty
@@ -34,7 +35,7 @@ Para instalar o actualizar todo de una:
 
 ```bash
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
 ```
 
 `install/` no es un paquete de stow: son scripts de bootstrap que se corren
@@ -54,7 +55,10 @@ Instala las siguientes herramientas para que los dotfiles funcionen correctament
 - [kitty](https://sw.kovidgoyal.net/kitty/binary/) Terminal emulator basado en GPU.
 - [sway](https://swaywm.org/) Compositor Wayland (tiling), config en `sway/`.
 - [waybar](https://github.com/Alexays/Waybar) Barra de estado para sway, config en `waybar/`. Para los binds del `sway/config` hace falta `swayidle`, `swaylock`, `brightnessctl`.
-- [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) (`ttf-fantasque-nerd` en Arch) Fuente usada de forma consistente en kitty, alacritty y waybar.
+- [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) (`ttf-fantasque-nerd` en Arch) Fuente usada de forma consistente en kitty, alacritty, waybar y fuzzel.
+- [fuzzel](https://codeberg.org/dnkl/fuzzel) Lanzador de aplicaciones para Wayland/sway, config con tema kanagawabones en `fuzzel/`.
+- [dbeaver](https://dbeaver.io/) Cliente SQL universal.
+- [docker](https://www.docker.com/) + `docker-compose`. El script habilita `docker.service` y añade el usuario al grupo `docker`.
 - [alacritty](https://alacritty.org/) Terminal emulator alternativo, config en `alacritty/`.
 - [cargo](https://doc.rust-lang.org/cargo) Rust y su gestor de paquetes.
 - [bun](https://bun.sh/) Runtime/paquetería de JS, usado vía `$BUN_INSTALL`.
@@ -102,7 +106,7 @@ Prefix = `Ctrl-a`
 ```bash
 git clone <este-repo> ~/dotfiles
 cd ~/dotfiles
-stow fish nvim kitty alacritty starship tmux ideavim scripts sway waybar
+stow fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
 ```
 
 Cada nombre es opcional: puedes correr `stow <paquete>` solo para lo que quieras instalar, o `stow -D <paquete>` para desinstalarlo (quita los symlinks sin borrar el contenido del repo).
@@ -120,10 +124,12 @@ cd ~/dotfiles/install
 
 El script instala vía `pacman` fish, starship, zoxide, ripgrep, fd, tmux,
 stow, sway/waybar/wmenu/swaybg/swayidle/swaylock/brightnessctl/grim/playerctl,
-flameshot, yazi y sus dependencias, y la fuente `ttf-fantasque-nerd`
-(`FantasqueSansM Nerd Font`, la misma que usan kitty y alacritty); y vía curl
-rustup (para `cargo install eza`), pyenv, kitty, fisher + plugins de fish, y
-Claude Code.
+flameshot, fuzzel, dbeaver, docker + docker-compose, yazi y sus dependencias, y
+la fuente `ttf-fantasque-nerd` (`FantasqueSansM Nerd Font`, la misma que usan
+kitty, alacritty y fuzzel); y vía curl rustup (para `cargo install eza`),
+pyenv, kitty, fisher + plugins de fish, y Claude Code. Para docker, además
+habilita y arranca `docker.service` y añade el usuario al grupo `docker`
+(todos estos pasos son idempotentes, no se repiten si ya están hechos).
 
 ```bash
 # nvim: paso manual, no lo automatiza install-arch.sh

@@ -37,6 +37,44 @@ pacman_install sway waybar wmenu swaybg swayidle swaylock brightnessctl grim pla
 # --- Utilidades de escritorio ---------------------------------------------
 pacman_install flameshot
 
+# --- fuzzel (lanzador de aplicaciones) --------------------------------------
+if ! command -v fuzzel >/dev/null 2>&1; then
+    log "Instalando fuzzel"
+    pacman_install fuzzel
+else
+    log "fuzzel ya está instalado"
+fi
+
+# --- dbeaver (cliente SQL) ---------------------------------------------------
+if ! command -v dbeaver >/dev/null 2>&1; then
+    log "Instalando dbeaver"
+    pacman_install dbeaver
+else
+    log "dbeaver ya está instalado"
+fi
+
+# --- docker -------------------------------------------------------------------
+if ! command -v docker >/dev/null 2>&1; then
+    log "Instalando docker"
+    pacman_install docker docker-compose
+else
+    log "docker ya está instalado"
+fi
+
+if ! systemctl is-enabled --quiet docker.service 2>/dev/null; then
+    log "Habilitando y arrancando docker.service"
+    sudo systemctl enable --now docker.service
+else
+    log "docker.service ya está habilitado"
+fi
+
+if ! groups "$USER" | grep -qw docker; then
+    log "Añadiendo $USER al grupo docker (necesitarás cerrar sesión y volver a entrar)"
+    sudo usermod -aG docker "$USER"
+else
+    log "$USER ya pertenece al grupo docker"
+fi
+
 # --- Yazi y sus dependencias ------------------------------------------------
 pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick
 
@@ -104,5 +142,5 @@ cat <<'EOF'
   - nvim: descargar el tarball, extraer en /opt/nvim (ver README.md > "Comandos").
   - ssh-keygen -t ed25519 -a 100 -C "tu-email" y añadir la key pública a GitHub.
   - git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles (si no lo tienes ya).
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar
+  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
 EOF
