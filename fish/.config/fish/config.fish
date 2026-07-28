@@ -17,7 +17,6 @@ if status is-interactive
     alias nv="nvim"
 
     alias rgf="rg --files | rg"
-    alias fd="fdfind"
 
     if type -q eza
         alias ls="eza --group-directories-first --icons --git"

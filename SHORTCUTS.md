@@ -14,7 +14,6 @@ Referencia de todos los atajos de teclado, alias y funciones configurados en est
 | `dev` | `npm run dev` | |
 | `v`, `nv` | `nvim` | abrir editor |
 | `rgf` | `rg --files \| rg` | filtrar listado de archivos con ripgrep |
-| `fd` | `fdfind` | binario de `fd` en Debian/Ubuntu se llama `fdfind` |
 | `ls`, `lf` | `eza --group-directories-first --icons --git` | listado normal (fallback nativo `ls` si no hay `eza`) |
 | `la` | `eza -lah --group-directories-first --icons --git` | listado detallado + ocultos (fallback `ls -lah --color=auto`) |
 | `ll` | `eza -lh --group-directories-first --icons --git` | listado detallado (fallback `ls -lh --color=auto`) |
