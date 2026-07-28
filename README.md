@@ -1,8 +1,7 @@
 <h1 style="text-align: center;">🤠 My personal dotfiles customization</h1>
 <p align="center">
-  <img src="https://img.shields.io/badge/Debian-13-A81D33?style=for-the-badge&logo=debian&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Ubuntu-24.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Linux%20Mint-22-87CF3E?style=for-the-badge&logo=linuxmint&logoColor=white"/>
+  <img src="https://img.shields.io/badge/CachyOS%2FArch-1793D1?style=for-the-badge&logo=archlinux&logoColor=white"/>
+  <img src="https://img.shields.io/badge/sway-Wayland-blue?style=for-the-badge&logo=wayland&logoColor=white"/>
 </p>
 
 ![](./assets/dotfiles-img.png)
@@ -20,17 +19,26 @@ dotfiles/
 ├── kitty/       -> ~/.config/kitty
 ├── alacritty/   -> ~/.config/alacritty
 ├── starship/    -> ~/.config/starship.toml
+├── sway/        -> ~/.config/sway
+├── waybar/      -> ~/.config/waybar
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
 └── scripts/     -> ~/docker-ps-visual.sh, ~/toggle-kitty
 ```
 
+`wallpapers/` vive en la raíz del repo (como `assets/`), fuera de cualquier
+paquete — `sway/.config/sway/config` lo referencia directo por su ruta
+dentro del clon (`~/dotfiles/wallpapers/...`), no vía stow.
+
 Para instalar o actualizar todo de una:
 
 ```bash
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar
 ```
+
+`install/` no es un paquete de stow: son scripts de bootstrap que se corren
+una sola vez (ver más abajo, sección Arch/CachyOS).
 
 ## 💽 Pre install
 
@@ -41,9 +49,12 @@ Instala las siguientes herramientas para que los dotfiles funcionen correctament
 - [starship](https://starship.rs/) Prompt customizer.
 - [zoxide](https://github.com/ajeetdsouza/zoxide) `cd` inteligente, usado en `config.fish`.
 - [fisher](https://github.com/jorgebucaran/fisher) Plugin manager de fish. Instala también el plugin `jorgebucaran/nvm.fish` (ver `fish/.config/fish/fish_plugins`).
-- [eza](https://github.com/eza-community/eza) Reemplazo de `ls` usado en los alias `lf`/`la`/`ll`/`qw`. **Instálalo con `cargo install eza`**, no con `apt` — la versión de los repos de Debian suele estar desactualizada o dar conflictos.
-- [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) y [fd-find](https://github.com/sharkdp/fd) (alias `fd="fdfind"`).
+- [eza](https://github.com/eza-community/eza) Reemplazo de `ls` usado en los alias `lf`/`la`/`ll`/`qw`. **Instálalo con `cargo install eza`**, no con pacman.
+- [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) y [fd](https://github.com/sharkdp/fd) (en Arch el binario ya se llama `fd`, sin alias).
 - [kitty](https://sw.kovidgoyal.net/kitty/binary/) Terminal emulator basado en GPU.
+- [sway](https://swaywm.org/) Compositor Wayland (tiling), config en `sway/`.
+- [waybar](https://github.com/Alexays/Waybar) Barra de estado para sway, config en `waybar/`. Para los binds del `sway/config` hace falta `swayidle`, `swaylock`, `brightnessctl`.
+- [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) (`ttf-fantasque-nerd` en Arch) Fuente usada de forma consistente en kitty, alacritty y waybar.
 - [alacritty](https://alacritty.org/) Terminal emulator alternativo, config en `alacritty/`.
 - [cargo](https://doc.rust-lang.org/cargo) Rust y su gestor de paquetes.
 - [bun](https://bun.sh/) Runtime/paquetería de JS, usado vía `$BUN_INSTALL`.
@@ -91,47 +102,34 @@ Prefix = `Ctrl-a`
 ```bash
 git clone <este-repo> ~/dotfiles
 cd ~/dotfiles
-stow fish nvim kitty alacritty starship tmux ideavim scripts
+stow fish nvim kitty alacritty starship tmux ideavim scripts sway waybar
 ```
 
 Cada nombre es opcional: puedes correr `stow <paquete>` solo para lo que quieras instalar, o `stow -D <paquete>` para desinstalarlo (quita los symlinks sin borrar el contenido del repo).
 
-## 🧑‍💻 Comandos para Debian 13
+## 🏔️ Comandos para Arch/CachyOS
 
-Ya tengo los comandos para instalar cada herramienta correctamente en Debian.
+Único sistema soportado a partir de ahora (soporte para Debian/Ubuntu/Mint
+deprecado, ver `HISTORY.md`). Todo lo de abajo, menos nvim, está automatizado
+en `install/install-arch.sh`:
 
 ```bash
-# base installation
-sudo apt update 
-sudo apt install curl wget git tar gzip xz-utils build-essential cmake pkg-config ca-certificates lsb-release ripgrep fd-find fzf libevent ncurses
+cd ~/dotfiles/install
+./install-arch.sh
+```
 
-# Stow y Fish 
-sudo apt install vim 
-sudo apt install stow
-sudo apt install tmux
-suto apt install ./fish**.deb
-curl -sS https://starship.rs/install.sh | s
+El script instala vía `pacman` fish, starship, zoxide, ripgrep, fd, tmux,
+stow, sway/waybar/wmenu/swaybg/swayidle/swaylock/brightnessctl/grim/playerctl,
+flameshot, yazi y sus dependencias, y la fuente `ttf-fantasque-nerd`
+(`FantasqueSansM Nerd Font`, la misma que usan kitty y alacritty); y vía curl
+rustup (para `cargo install eza`), pyenv, kitty, fisher + plugins de fish, y
+Claude Code.
 
-
-# Kitty config
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
-cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
-sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
-sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
-echo 'kitty.desktop' > ~/.config/xdg-terminals.list
-
-# Cargo
-curl https://sh.rustup.rs -sSf | sh
-
-# eza (via cargo, no apt)
-cargo install eza
-
-# NVM (la integración con el shell ya la maneja el plugin de fish)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-
-# nvim, una vez descargada la última versión
+```bash
+# nvim: paso manual, no lo automatiza install-arch.sh
 sudo rm -rf /opt/nvim-***-x86_64
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 # el PATH ya lo maneja fish, carpeta recomendada "/opt/nvim"
 ```
+
+Ver `../HISTORY.md` para el detalle de por qué cada pieza está ahí.
