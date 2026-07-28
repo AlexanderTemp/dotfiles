@@ -22,7 +22,7 @@ log "Actualizando índices de paquetes"
 sudo pacman -Sy
 
 # --- Base ---------------------------------------------------------------
-pacman_install git curl wget stow
+pacman_install git curl wget stow base-devel zip unzip
 
 # --- Shell / prompt / navegación ----------------------------------------
 pacman_install fish starship zoxide fzf ripgrep fd tmux
@@ -97,7 +97,11 @@ else
     log "eza ya está instalado"
 fi
 
-# --- pyenv ------------------------------------------------------------------
+# --- pyenv --------------------------------------------------------------------
+# Deps de compilación: sin esto `pyenv install <version>` falla a mitad de
+# build (openssl/zlib/etc faltantes) aunque pyenv en sí se haya instalado bien.
+pacman_install openssl zlib xz bzip2 readline sqlite tk libffi
+
 if [ ! -d "$HOME/.pyenv" ]; then
     log "Instalando pyenv"
     curl -fsSL https://pyenv.run | bash
@@ -118,6 +122,17 @@ if ! command -v kitty >/dev/null 2>&1 && [ ! -x "$HOME/.local/kitty.app/bin/kitt
     echo 'kitty.desktop' > "$HOME/.config/xdg-terminals.list"
 else
     log "kitty ya está instalado"
+fi
+
+# --- SDKMAN (core) --------------------------------------------------------------
+# El plugin de fish (reitzig/sdkman-for-fish, más abajo) es solo un wrapper:
+# necesita que esto ya esté instalado, si no cada `sdk` tira el warning de
+# "installation path set but no installation found there".
+if [ ! -d "$HOME/.sdkman" ]; then
+    log "Instalando SDKMAN"
+    curl -s "https://get.sdkman.io" | bash
+else
+    log "SDKMAN ya está instalado"
 fi
 
 # --- fisher + plugins de fish -------------------------------------------------
