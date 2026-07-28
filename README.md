@@ -64,6 +64,7 @@ Instala las siguientes herramientas para que los dotfiles funcionen correctament
 - [bun](https://bun.sh/) Runtime/paquetería de JS, usado vía `$BUN_INSTALL`.
 - [nvm](https://github.com/nvm-sh/nvm) Node version manager (integrado como plugin de fish).
 - [pyenv](https://github.com/pyenv/pyenv) Python version manager, inicializado en `config.fish`.
+- [SDKMAN!](https://sdkman.io/) Version manager de JVM/Java/Kotlin/etc (integrado como plugin de fish, `reitzig/sdkman-for-fish`).
 - [.NET SDK](https://dotnet.microsoft.com/) usado vía `$DOTNET_ROOT`.
 - [tmux](https://github.com/tmux/tmux/wiki/Installing) Terminal multiplexer.
 - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) Guarda y restaura sesiones de tmux (ver sección de abajo).
@@ -123,13 +124,18 @@ cd ~/dotfiles/install
 ```
 
 El script instala vía `pacman` fish, starship, zoxide, ripgrep, fd, tmux,
-stow, sway/waybar/wmenu/swaybg/swayidle/swaylock/brightnessctl/grim/playerctl,
-flameshot, fuzzel, dbeaver, docker + docker-compose, yazi y sus dependencias, y
-la fuente `ttf-fantasque-nerd` (`FantasqueSansM Nerd Font`, la misma que usan
-kitty, alacritty y fuzzel); y vía curl rustup (para `cargo install eza`),
-pyenv, kitty, fisher + plugins de fish, y Claude Code. Para docker, además
-habilita y arranca `docker.service` y añade el usuario al grupo `docker`
-(todos estos pasos son idempotentes, no se repiten si ya están hechos).
+stow, `base-devel` (necesario para que `cargo install eza` pueda linkear),
+`zip`/`unzip` (los pide el instalador de SDKMAN),
+sway/waybar/wmenu/swaybg/swayidle/swaylock/brightnessctl/grim/playerctl,
+flameshot, fuzzel, dbeaver, docker + docker-compose, yazi y sus dependencias,
+las libs de compilación que pyenv necesita para poder construir un Python
+(`openssl zlib xz bzip2 readline sqlite tk libffi`), y la fuente
+`ttf-fantasque-nerd` (`FantasqueSansM Nerd Font`, la misma que usan kitty,
+alacritty y fuzzel); y vía curl rustup (para `cargo install eza`), pyenv,
+kitty, SDKMAN (core, antes del plugin de fish), fisher + plugins de fish, y
+Claude Code. Para docker, además habilita y arranca `docker.service` y añade
+el usuario al grupo `docker` (todos estos pasos son idempotentes, no se
+repiten si ya están hechos).
 
 ```bash
 # nvim: paso manual, no lo automatiza install-arch.sh

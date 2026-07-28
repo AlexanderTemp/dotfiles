@@ -68,6 +68,31 @@ instalados** en esta máquina limpia:
 Sin estos tres, esos bindings del `config` simplemente no van a hacer nada.
 Ya están agregados a `install/install-arch.sh`.
 
+## Auditoría de `install-arch.sh`: gaps encontrados antes de reinstalar (2026-07-28)
+
+Al revisar el script contra lo que los dotfiles realmente usan, aparecieron
+cuatro huecos que habrían hecho sufrir de nuevo en la próxima instalación
+limpia — se corrigieron directo en `install-arch.sh`:
+
+- **`zip`/`unzip` faltaban.** El `7zip` que ya se instala (para yazi) da el
+  binario `7z`, no `zip`/`unzip`. El instalador de SDKMAN (`get.sdkman.io`)
+  chequea explícitamente `command -v zip`/`unzip` y aborta sin ellos.
+- **SDKMAN solo estaba a medias.** El script instalaba el plugin de fish
+  (`reitzig/sdkman-for-fish`, vía fisher) pero nunca el SDKMAN real (el
+  `curl -s https://get.sdkman.io | bash`). Quedaba diferido a la primera vez
+  que corrieras `sdk` a mano, vía el prompt interactivo de
+  `fish/.config/fish/functions/sdk.fish` — que además habría fallado por el
+  punto anterior. Ahora el script instala SDKMAN core explícitamente antes
+  del plugin de fish.
+- **`base-devel` no estaba.** `cargo install eza` necesita un linker C
+  (`cc`); sin `base-devel` falla con `linker `cc` not found` en una máquina
+  realmente limpia (dependía de si el perfil de `archinstall` lo traía o
+  no).
+- **Deps de compilación de pyenv faltaban.** `pyenv` en sí se instala bien,
+  pero `pyenv install <versión>` para compilar un Python real necesita
+  `openssl zlib xz bzip2 readline sqlite tk libffi` — sin esto falla a
+  mitad de build. Es un gap clásico y documentado de pyenv en Arch.
+
 ## Cosas específicas de esta máquina (revisar si cambiás de equipo)
 
 - `sway/.config/sway/config`: `output DP-1 mode 1920x1080@60Hz` — nombre de
