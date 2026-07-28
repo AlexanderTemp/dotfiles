@@ -17,6 +17,7 @@ dotfiles/
 ├── starship/    -> ~/.config/starship.toml
 ├── sway/        -> ~/.config/sway
 ├── waybar/      -> ~/.config/waybar
+├── fuzzel/      -> ~/.config/fuzzel
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
 └── scripts/     -> ~/docker-ps-visual.sh, ~/toggle-kitty
@@ -31,7 +32,7 @@ dotfiles/
 Install/update all packages:
 ```bash
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
 ```
 
 Install/remove a single package:
@@ -68,6 +69,20 @@ stow -D <package>    # uninstall (removes symlinks only, repo content stays)
   assumes the repo is cloned to `~/dotfiles`.
 - Machine-specific bit that won't travel to another box as-is: the output
   name is hardcoded (`output DP-1 mode 1920x1080@60Hz`).
+
+### fuzzel (`fuzzel/.config/fuzzel/fuzzel.ini`)
+
+- App launcher for sway, alternative to the `wmenu` installed by
+  `install-arch.sh`. Colors are hand-picked from the kanagawabones palette
+  (`kitty/.config/kitty/current-theme.conf`), not a generic Catppuccin/Tokyo
+  Night theme — kept consistent with the actual kitty theme in use. Font is
+  `FantasqueSansM Nerd Font Mono`, matching kitty/alacritty/waybar.
+- `icons-enabled` is the correct key (not `icons` — that name doesn't exist
+  in fuzzel's schema and fails `--check-config`). `icon-theme=Adwaita` since
+  that's what's actually installed on the box (no Papirus).
+- `selection` is transparent (`00000000`) by design: the selected entry is
+  distinguished by text color only (`selection-text`/`selection-match`), not
+  a solid highlight bar — a deliberate minimal look, not an oversight.
 
 ### tmux (`tmux/.tmux.conf`, `tmux/.tmux/`)
 
