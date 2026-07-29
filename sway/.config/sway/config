@@ -38,8 +38,8 @@ gaps horizontal 4
 gaps vertical 4
 gaps inner 12
 
-default_border pixel 4
-default_floating_border pixel 4
+default_border pixel 2
+default_floating_border pixel 2
 
 # colors first: keybinds/bar reference $primary/$surface, include order matters
 include ~/.config/sway/config.d/colors

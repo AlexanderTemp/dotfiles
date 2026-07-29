@@ -22,10 +22,13 @@ dotfiles/
 ├── sway/        -> ~/.config/sway
 ├── waybar/      -> ~/.config/waybar
 ├── fuzzel/      -> ~/.config/fuzzel
+├── wlogout/     -> ~/.config/wlogout
+├── matugen/     -> ~/.config/matugen
+├── gtklock/     -> ~/.config/gtklock
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
 ├── environment/ -> ~/.config/environment.d
-└── scripts/     -> ~/docker-ps-visual.sh, ~/toggle-kitty
+└── scripts/     -> ~/docker-ps-visual.sh, ~/.local/bin/set-wallpaper
 ```
 
 `wallpapers/` vive en la raíz del repo (como `assets/`), fuera de cualquier
@@ -36,7 +39,7 @@ Para instalar o actualizar todo de una:
 
 ```bash
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel environment
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock environment
 ```
 
 `install/` no es un paquete de stow: son scripts de bootstrap que se corren
@@ -55,9 +58,12 @@ Instala las siguientes herramientas para que los dotfiles funcionen correctament
 - [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) y [fd](https://github.com/sharkdp/fd) (en Arch el binario ya se llama `fd`, sin alias).
 - [kitty](https://sw.kovidgoyal.net/kitty/binary/) Terminal emulator basado en GPU.
 - [sway](https://swaywm.org/) Compositor Wayland (tiling), config en `sway/`.
-- [waybar](https://github.com/Alexays/Waybar) Barra de estado para sway, config en `waybar/`. Para los binds del `sway/config` hace falta `swayidle`, `swaylock`, `brightnessctl`.
+- [waybar](https://github.com/Alexays/Waybar) Barra de estado para sway, config en `waybar/`. Para los binds del `sway/config` hace falta `swayidle`, `gtklock`, `brightnessctl`. **`waybar/style.css` importa `../matugen/colors.css`** — si el paquete `matugen` no está stow-eado, waybar falla al arrancar (error de CSS) y no se ve la barra.
 - [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) (`ttf-fantasque-nerd` en Arch) Fuente usada de forma consistente en kitty, alacritty, waybar y fuzzel.
 - [fuzzel](https://codeberg.org/dnkl/fuzzel) Lanzador de aplicaciones para Wayland/sway, config con tema kanagawabones en `fuzzel/`.
+- [matugen](https://github.com/InioX/matugen) Genera la paleta Material-You desde el wallpaper actual (`$mod+Shift+w`) y escribe `colors.css`/`config.d/colors`/`fuzzel.ini`, config en `matugen/`. **Paquete obligatorio para que waybar y gtklock arranquen** (ambos importan `matugen/colors.css`), no solo para el retheme.
+- [gtklock](https://github.com/jovanlanik/gtklock) Pantalla de bloqueo usada por `swayidle`/`wlogout`, config en `gtklock/`.
+- [wlogout](https://github.com/ArtsyMacaw/wlogout) Menú de sesión (`$mod+Shift+e`): lock/logout/suspend/reboot/shutdown/exit-sway, config en `wlogout/`.
 - [dbeaver](https://dbeaver.io/) Cliente SQL universal.
 - [docker](https://www.docker.com/) + `docker-compose`. El script habilita `docker.service` y añade el usuario al grupo `docker`.
 - [alacritty](https://alacritty.org/) Terminal emulator alternativo, config en `alacritty/`.
@@ -108,7 +114,7 @@ Prefix = `Ctrl-a`
 ```bash
 git clone <este-repo> ~/dotfiles
 cd ~/dotfiles
-stow fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
+stow fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock
 ```
 
 Cada nombre es opcional: puedes correr `stow <paquete>` solo para lo que quieras instalar, o `stow -D <paquete>` para desinstalarlo (quita los symlinks sin borrar el contenido del repo).

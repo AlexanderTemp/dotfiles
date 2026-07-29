@@ -37,6 +37,13 @@ pacman_install() {
 log "Actualizando índices de paquetes y el sistema"
 sudo pacman -Syu # -Syu, no -Sy: evita dejar el sistema en partial upgrade
 
+# -Syu pudo traer un kernel nuevo sin reiniciar: eso rompe docker/nftables más abajo.
+if [ ! -d "/usr/lib/modules/$(uname -r)" ]; then
+    printf '\n\033[1;33m⚠ El kernel se actualizó (corriendo %s, sin módulos en disco) — reiniciá y volvé a correr este script.\033[0m\n' "$(uname -r)"
+    printf 'El script es idempotente: lo ya instalado se saltea, así que reiniciar no repite trabajo.\n'
+    exit 0
+fi
+
 # --- Base ---------------------------------------------------------------
 pacman_install git curl wget stow base-devel zip unzip
 
