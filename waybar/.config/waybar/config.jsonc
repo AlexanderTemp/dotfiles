@@ -9,7 +9,13 @@
     "interval": "once",
     "tooltip": false
   },
+  "custom/launcher": {
+    "format": "ム",
+    "tooltip": false,
+    "on-click": "exec wlogout -p layer-shell"
+  },
   "modules-left": [
+    "custom/launcher",
     "sway/workspaces",
     "sway/mode"
   ],
@@ -17,15 +23,25 @@
     "sway/window"
   ],
   "modules-right": [
-    "tray",
-    "cpu",
-    "custom/separator",
-    "memory",
-    "custom/separator",
-    // "battery",
-    // "custom/separator",
+    "group/system",
     "clock"
   ],
+  "group/system": {
+    "orientation": "horizontal",
+    "modules": [
+      "tray",
+      "custom/separator",
+      "cpu",
+      "custom/separator",
+      "memory",
+      "custom/separator",
+      "pulseaudio"
+      // , "custom/separator", "battery"  -- solo para la laptop
+    ]
+  },
+  "sway/workspaces": {
+    "disable-scroll": true
+  },
   "sway/window": {
     "max-length": 50
   },
@@ -49,7 +65,8 @@
   },
   /* Solo para la laptop
   "battery": {
-    "format": "bat {capacity}%",
+    "format": "{icon} {capacity}%",
+    "format-icons": ["", "", "", "", ""],
     "interval": 5,
     "states": {
       "warning": 20,
@@ -68,13 +85,13 @@
   "pulseaudio": {
     "scroll-step": 5,
     "max-volume": 150,
-    "format": "vol {volume}%",
-    "format-bluetooth": "vol {volume}%",
-    "nospacing": 1,
-    "on-click": "pavucontrol",
+    "format": "V {volume}%",
+    "format-muted": "V Muted",
+    "on-click": "pamixer -t",
+    "on-click-right": "pavucontrol",
     "tooltip": false
   },
   "clock": {
-    "format": "{:%a %d %b  %H:%M:%S}"
+    "format": "{:%a %d %b  %H:%M}"
   }
 }

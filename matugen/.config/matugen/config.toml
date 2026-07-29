@@ -1,0 +1,14 @@
+[config]
+
+[templates.css]
+input_path = "~/.config/matugen/templates/colors.tpl"
+output_path = "~/.config/matugen/colors.css"
+
+[templates.sway]
+input_path = "~/.config/matugen/templates/sway.tpl"
+output_path = "~/.config/sway/config.d/colors"
+post_hook = "swaymsg reload"
+
+[templates.fuzzel]
+input_path = "~/.config/matugen/templates/fuzzel.ini"
+output_path = "~/.config/fuzzel/fuzzel.ini"

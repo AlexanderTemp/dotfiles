@@ -1,0 +1,12 @@
+#!/bin/bash
+# Pick a wallpaper via fuzzel, apply it live via sway's own output bg, retheme with matugen.
+WALLPAPER_DIR="$HOME/dotfiles/wallpapers"
+
+selected=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -printf "%f\n" | fuzzel --dmenu --prompt "Wallpaper: ")
+[ -z "$selected" ] && exit 0
+
+# written before matugen so its swaymsg-reload post-process re-asserts this, not the old bg
+echo "output * bg \"$WALLPAPER_DIR/$selected\" fill" > "$HOME/.config/sway/config.d/wallpaper"
+
+matugen image "$WALLPAPER_DIR/$selected" --prefer saturation
+swaymsg output '*' bg "$WALLPAPER_DIR/$selected" fill

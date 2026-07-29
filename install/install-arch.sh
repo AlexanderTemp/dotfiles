@@ -48,10 +48,10 @@ pacman_install fish starship zoxide fzf ripgrep fd tmux
 # --- Wayland / sway / waybar ---------------------------------------------
 # sway y waybar suelen venir con el perfil "sway" de archinstall; --needed
 # hace que esto sea un no-op si ya están.
-pacman_install sway waybar wmenu swaybg swayidle swaylock brightnessctl grim playerctl
+pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen
 
 # --- Utilidades de escritorio ---------------------------------------------
-pacman_install flameshot
+pacman_install flameshot pavucontrol
 
 # --- fuzzel (lanzador de aplicaciones) --------------------------------------
 if ! command -v fuzzel >/dev/null 2>&1; then
@@ -203,5 +203,5 @@ cat <<'EOF'
   - nvim: descargar el tarball, extraer en /opt/nvim (ver README.md > "Comandos").
   - ssh-keygen -t ed25519 -a 100 -C "tu-email" y añadir la key pública a GitHub.
   - git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles (si no lo tienes ya).
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel environment
+  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock environment
 EOF
