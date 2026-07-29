@@ -13,13 +13,29 @@ set -euo pipefail
 
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 
+# -e mudo es imposible de debuggear: marca línea y comando exacto al fallar.
+on_error() {
+    local exit_code=$?
+    printf '\n\033[1;31m✗ FALLÓ (línea %s): %s\033[0m\n' "$1" "$2" >&2
+    exit "$exit_code"
+}
+trap 'on_error "$LINENO" "$BASH_COMMAND"' ERR
+
 pacman_install() {
-    log "pacman: $*"
-    sudo pacman -S --needed "$@"
+    # pacman -T respeta Provides (evita chocar con reemplazos de CachyOS, ej. zlib-ng-compat vs zlib)
+    local missing
+    missing=$(pacman -T "$@" 2>/dev/null || true)
+    if [ -z "$missing" ]; then
+        log "ya satisfechos: $*"
+        return 0
+    fi
+    log "pacman: $missing"
+    # shellcheck disable=SC2086
+    sudo pacman -S --needed $missing
 }
 
-log "Actualizando índices de paquetes"
-sudo pacman -Sy
+log "Actualizando índices de paquetes y el sistema"
+sudo pacman -Syu # -Syu, no -Sy: evita dejar el sistema en partial upgrade
 
 # --- Base ---------------------------------------------------------------
 pacman_install git curl wget stow base-devel zip unzip
@@ -102,9 +118,13 @@ fi
 # build (openssl/zlib/etc faltantes) aunque pyenv en sí se haya instalado bien.
 pacman_install openssl zlib xz bzip2 readline sqlite tk libffi
 
-if [ ! -d "$HOME/.pyenv" ]; then
+if [ ! -x "$HOME/.pyenv/bin/pyenv" ]; then
     log "Instalando pyenv"
     curl -fsSL https://pyenv.run | bash
+    if [ ! -x "$HOME/.pyenv/bin/pyenv" ]; then
+        printf '\033[1;31mpyenv no quedó instalado correctamente (falta ~/.pyenv/bin/pyenv).\033[0m\n' >&2
+        exit 1
+    fi
 else
     log "pyenv ya está instalado"
 fi
@@ -120,6 +140,10 @@ if ! command -v kitty >/dev/null 2>&1 && [ ! -x "$HOME/.local/kitty.app/bin/kitt
     sed -i "s|Icon=kitty|Icon=$(readlink -f "$HOME")/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" "$HOME"/.local/share/applications/kitty*.desktop
     sed -i "s|Exec=kitty|Exec=$(readlink -f "$HOME")/.local/kitty.app/bin/kitty|g" "$HOME"/.local/share/applications/kitty*.desktop
     echo 'kitty.desktop' > "$HOME/.config/xdg-terminals.list"
+    if [ ! -x "$HOME/.local/bin/kitty" ]; then
+        printf '\033[1;31mkitty no quedó instalado correctamente (falta ~/.local/bin/kitty).\033[0m\n' >&2
+        exit 1
+    fi
 else
     log "kitty ya está instalado"
 fi
@@ -152,10 +176,32 @@ else
     log "Claude Code ya está instalado"
 fi
 
+# --- Verificación final -------------------------------------------------------
+log "Verificando instalación"
+any_check_failed=0
+check() {
+    if eval "$2" >/dev/null 2>&1; then
+        printf '  \033[1;32m✓\033[0m %s\n' "$1"
+    else
+        printf '  \033[1;31m✗\033[0m %s\n' "$1"
+        any_check_failed=1
+    fi
+}
+check "pyenv"  '"$HOME/.pyenv/bin/pyenv" --version'
+check "kitty"  '"$HOME/.local/bin/kitty" --version'
+check "docker" 'command -v docker'
+check "eza"    'command -v eza'
+check "fisher" "fish -c 'type -q fisher'"
+check "claude" 'command -v claude'
+
+if [ "$any_check_failed" -eq 1 ]; then
+    printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisá los logs arriba antes de dar la instalación por buena.\033[0m\n'
+fi
+
 log "Listo. Pendiente MANUAL (no lo hace este script):"
 cat <<'EOF'
   - nvim: descargar el tarball, extraer en /opt/nvim (ver README.md > "Comandos").
   - ssh-keygen -t ed25519 -a 100 -C "tu-email" y añadir la key pública a GitHub.
   - git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles (si no lo tienes ya).
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
+  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel environment
 EOF

@@ -20,6 +20,7 @@ dotfiles/
 ├── fuzzel/      -> ~/.config/fuzzel
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
+├── environment/ -> ~/.config/environment.d
 └── scripts/     -> ~/docker-ps-visual.sh, ~/toggle-kitty
 ```
 
@@ -32,7 +33,7 @@ dotfiles/
 Install/update all packages:
 ```bash
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel environment
 ```
 
 Install/remove a single package:
@@ -69,6 +70,10 @@ stow -D <package>    # uninstall (removes symlinks only, repo content stays)
   assumes the repo is cloned to `~/dotfiles`.
 - Machine-specific bit that won't travel to another box as-is: the output
   name is hardcoded (`output DP-1 mode 1920x1080@60Hz`).
+
+### environment (`environment/.config/environment.d/path.conf`)
+
+- Adds `~/.local/bin` to the systemd/dbus activation PATH — without it, sway's `$mod+Return exec kitty` couldn't find kitty.
 
 ### fuzzel (`fuzzel/.config/fuzzel/fuzzel.ini`)
 

@@ -24,6 +24,7 @@ dotfiles/
 ├── fuzzel/      -> ~/.config/fuzzel
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
+├── environment/ -> ~/.config/environment.d
 └── scripts/     -> ~/docker-ps-visual.sh, ~/toggle-kitty
 ```
 
@@ -35,7 +36,7 @@ Para instalar o actualizar todo de una:
 
 ```bash
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel environment
 ```
 
 `install/` no es un paquete de stow: son scripts de bootstrap que se corren
