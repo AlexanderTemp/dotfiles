@@ -86,7 +86,12 @@ set -gx DOTNET_ROOT $HOME/.dotnet
 # BUN
 set -gx BUN_INSTALL $HOME/.bun
 
+
 # PYENV_ROOT
 set -Ux PYENV_ROOT $HOME/.pyenv
 fish_add_path $PYENV_ROOT/bin
-pyenv init - | source
+
+fish_add_path $HOME/.local/bin
+if type -q pyenv
+    pyenv init - | source
+end

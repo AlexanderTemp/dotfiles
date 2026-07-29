@@ -93,6 +93,17 @@ limpia — se corrigieron directo en `install-arch.sh`:
   `openssl zlib xz bzip2 readline sqlite tk libffi` — sin esto falla a
   mitad de build. Es un gap clásico y documentado de pyenv en Arch.
 
+## Endurecimiento de `install-arch.sh` (2026-07-28)
+
+pyenv no quedaba instalado y no había forma de saber dónde moría el script. Fixes:
+
+- `pacman -Sy` → `-Syu` (el `-Sy` suelto deja partial upgrade, causa típica de errores de librerías al compilar).
+- `trap ... ERR` global: marca línea y comando exacto al fallar.
+- pyenv/kitty verifican que el binario final exista, no solo el directorio.
+- Chequeo de salud al final (✓/✗ por herramienta).
+- Nuevo paquete `environment/` (`~/.config/environment.d/`), agregado a `stow -R`.
+- `pacman_install()` filtra con `pacman -T` (respeta `Provides`) para no chocar con reemplazos de CachyOS (ej. `zlib` vs `zlib-ng-compat`, que rompía la transacción).
+
 ## Cosas específicas de esta máquina (revisar si cambiás de equipo)
 
 - `sway/.config/sway/config`: `output DP-1 mode 1920x1080@60Hz` — nombre de
