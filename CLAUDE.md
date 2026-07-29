@@ -27,7 +27,7 @@ dotfiles/
 └── scripts/     -> ~/docker-ps-visual.sh, ~/.local/bin/set-wallpaper
 ```
 
-`README.md`, `TODO.md`, `git-aliases.md`, `HISTORY.md`, and `wallpapers/` live at the repo root, outside any package, and are additionally listed in `.stow-local-ignore` as a safety net.
+`README.md`, `TODO.md`, `git-aliases.md`, `SHORTCUTS.md`, `USAGE.md`, `HISTORY.md`, and `wallpapers/` live at the repo root, outside any package, and are additionally listed in `.stow-local-ignore` as a safety net.
 
 `install/` is a bootstrap script directory, **not** a stow package — never run `stow install`. See its own README and `HISTORY.md` for what it does and why.
 

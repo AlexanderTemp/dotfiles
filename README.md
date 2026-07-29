@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/sway-Wayland-blue?style=for-the-badge&logo=wayland&logoColor=white"/>
 </p>
 
-![](./assets/dotfiles-img.png)
+![](./assets/dotfiles-img-2.png)
 
 ---
 
@@ -35,120 +35,79 @@ dotfiles/
 paquete — `sway/.config/sway/config` lo referencia directo por su ruta
 dentro del clon (`~/dotfiles/wallpapers/...`), no vía stow.
 
-Para instalar o actualizar todo de una:
+`install/` tampoco es un paquete de stow: son scripts de bootstrap que se
+corren una sola vez (ver [Instalación](#-instalación)).
+
+## 🔧 Instalación
+
+Único sistema soportado: Arch/CachyOS + sway (ver `HISTORY.md` para la
+migración desde Debian/Ubuntu).
 
 ```bash
+git clone <este-repo> ~/dotfiles
+
+cd ~/dotfiles/install
+./install-arch.sh
+
 cd ~/dotfiles
 stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock environment
 ```
 
-`install/` no es un paquete de stow: son scripts de bootstrap que se corren
-una sola vez (ver más abajo, sección Arch/CachyOS).
-
-## 💽 Pre install
-
-Instala las siguientes herramientas para que los dotfiles funcionen correctamente.
-
-- [stow](https://www.gnu.org/software/stow/) Symlink dotfiles manager.
-- [fish](https://software.opensuse.org/download.html?project=shells%3Afish%3Arelease%3A4&package=fish) CLI shell para linux.
-- [starship](https://starship.rs/) Prompt customizer.
-- [zoxide](https://github.com/ajeetdsouza/zoxide) `cd` inteligente, usado en `config.fish`.
-- [fisher](https://github.com/jorgebucaran/fisher) Plugin manager de fish. Instala también el plugin `jorgebucaran/nvm.fish` (ver `fish/.config/fish/fish_plugins`).
-- [eza](https://github.com/eza-community/eza) Reemplazo de `ls` usado en los alias `lf`/`la`/`ll`/`qw`. **Instálalo con `cargo install eza`**, no con pacman.
-- [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) y [fd](https://github.com/sharkdp/fd) (en Arch el binario ya se llama `fd`, sin alias).
-- [kitty](https://sw.kovidgoyal.net/kitty/binary/) Terminal emulator basado en GPU.
-- [sway](https://swaywm.org/) Compositor Wayland (tiling), config en `sway/`.
-- [waybar](https://github.com/Alexays/Waybar) Barra de estado para sway, config en `waybar/`. Para los binds del `sway/config` hace falta `swayidle`, `gtklock`, `brightnessctl`. **`waybar/style.css` importa `../matugen/colors.css`** — si el paquete `matugen` no está stow-eado, waybar falla al arrancar (error de CSS) y no se ve la barra.
-- [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) (`ttf-fantasque-nerd` en Arch) Fuente usada de forma consistente en kitty, alacritty, waybar y fuzzel.
-- [fuzzel](https://codeberg.org/dnkl/fuzzel) Lanzador de aplicaciones para Wayland/sway, config con tema kanagawabones en `fuzzel/`.
-- [matugen](https://github.com/InioX/matugen) Genera la paleta Material-You desde el wallpaper actual (`$mod+Shift+w`) y escribe `colors.css`/`config.d/colors`/`fuzzel.ini`, config en `matugen/`. **Paquete obligatorio para que waybar y gtklock arranquen** (ambos importan `matugen/colors.css`), no solo para el retheme.
-- [gtklock](https://github.com/jovanlanik/gtklock) Pantalla de bloqueo usada por `swayidle`/`wlogout`, config en `gtklock/`.
-- [wlogout](https://github.com/ArtsyMacaw/wlogout) Menú de sesión (`$mod+Shift+e`): lock/logout/suspend/reboot/shutdown/exit-sway, config en `wlogout/`.
-- [dbeaver](https://dbeaver.io/) Cliente SQL universal.
-- [docker](https://www.docker.com/) + `docker-compose`. El script habilita `docker.service` y añade el usuario al grupo `docker`.
-- [alacritty](https://alacritty.org/) Terminal emulator alternativo, config en `alacritty/`.
-- [cargo](https://doc.rust-lang.org/cargo) Rust y su gestor de paquetes.
-- [bun](https://bun.sh/) Runtime/paquetería de JS, usado vía `$BUN_INSTALL`.
-- [nvm](https://github.com/nvm-sh/nvm) Node version manager (integrado como plugin de fish).
-- [pyenv](https://github.com/pyenv/pyenv) Python version manager, inicializado en `config.fish`.
-- [SDKMAN!](https://sdkman.io/) Version manager de JVM/Java/Kotlin/etc (integrado como plugin de fish, `reitzig/sdkman-for-fish`).
-- [.NET SDK](https://dotnet.microsoft.com/) usado vía `$DOTNET_ROOT`.
-- [tmux](https://github.com/tmux/tmux/wiki/Installing) Terminal multiplexer.
-- [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) Guarda y restaura sesiones de tmux (ver sección de abajo).
-- [nvim](https://github.com/neovim/neovim/releases) Editor de texto basado en Vim.
-- [lazyvim](https://www.lazyvim.org/) Customizador para nvim.
-
-## 🖥️ Sesiones dinámicas (resurrect con nombre)
-
-Sin tmuxifier, sin auto-guardado. Armas la sesión a mano (paneles, ventanas, programas corriendo) y cuando te gusta cómo quedó, la guardas con nombre. Los snapshots viven en `~/.tmux/resurrect/named/*.txt` (local, no se commitean).
-
-| Acción | Atajo |
-|---|---|
-| Guardar sesión actual con nombre | `prefix S` (pide el nombre) |
-| Cargar un layout guardado | `prefix L` (popup con fzf para elegir) |
-| Guardar el último snapshot (sin nombre) | `prefix Ctrl-s` |
-| Restaurar el último snapshot (sin nombre) | `prefix Ctrl-r` |
-
-Flujo típico:
-```
-1. Abre tmux, arma paneles/ventanas/programas como quieras.
-2. prefix S -> escribe un nombre, ej. "backend".
-3. La próxima vez: abre tmux, prefix L, elige "backend".
-```
-
-## ⌨️ tmux — chuleta rápida
-
-Prefix = `Ctrl-a`
-
-| Acción | Atajo |
-|---|---|
-| Split horizontal | `prefix s` |
-| Split vertical | `prefix x` |
-| Moverse entre paneles | `prefix h/j/k/l` |
-| Recargar config | `prefix r` |
-| Buscador de sesiones (fzf) | `prefix Ctrl-j` |
-| Nueva sesión con nombre | `prefix Ctrl-n` |
-
-## 🔧 Instalación
+`install-arch.sh` instala vía pacman/cargo/curl casi todo lo de la tabla de
+[Herramientas](#-herramientas) de abajo, y es idempotente (se puede
+re-correr sin repetir trabajo). Lo único manual es nvim:
 
 ```bash
-git clone <este-repo> ~/dotfiles
-cd ~/dotfiles
-stow fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock
-```
-
-Cada nombre es opcional: puedes correr `stow <paquete>` solo para lo que quieras instalar, o `stow -D <paquete>` para desinstalarlo (quita los symlinks sin borrar el contenido del repo).
-
-## 🏔️ Comandos para Arch/CachyOS
-
-Único sistema soportado a partir de ahora (soporte para Debian/Ubuntu/Mint
-deprecado, ver `HISTORY.md`). Todo lo de abajo, menos nvim, está automatizado
-en `install/install-arch.sh`:
-
-```bash
-cd ~/dotfiles/install
-./install-arch.sh
-```
-
-El script instala vía `pacman` fish, starship, zoxide, ripgrep, fd, tmux,
-stow, `base-devel` (necesario para que `cargo install eza` pueda linkear),
-`zip`/`unzip` (los pide el instalador de SDKMAN),
-sway/waybar/wmenu/swaybg/swayidle/swaylock/brightnessctl/grim/playerctl,
-flameshot, fuzzel, dbeaver, docker + docker-compose, yazi y sus dependencias,
-las libs de compilación que pyenv necesita para poder construir un Python
-(`openssl zlib xz bzip2 readline sqlite tk libffi`), y la fuente
-`ttf-fantasque-nerd` (`FantasqueSansM Nerd Font`, la misma que usan kitty,
-alacritty y fuzzel); y vía curl rustup (para `cargo install eza`), pyenv,
-kitty, SDKMAN (core, antes del plugin de fish), fisher + plugins de fish, y
-Claude Code. Para docker, además habilita y arranca `docker.service` y añade
-el usuario al grupo `docker` (todos estos pasos son idempotentes, no se
-repiten si ya están hechos).
-
-```bash
-# nvim: paso manual, no lo automatiza install-arch.sh
 sudo rm -rf /opt/nvim-***-x86_64
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 # el PATH ya lo maneja fish, carpeta recomendada "/opt/nvim"
 ```
 
-Ver `../HISTORY.md` para el detalle de por qué cada pieza está ahí.
+Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <paquete>` lo desinstala (quita los symlinks, no borra el contenido del repo). **Nunca corras `stow .`** — trata todo el repo como un solo paquete y produce symlinks mal puestos (`~/fish` en vez de `~/.config/fish`, etc.).
+
+## 🧰 Herramientas
+
+| Herramienta | Qué hace |
+|---|---|
+| [nvim](https://neovim.io/) | editor — instalación manual, ver arriba |
+| [LazyVim](https://www.lazyvim.org/) | config base de nvim, incluida en el repo |
+| [tmux](https://github.com/tmux/tmux) | terminal multiplexer, prefix `Ctrl-a` |
+| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | guarda/restaura sesiones de tmux, vendorizado en el repo |
+| [fish](https://fishshell.com/) | shell interactivo |
+| [fisher](https://github.com/jorgebucaran/fisher) | plugin manager de fish, instala `nvm.fish` y `sdkman-for-fish` |
+| [sway](https://swaywm.org/) | compositor Wayland tiling |
+| [kitty](https://sw.kovidgoyal.net/kitty/) | terminal basada en GPU |
+| [alacritty](https://alacritty.org/) | terminal alternativa |
+| [docker](https://www.docker.com/) + docker-compose | contenedores |
+| [cargo/rustup](https://rustup.rs/) | Rust y su gestor de paquetes |
+| [pyenv](https://github.com/pyenv/pyenv) | Python version manager |
+| [nvm](https://github.com/nvm-sh/nvm) | Node version manager, plugin `nvm.fish` |
+| [SDKMAN!](https://sdkman.io/) | version manager de JVM/Java/Kotlin/etc |
+| [.NET SDK](https://dotnet.microsoft.com/) | usado vía `$DOTNET_ROOT` |
+| [Go](https://go.dev/) | `$GOPATH/bin` se agrega al PATH en `config.fish` |
+| [bun](https://bun.sh/) | runtime/paquetería JS, usado vía `$BUN_INSTALL` |
+| [dbeaver](https://dbeaver.io/) | cliente SQL universal |
+| [Claude Code](https://claude.com/claude-code) | CLI de IA |
+| [yazi](https://github.com/sxyazi/yazi) | file manager TUI, integrado en nvim vía `yazi.nvim` |
+| [starship](https://starship.rs/) | prompt |
+| [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` inteligente, aprende directorios frecuentes |
+| [eza](https://github.com/eza-community/eza) | reemplazo de `ls` (alias `lf`/`la`/`ll`/`qw`) — se instala con `cargo install`, no pacman |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) | grep rápido |
+| [fd](https://github.com/sharkdp/fd) | find rápido |
+| [fzf](https://github.com/junegunn/fzf) | fuzzy finder, usado en popups de tmux y en yazi |
+| [waybar](https://github.com/Alexays/Waybar) | barra de estado de sway |
+| [fuzzel](https://codeberg.org/dnkl/fuzzel) | lanzador de aplicaciones |
+| [wmenu](https://codeberg.org/adnano/wmenu) | lanzador alternativo (backup de fuzzel) |
+| [matugen](https://github.com/InioX/matugen) | genera la paleta Material-You desde el wallpaper actual (`$mod+Shift+w`) |
+| [gtklock](https://github.com/jovanlanik/gtklock) | pantalla de bloqueo |
+| [wlogout](https://github.com/ArtsyMacaw/wlogout) | menú de sesión (`$mod+Shift+e`) |
+| [flameshot](https://flameshot.org/) | capturas de pantalla con anotaciones |
+| [pavucontrol](https://freedesktop.org/software/pulseaudio/pavucontrol/) | mixer de audio gráfico |
+| [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) | fuente usada en kitty, alacritty, waybar y fuzzel |
+| swayidle, swaybg, grim, playerctl, pamixer, brightnessctl | utilidades que sway invoca desde sus keybinds: idle-lock, fondo de pantalla, capturas, media, volumen, brillo |
+| [stow](https://www.gnu.org/software/stow/) | symlink manager, instala/desinstala cada paquete de este repo por separado |
+
+## 🧭 Uso
+
+- Atajos de teclado y alias: `SHORTCUTS.md`.
+- Flujos de trabajo (ej. sesiones de tmux con nombre): `USAGE.md`.
