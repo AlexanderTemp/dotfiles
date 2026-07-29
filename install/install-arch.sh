@@ -120,6 +120,9 @@ else
     log "eza ya está instalado"
 fi
 
+# --- Go -----------------------------------------------------------------------
+pacman_install go
+
 # --- pyenv --------------------------------------------------------------------
 # Deps de compilación: sin esto `pyenv install <version>` falla a mitad de
 # build (openssl/zlib/etc faltantes) aunque pyenv en sí se haya instalado bien.
@@ -198,6 +201,7 @@ check "pyenv"  '"$HOME/.pyenv/bin/pyenv" --version'
 check "kitty"  '"$HOME/.local/bin/kitty" --version'
 check "docker" 'command -v docker'
 check "eza"    'command -v eza'
+check "go"     'command -v go'
 check "fisher" "fish -c 'type -q fisher'"
 check "claude" 'command -v claude'
 

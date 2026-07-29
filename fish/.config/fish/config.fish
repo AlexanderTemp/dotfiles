@@ -86,6 +86,10 @@ set -gx DOTNET_ROOT $HOME/.dotnet
 # BUN
 set -gx BUN_INSTALL $HOME/.bun
 
+# GOPATH
+set -gx GOPATH $HOME/go
+fish_add_path $GOPATH/bin
+
 
 # PYENV_ROOT
 set -Ux PYENV_ROOT $HOME/.pyenv
