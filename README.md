@@ -5,6 +5,7 @@
 </p>
 
 ![](./assets/dotfiles-img-2.png)
+![](./assets/dotfiles-img-3.png)
 
 ---
 
