@@ -1,3 +1,5 @@
+@import "../matugen/colors.css";
+
 * {
   border: none;
   border-radius: 0;
@@ -8,14 +10,38 @@
 }
 
 window#waybar {
-  background: rgba(32, 32, 32, 0.85);
-  color: #d4c7b8;
-
-  border-top: 1px solid rgba(155, 141, 127, 0.25);
+  background: transparent;
+  color: @on_surface;
 }
 
 tooltip {
-  background-color: #202020;
+  background-color: @surface;
+}
+
+/* each cluster is its own island: launcher, workspaces, window title,
+   tray+system+audio combined, clock. #system is the "group/system" module's
+   CSS node -- waybar drops the "group-" prefix, it's NOT #group-system.
+   margin-bottom 0 so islands sit flush with the screen edge; left/right
+   edges use 16px to match the measured gap tiled windows get (gaps
+   horizontal 4 + default_border 4 isn't 1:1 with that, so this is the real
+   measured pixel value, not the raw config number) */
+#custom-launcher,
+#workspaces,
+.modules-center,
+#system,
+#clock {
+  background-color: alpha(@surface, 0.55);
+  border-radius: 4px;
+  margin: 6px 4px 0 4px;
+  padding: 0 10px;
+}
+
+#custom-launcher {
+  margin-left: 16px;
+}
+
+#clock {
+  margin-right: 16px;
 }
 
 #clock,
@@ -24,27 +50,28 @@ tooltip {
 #memory,
 #battery,
 #network,
-#pulseaudio {
-  margin: 2px 2px 0px 0px;
-  padding: 2px 8px;
+#pulseaudio,
+#window,
+#mode {
+  padding: 0 6px;
 }
 
 #workspaces button {
-  color: #9b8d7f;
+  color: @primary;
+  padding: 0 6px;
+  border-radius: 2px;
 }
 
-
 #workspaces button.focused {
-  background-color: #9b8d7f;
-  color: #202020;
+  background-color: @primary;
+  color: @surface;
 }
 
 #workspaces button.active {
-  background-color: #202020;
-  color: #9b8d7f;
+  background-color: @surface;
+  color: @primary;
 }
 
 #battery, #tray, #clock, #cpu, #pulseaudio, #memory {
-  /* background-color: none; */
-  color: #9b8d7f;
+  color: @primary;
 }

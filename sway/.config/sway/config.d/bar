@@ -1,0 +1,16 @@
+bar {
+    swaybar_command waybar
+    position bottom
+
+    colors {
+        background $surface
+        statusline $primary
+        separator $primary
+
+        focused_workspace $primary $primary $surface
+        inactive_workspace $surface $surface $primary
+        active_workspace $surface $surface $primary
+        urgent_workspace $surface $surface $error
+        binding_mode $surface $surface $primary
+    }
+}
