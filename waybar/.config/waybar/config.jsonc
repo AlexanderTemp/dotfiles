@@ -35,8 +35,9 @@
       "custom/separator",
       "memory",
       "custom/separator",
-      "pulseaudio"
-      // , "custom/separator", "battery"  -- solo para la laptop
+      "pulseaudio",
+      "custom/separator",
+      "battery"
     ]
   },
   "sway/workspaces": {
@@ -63,7 +64,6 @@
       "critical": 80
     }
   },
-  /* Solo para la laptop
   "battery": {
     "format": "{icon} {capacity}%",
     "format-icons": ["", "", "", "", ""],
@@ -81,7 +81,6 @@
     "interval": 5,
     "tooltip": false
   },
-  */
   "pulseaudio": {
     "scroll-step": 5,
     "max-volume": 150,
