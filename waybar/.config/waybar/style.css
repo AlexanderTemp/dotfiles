@@ -6,6 +6,7 @@
   min-height: 0;
   font-family: "FantasqueSansM Nerd Font Mono";
   font-size: 16px;
+  font-weight: 500;
   padding: 0;
 }
 
@@ -30,9 +31,9 @@ tooltip {
 .modules-center,
 #system,
 #clock {
-  background-color: alpha(@surface, 0.55);
+  background-color: alpha(@surface, 0.9);
   border-radius: 4px;
-  margin: 6px 4px 0 4px;
+  margin: 0px 4px 0 4px;
   padding: 0 10px;
 }
 
