@@ -8,26 +8,39 @@ set hlsearch
 
 set clipboard+=unnamed
 
+" Leader key: Space
 let mapleader=" "
 
-nnoremap <leader>w :w<CR>
-nnoremap <leader>q :q<CR>
+" --- Plugins ---
+set surround
+set quickscope
 
-" escape rápido
-inoremap jk <Esc>
+" --- Mapeos Estilo Neovim ---
 
-" navegación splits
+" Guardado
+nnoremap <leader>fs :w<CR>
+
+" Splits (Ventanas) - Usando la sintaxis <Action>(...) que es la más robusta en IdeaVim
+map <leader>wj <Action>(SplitHorizontally)
+map <leader>wl <Action>(SplitVertically)
+map <leader>wc <Action>(CloseContent)
+
+" Navegación de ventanas
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" splits
-map <leader>sv <Action>(SplitVertically)
-map <leader>sh <Action>(SplitHorizontally)
-map <leader>su <Action>(Unsplit)
+" Scroll con cursor centrado
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap <C-f> <C-f>zz
+nnoremap <C-b> <C-b>zz
 
-" navegación IDE
+" Cerrar editor
+map <leader>q <Action>(CloseEditor)
+
+" --- Navegación IDE ---
 map <leader>ff <Action>(GotoFile)
 map <leader>fg <Action>(FindInPath)
 map <leader>rn <Action>(RenameElement)
@@ -36,9 +49,10 @@ map <leader>ca <Action>(ShowIntentionActions)
 map gd <Action>(GotoDeclaration)
 map gr <Action>(FindUsages)
 
-" plugins
-set surround
-set quickscope
+" --- Otros ---
+
+" escape rápido
+inoremap jk <Esc>
 
 " flash
 map <leader>f <Action>(flash.search)
