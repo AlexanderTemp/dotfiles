@@ -24,8 +24,8 @@ if status is-interactive
     alias untar="tar -zxvf "
     alias ..="cd .."
     alias ...="cd ../.."
-    # Uso psmem10 coste de memroria de los procesos
-    alias psmem='ps auxf | sort -nr -k 4'
+    alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
     alias hw='hwinfo --short'
     alias jctl="journalctl -p 3 -xb"
     alias update='sudo cachyos-rate-mirrors && sudo pacman -Syu'
