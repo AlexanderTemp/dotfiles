@@ -1,0 +1,3 @@
+# Automontaje de pendrives/discos externos (sway no trae un DE que lo haga)
+# --tray pone el ícono en waybar; ya cae dentro de group/system (ver waybar/style.css)
+exec udiskie --tray --notify

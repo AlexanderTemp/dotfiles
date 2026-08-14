@@ -42,9 +42,11 @@ map <leader>q <Action>(CloseEditor)
 
 " --- Navegación IDE ---
 map <leader>ff <Action>(GotoFile)
+map <leader>jk <Action>(GotoFile)
 map <leader>fg <Action>(FindInPath)
 map <leader>rn <Action>(RenameElement)
 map <leader>ca <Action>(ShowIntentionActions)
+map <leader>n <Action>(ActivateProjectToolWindow)
 
 map gd <Action>(GotoDeclaration)
 map gr <Action>(FindUsages)
@@ -54,5 +56,5 @@ map gr <Action>(FindUsages)
 " escape rápido
 inoremap jk <Esc>
 
-" flash
-map <leader>f <Action>(flash.search)
+" flash (misma tecla que en nvim: lua/plugins/flash.lua usa "zk", no <leader>f)
+map zk <Action>(flash.search)
