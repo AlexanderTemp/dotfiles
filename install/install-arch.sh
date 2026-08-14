@@ -60,6 +60,9 @@ pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim play
 # --- Utilidades de escritorio ---------------------------------------------
 pacman_install flameshot pavucontrol
 
+# --- udiskie (automontaje de pendrives/discos externos, sway no trae DE) ----
+pacman_install udisks2 udiskie
+
 # --- fuzzel (lanzador de aplicaciones) --------------------------------------
 if ! command -v fuzzel >/dev/null 2>&1; then
     log "Instalando fuzzel"
@@ -99,7 +102,10 @@ else
 fi
 
 # --- Yazi y sus dependencias ------------------------------------------------
-pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick
+# chafa: fallback de preview de imágenes cuando la terminal no soporta el
+# protocolo gráfico de kitty (p.ej. dentro de tmux mal configurado, u otra
+# terminal) — sin esto yazi se queda sin preview en vez de degradar.
+pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick chafa
 
 # --- Fuente usada en kitty/alacritty/waybar (FantasqueSansM Nerd Font) ----
 pacman_install ttf-fantasque-nerd
