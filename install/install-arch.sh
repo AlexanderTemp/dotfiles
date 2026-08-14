@@ -45,7 +45,7 @@ if [ ! -d "/usr/lib/modules/$(uname -r)" ]; then
 fi
 
 # --- Base ---------------------------------------------------------------
-pacman_install git curl wget stow base-devel zip unzip
+pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop
 
 # --- Shell / prompt / navegación ----------------------------------------
 pacman_install fish starship zoxide fzf ripgrep fd tmux
