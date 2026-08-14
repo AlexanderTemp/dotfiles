@@ -80,15 +80,6 @@ Nota: `lua/custom/custom.lua` implementa "cowboy mode" — avisa si abusás de `
 
 Sin keybindings custom — usa los defaults de kitty. Solo se tocaron settings visuales (`font_size`, `cursor_shape`, `background_opacity`, etc.) y `allow_remote_control yes` (habilita el socket que usa `toggle-kitty`).
 
-## alacritty (`alacritty/.config/alacritty/alacritty.toml`)
-
-Sin keybindings de teclado custom. Solo mouse:
-
-| Botón | Acción |
-|---|---|
-| `Forward` | `ScrollPageUp` |
-| `Back` | `ScrollPageDown` |
-
 ## ideavim (`ideavim/.ideavimrc`)
 
 Leader: **`<Space>`**.

@@ -110,5 +110,5 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 
 ## 🧭 Uso
 
-- Atajos de teclado y alias: `SHORTCUTS.md`.
-- Flujos de trabajo (ej. sesiones de tmux con nombre): `USAGE.md`.
+- Atajos de teclado y alias: [./SHORTCUTS.md](SHORTCUTS).
+- Para importar los comandos de git usados por mi [./GIT-ALIAS.md](GIT-ALIAS).
