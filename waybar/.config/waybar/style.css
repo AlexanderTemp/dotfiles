@@ -19,7 +19,7 @@ tooltip {
   background-color: @surface;
 }
 
-/* each cluster is its own island: launcher, workspaces, window title,
+/* each cluster is ts own island: launcher, workspaces, window title,
    tray+system+audio combined, clock. #system is the "group/system" module's
    CSS node -- waybar drops the "group-" prefix, it's NOT #group-system.
    margin-bottom 0 so islands sit flush with the screen edge; left/right
@@ -38,11 +38,11 @@ tooltip {
 }
 
 #custom-launcher {
-  margin-left: 16px;
+  margin-left: 12px;
 }
 
 #clock {
-  margin-right: 16px;
+  margin-right: 12px;
 }
 
 #clock,
