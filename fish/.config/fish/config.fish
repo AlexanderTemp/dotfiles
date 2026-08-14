@@ -90,7 +90,6 @@ set -gx BUN_INSTALL $HOME/.bun
 set -gx GOPATH $HOME/go
 fish_add_path $GOPATH/bin
 
-
 # PYENV_ROOT
 set -Ux PYENV_ROOT $HOME/.pyenv
 fish_add_path $PYENV_ROOT/bin
