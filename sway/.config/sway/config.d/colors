@@ -1,5 +1,5 @@
-set $primary #c2c1ff
-set $surface #131318
-set $on_surface #e4e1e9
-set $outline #918f9a
+set $primary #ffb4a5
+set $surface #1a1110
+set $on_surface #f1dfdb
+set $outline #a08c88
 set $error #ffb4ab

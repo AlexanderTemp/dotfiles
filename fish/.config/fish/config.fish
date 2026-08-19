@@ -145,6 +145,14 @@ set -Ux PYENV_ROOT $HOME/.pyenv
 fish_add_path $PYENV_ROOT/bin
 
 fish_add_path $HOME/.local/bin
+
+# SDKMAN (el plugin sdkman-for-fish no actualiza el PATH en `sdk use`/`sdk default`,
+# así que apuntamos directo al symlink `current` que sdkman sí mantiene al día)
+set -gx SDKMAN_DIR $HOME/.sdkman
+fish_add_path -p $SDKMAN_DIR/candidates/java/current/bin
+
 if type -q pyenv
     pyenv init - | source
 end
+
+source ~/.adas-cli/.adas-cli-completion-fish
