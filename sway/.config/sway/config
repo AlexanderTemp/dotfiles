@@ -33,12 +33,12 @@ input type:keyboard {
 }
 
 # all workspaces
-gaps horizontal 4
-gaps vertical 4
-gaps inner 12
+gaps horizontal 2
+gaps vertical 2
+gaps inner 8
 
-default_border pixel 2
-default_floating_border pixel 2
+default_border pixel 1
+default_floating_border pixel 1
 
 # colors first: keybinds/bar reference $primary/$surface, include order matters
 include ~/.config/sway/config.d/colors
