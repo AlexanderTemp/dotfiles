@@ -33,12 +33,7 @@ dotfiles/
 └── scripts/     -> ~/docker-ps-visual.sh, ~/.local/bin/set-wallpaper
 ```
 
-`wallpapers/` vive en la raíz del repo (como `assets/`), fuera de cualquier
-paquete — `sway/.config/sway/config` lo referencia directo por su ruta
-dentro del clon (`~/dotfiles/wallpapers/...`), no vía stow.
-
-`install/` tampoco es un paquete de stow: son scripts de bootstrap que se
-corren una sola vez (ver [Instalación](#-instalación)).
+`wallpapers/` e `install/` no son paquetes de stow: el primero se referencia por ruta directa, el segundo son scripts de bootstrap de una sola vez ([Instalación](#-instalación)).
 
 ## 🔧 Instalación
 
@@ -65,49 +60,49 @@ sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
 ## 🧰 Herramientas
 
-| Herramienta | Qué hace |
+| Herramienta | Nota |
 |---|---|
-| [nvim](https://neovim.io/) | editor — instalación manual, ver arriba |
-| [LazyVim](https://www.lazyvim.org/) | config base de nvim, incluida en el repo |
-| [tmux](https://github.com/tmux/tmux) | terminal multiplexer, prefix `Ctrl-a` |
-| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | guarda/restaura sesiones de tmux, vendorizado en el repo |
-| [fish](https://fishshell.com/) | shell interactivo |
-| [fisher](https://github.com/jorgebucaran/fisher) | plugin manager de fish, instala `nvm.fish` y `sdkman-for-fish` |
-| [sway](https://swaywm.org/) | compositor Wayland tiling |
-| [kitty](https://sw.kovidgoyal.net/kitty/) | terminal basada en GPU |
-| [alacritty](https://alacritty.org/) | terminal alternativa |
-| [docker](https://www.docker.com/) + docker-compose | contenedores |
-| [cargo/rustup](https://rustup.rs/) | Rust y su gestor de paquetes |
-| [pyenv](https://github.com/pyenv/pyenv) | Python version manager |
-| [nvm](https://github.com/nvm-sh/nvm) | Node version manager, plugin `nvm.fish` |
-| [SDKMAN!](https://sdkman.io/) | version manager de JVM/Java/Kotlin/etc |
-| [.NET SDK](https://dotnet.microsoft.com/) | usado vía `$DOTNET_ROOT` |
-| [Go](https://go.dev/) | `$GOPATH/bin` se agrega al PATH en `config.fish` |
-| [bun](https://bun.sh/) | runtime/paquetería JS, usado vía `$BUN_INSTALL` |
-| [dbeaver](https://dbeaver.io/) | cliente SQL universal |
-| [Claude Code](https://claude.com/claude-code) | CLI de IA |
-| [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude en waybar (from-source, ver `install-arch.sh`) |
-| coinwatch (`waybar/scripts/coinwatch.py`) | precios cripto (CoinGecko, `precision=full`) en waybar — script propio, sin dependencia de terceros. Click abre detalle en CoinGecko vía fuzzel |
-| [yazi](https://github.com/sxyazi/yazi) | file manager TUI, integrado en nvim vía `yazi.nvim` |
-| [starship](https://starship.rs/) | prompt |
-| [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` inteligente, aprende directorios frecuentes |
-| [eza](https://github.com/eza-community/eza) | reemplazo de `ls` (alias `lf`/`la`/`ll`/`qw`) — se instala con `cargo install`, no pacman |
-| [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) | grep rápido |
-| [fd](https://github.com/sharkdp/fd) | find rápido |
-| [fzf](https://github.com/junegunn/fzf) | fuzzy finder, usado en popups de tmux y en yazi |
-| [waybar](https://github.com/Alexays/Waybar) | barra de estado de sway |
-| [mako](https://mako-project.org) | daemon de notificaciones, coloreado por matugen |
-| [fuzzel](https://codeberg.org/dnkl/fuzzel) | lanzador de aplicaciones |
-| [wmenu](https://codeberg.org/adnano/wmenu) | lanzador alternativo (backup de fuzzel) |
-| [matugen](https://github.com/InioX/matugen) | genera la paleta Material-You desde el wallpaper actual (`$mod+Shift+w`) |
-| [gtklock](https://github.com/jovanlanik/gtklock) | pantalla de bloqueo |
-| [wlogout](https://github.com/ArtsyMacaw/wlogout) | menú de sesión (`$mod+Shift+e`) |
-| [flameshot](https://flameshot.org/) | capturas de pantalla con anotaciones |
-| [pavucontrol](https://freedesktop.org/software/pulseaudio/pavucontrol/) | mixer de audio gráfico |
-| [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) | fuente usada en kitty, alacritty, waybar y fuzzel |
-| [Symbols Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) (`ttf-nerd-fonts-symbols-mono`) | fallback de íconos extra en waybar |
-| swayidle, swaybg, grim, playerctl, pamixer, brightnessctl | utilidades que sway invoca desde sus keybinds: idle-lock, fondo de pantalla, capturas, media, volumen, brillo |
-| [stow](https://www.gnu.org/software/stow/) | symlink manager, instala/desinstala cada paquete de este repo por separado |
+| [nvim](https://neovim.io/) | manual, ver arriba |
+| [LazyVim](https://www.lazyvim.org/) | |
+| [tmux](https://github.com/tmux/tmux) | prefix `Ctrl-a` |
+| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | vendorizado |
+| [fish](https://fishshell.com/) | |
+| [fisher](https://github.com/jorgebucaran/fisher) | `nvm.fish`, `sdkman-for-fish` |
+| [sway](https://swaywm.org/) | |
+| [kitty](https://sw.kovidgoyal.net/kitty/) | |
+| [alacritty](https://alacritty.org/) | |
+| [docker](https://www.docker.com/) + compose | |
+| [cargo/rustup](https://rustup.rs/) | |
+| [pyenv](https://github.com/pyenv/pyenv) | |
+| [nvm](https://github.com/nvm-sh/nvm) | plugin `nvm.fish` |
+| [SDKMAN!](https://sdkman.io/) | |
+| [.NET SDK](https://dotnet.microsoft.com/) | `$DOTNET_ROOT` |
+| [Go](https://go.dev/) | |
+| [bun](https://bun.sh/) | `$BUN_INSTALL` |
+| [dbeaver](https://dbeaver.io/) | |
+| [Claude Code](https://claude.com/claude-code) | |
+| [claudebar](https://github.com/mryll/claudebar) | from-source |
+| coinwatch (`waybar/scripts/coinwatch.py`) | script propio |
+| [yazi](https://github.com/sxyazi/yazi) | vía `yazi.nvim` |
+| [starship](https://starship.rs/) | |
+| [zoxide](https://github.com/ajeetdsouza/zoxide) | |
+| [eza](https://github.com/eza-community/eza) | alias `lf/la/ll/qw`, cargo |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) | |
+| [fd](https://github.com/sharkdp/fd) | |
+| [fzf](https://github.com/junegunn/fzf) | |
+| [waybar](https://github.com/Alexays/Waybar) | |
+| [mako](https://mako-project.org) | coloreado por matugen |
+| [fuzzel](https://codeberg.org/dnkl/fuzzel) | |
+| [wmenu](https://codeberg.org/adnano/wmenu) | backup de fuzzel |
+| [matugen](https://github.com/InioX/matugen) | `$mod+Shift+w` |
+| [gtklock](https://github.com/jovanlanik/gtklock) | |
+| [wlogout](https://github.com/ArtsyMacaw/wlogout) | `$mod+Shift+e` |
+| [flameshot](https://flameshot.org/) | |
+| [pavucontrol](https://freedesktop.org/software/pulseaudio/pavucontrol/) | |
+| [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) | |
+| [Symbols Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) | fallback waybar |
+| swayidle, swaybg, grim, playerctl, pamixer, brightnessctl | keybinds de sway |
+| [stow](https://www.gnu.org/software/stow/) | |
 
 ## 🧭 Uso
 
