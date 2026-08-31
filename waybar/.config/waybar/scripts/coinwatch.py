@@ -26,7 +26,7 @@ WATCHLIST = [
 ]
 BAR_COINS = {"BTC", "XRP"}
 
-UP, DOWN, FLAT = "#4caf50", "#f44336", "#abb2bf"
+UP, DOWN, FLAT = "#9ADE7B", "#FF8F8F", "#abb2bf"
 HEADER, DIM = "#61afef", "#5c6370"
 
 
