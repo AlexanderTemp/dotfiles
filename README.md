@@ -4,8 +4,8 @@
   <img src="https://img.shields.io/badge/sway-Wayland-blue?style=for-the-badge&logo=wayland&logoColor=white"/>
 </p>
 
-![](./assets/dotfiles-img-2.png)
-![](./assets/dotfiles-img-3.png)
+![](./assets/dotfiles-img-5.png)
+![](./assets/dotfiles-img-4.png)
 
 ---
 
