@@ -45,7 +45,9 @@ if [ ! -d "/usr/lib/modules/$(uname -r)" ]; then
 fi
 
 # --- Base ---------------------------------------------------------------
-pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop
+# python: no viene garantizado en un Arch mínimo -- lo necesita
+# waybar/scripts/coinwatch.py (stdlib, sin pip packages).
+pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop python
 
 # --- Shell / prompt / navegación ----------------------------------------
 pacman_install fish starship zoxide fzf ripgrep fd tmux
@@ -163,7 +165,7 @@ fi
 # --- kitty (instalador oficial, no pacman) -----------------------------------
 if ! command -v kitty >/dev/null 2>&1 && [ ! -x "$HOME/.local/kitty.app/bin/kitty" ]; then
     log "Instalando kitty"
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    curl -fL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
     mkdir -p "$HOME/.local/bin" "$HOME/.local/share/applications"
     ln -sf "$HOME/.local/kitty.app/bin/kitty" "$HOME/.local/kitty.app/bin/kitten" "$HOME/.local/bin/"
     cp "$HOME/.local/kitty.app/share/applications/kitty.desktop" "$HOME/.local/share/applications/"
@@ -185,7 +187,7 @@ fi
 # "installation path set but no installation found there".
 if [ ! -d "$HOME/.sdkman" ]; then
     log "Instalando SDKMAN"
-    curl -s "https://get.sdkman.io" | bash
+    curl -fsS "https://get.sdkman.io" | bash
 else
     log "SDKMAN ya está instalado"
 fi
@@ -193,7 +195,7 @@ fi
 # --- fisher + plugins de fish -------------------------------------------------
 if ! fish -c 'type -q fisher' >/dev/null 2>&1; then
     log "Instalando fisher y plugins de fish (jorgebucaran/nvm.fish, reitzig/sdkman-for-fish)"
-    fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
+    fish -c 'curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
     fish -c 'fisher install jorgebucaran/nvm.fish reitzig/sdkman-for-fish'
 else
     log "fisher ya está instalado"
@@ -222,20 +224,6 @@ else
     log "claudebar ya está instalado"
 fi
 
-# --- tickerbar (precios cripto/dólar en waybar, ver waybar/config.jsonc) -----
-# Mismo patrón que claudebar: from-source, sin AUR. A diferencia de claudebar
-# esto SÍ compila (Rust, ~1min con cargo/rustc de arriba) -- no es un problema,
-# ya instalamos rustup para eza más arriba en este mismo script.
-if ! command -v tickerbar >/dev/null 2>&1; then
-    log "Instalando tickerbar"
-    tickerbar_tmp=$(mktemp -d)
-    git clone --depth 1 https://github.com/mryll/tickerbar.git "$tickerbar_tmp"
-    make -C "$tickerbar_tmp" install PREFIX="$HOME/.local"
-    rm -rf "$tickerbar_tmp"
-else
-    log "tickerbar ya está instalado"
-fi
-
 # --- Verificación final -------------------------------------------------------
 log "Verificando instalación"
 any_check_failed=0
@@ -255,7 +243,6 @@ check "go"     'command -v go'
 check "fisher" "fish -c 'type -q fisher'"
 check "claude" 'command -v claude'
 check "claudebar" 'command -v claudebar'
-check "tickerbar" 'command -v tickerbar'
 
 if [ "$any_check_failed" -eq 1 ]; then
     printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisá los logs arriba antes de dar la instalación por buena.\033[0m\n'

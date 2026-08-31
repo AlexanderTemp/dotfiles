@@ -23,7 +23,6 @@ dotfiles/
 ├── sway/        -> ~/.config/sway
 ├── waybar/      -> ~/.config/waybar
 ├── mako/        -> ~/.config/mako
-├── tickerbar/   -> ~/.config/tickerbar
 ├── fuzzel/      -> ~/.config/fuzzel
 ├── wlogout/     -> ~/.config/wlogout
 ├── matugen/     -> ~/.config/matugen
@@ -43,37 +42,26 @@ corren una sola vez (ver [Instalación](#-instalación)).
 
 ## 🔧 Instalación
 
-Único sistema soportado: Arch/CachyOS + sway (ver `HISTORY.md` para la
-migración desde Debian/Ubuntu).
-
-> **Antes de esto:** si el repo es privado y clonás por SSH, necesitás una
-> key ya agregada a tu cuenta de Git *antes* del primer comando de abajo —
-> no hay forma de scriptear este paso, porque el script de instalación vive
-> adentro del propio repo que todavía no clonaste:
-> `ssh-keygen -t ed25519 -a 100 -C "tu-email"` y sumar la key pública en
-> GitHub → Settings → SSH Keys.
+Arch/CachyOS + sway únicamente ([SSH keygen](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) primero si clonás por SSH).
 
 ```bash
-git clone <este-repo> ~/dotfiles
+git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles   # SSH, con key ya agregada — para pushear cambios
+# git clone https://github.com/AlexanderTemp/dotfiles.git ~/dotfiles  # HTTPS — solo lectura, sin key
 
 cd ~/dotfiles/install
-./install-arch.sh
+./install-arch.sh   # idempotente — instala todo salvo nvim (manual, ver abajo)
 
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako tickerbar fuzzel wlogout matugen gtklock environment
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako fuzzel wlogout matugen gtklock environment
 ```
-
-`install-arch.sh` instala vía pacman/cargo/curl casi todo lo de la tabla de
-[Herramientas](#-herramientas) de abajo, y es idempotente (se puede
-re-correr sin repetir trabajo). Lo único manual es nvim:
 
 ```bash
+# nvim: único paso manual
 sudo rm -rf /opt/nvim-***-x86_64
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-# el PATH ya lo maneja fish, carpeta recomendada "/opt/nvim"
 ```
 
-Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <paquete>` lo desinstala (quita los symlinks, no borra el contenido del repo). **Nunca corras `stow .`** — trata todo el repo como un solo paquete y produce symlinks mal puestos (`~/fish` en vez de `~/.config/fish`, etc.).
+`stow <paquete>` instala uno solo, `stow -D <paquete>` lo desinstala. **Nunca `stow .`** — rompe las rutas (`~/fish` en vez de `~/.config/fish`).
 
 ## 🧰 Herramientas
 
@@ -98,8 +86,8 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 | [bun](https://bun.sh/) | runtime/paquetería JS, usado vía `$BUN_INSTALL` |
 | [dbeaver](https://dbeaver.io/) | cliente SQL universal |
 | [Claude Code](https://claude.com/claude-code) | CLI de IA |
-| [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude (sesión/semanal/extra) en waybar, reemplaza `sway/window` — se instala from-source (`make install PREFIX=~/.local`), no pacman ni AUR. Requiere `claude` logueado (`~/.claude/.credentials.json`); sin login muestra un ícono de error, no rompe waybar |
-| [tickerbar](https://github.com/mryll/tickerbar) | precios de cripto/dólar (BTC, ETH, Dólar Blue vía `dolarapi`) en waybar, junto a claudebar en `group/personal` — Rust, from-source (`make install PREFIX=~/.local`), sin API key. Símbolos configurables en `tickerbar/.config/tickerbar/config.toml` |
+| [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude en waybar (from-source, ver `install-arch.sh`) |
+| coinwatch (`waybar/scripts/coinwatch.py`) | precios cripto (CoinGecko, `precision=full`) en waybar — script propio, sin dependencia de terceros. Click abre detalle en CoinGecko vía fuzzel |
 | [yazi](https://github.com/sxyazi/yazi) | file manager TUI, integrado en nvim vía `yazi.nvim` |
 | [starship](https://starship.rs/) | prompt |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` inteligente, aprende directorios frecuentes |
@@ -108,7 +96,7 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 | [fd](https://github.com/sharkdp/fd) | find rápido |
 | [fzf](https://github.com/junegunn/fzf) | fuzzy finder, usado en popups de tmux y en yazi |
 | [waybar](https://github.com/Alexays/Waybar) | barra de estado de sway |
-| [mako](https://mako-project.org) | daemon de notificaciones — corre como `systemctl --user` unit (no `exec` en sway), colores generados por matugen (`mako/.config/mako/colors`), toggle de Do Not Disturb en waybar (`custom/notifications`) |
+| [mako](https://mako-project.org) | daemon de notificaciones, coloreado por matugen |
 | [fuzzel](https://codeberg.org/dnkl/fuzzel) | lanzador de aplicaciones |
 | [wmenu](https://codeberg.org/adnano/wmenu) | lanzador alternativo (backup de fuzzel) |
 | [matugen](https://github.com/InioX/matugen) | genera la paleta Material-You desde el wallpaper actual (`$mod+Shift+w`) |
@@ -117,7 +105,7 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 | [flameshot](https://flameshot.org/) | capturas de pantalla con anotaciones |
 | [pavucontrol](https://freedesktop.org/software/pulseaudio/pavucontrol/) | mixer de audio gráfico |
 | [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) | fuente usada en kitty, alacritty, waybar y fuzzel |
-| [Symbols Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) (`ttf-nerd-fonts-symbols-mono`) | fallback de íconos en waybar (set moderno de Material Design Icons, ~7000 glyphs) — sin este paquete, `custom/notifications` (la campana) se renderiza vacío |
+| [Symbols Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) (`ttf-nerd-fonts-symbols-mono`) | fallback de íconos extra en waybar |
 | swayidle, swaybg, grim, playerctl, pamixer, brightnessctl | utilidades que sway invoca desde sus keybinds: idle-lock, fondo de pantalla, capturas, media, volumen, brillo |
 | [stow](https://www.gnu.org/software/stow/) | symlink manager, instala/desinstala cada paquete de este repo por separado |
 

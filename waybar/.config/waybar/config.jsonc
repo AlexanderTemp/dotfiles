@@ -11,7 +11,7 @@
   },
   "modules-left": [
     "group/personal",
-    "custom/tickerbar"
+    "custom/coinwatch"
   ],
   "modules-center": [
     "sway/workspaces",
@@ -50,13 +50,6 @@
     "signal": 13,
     "tooltip": true,
     "on-click": "xdg-open https://claude.ai/settings/usage"
-  },
-  "custom/tickerbar": {
-    "exec": "tickerbar",
-    "return-type": "json",
-    "interval": 60,
-    "signal": 8,
-    "tooltip": true
   },
   "group/personal": {
     "orientation": "horizontal",
@@ -113,5 +106,13 @@
   },
   "clock": {
     "format": "{:%a %d %b  %H:%M}"
+  },
+  "custom/coinwatch": {
+    "exec": "~/.config/waybar/scripts/coinwatch.py",
+    "return-type": "json",
+    "interval": 60,
+    "tooltip": true,
+    "on-click": "~/.config/waybar/scripts/coinwatch_open.sh",
+    "signal": 8
   }
 }

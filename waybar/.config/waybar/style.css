@@ -21,6 +21,10 @@ window#waybar {
 
 tooltip {
   background-color: @surface;
+  border: 1px solid alpha(@primary, 0.3);
+  border-radius: 6px;
+  padding: 10px 14px;
+  min-width: 260px;
 }
 
 /* each cluster is ts own island: launcher, workspaces, window title,
@@ -31,7 +35,7 @@ tooltip {
    horizontal 4 + default_border 4 isn't 1:1 with that, so this is the real
    measured pixel value, not the raw config number) */
 #personal,
-#custom-tickerbar,
+#custom-coinwatch,
 #workspaces,
 .modules-center,
 #system,
