@@ -55,7 +55,16 @@ pacman_install fish starship zoxide fzf ripgrep fd tmux
 # --- Wayland / sway / waybar ---------------------------------------------
 # sway y waybar suelen venir con el perfil "sway" de archinstall; --needed
 # hace que esto sea un no-op si ya están.
-pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen
+pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako
+
+# mako trae su propio systemd --user unit (Type=dbus, BusName=org.freedesktop.Notifications,
+# WantedBy=graphical-session.target) pero llega "disabled": sin esto no arranca solo tras reiniciar.
+if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
+    log "Habilitando y arrancando mako.service (--user)"
+    systemctl --user enable --now mako.service
+else
+    log "mako.service ya está habilitado"
+fi
 
 # --- Utilidades de escritorio ---------------------------------------------
 pacman_install flameshot pavucontrol
@@ -109,6 +118,12 @@ pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick chafa
 
 # --- Fuente usada en kitty/alacritty/waybar (FantasqueSansM Nerd Font) ----
 pacman_install ttf-fantasque-nerd
+
+# --- Fallback de íconos para waybar (family "Symbols Nerd Font Mono") --------
+# FantasqueSansM Nerd Font trae los sets clásicos (FA, Octicons, Devicons...)
+# pero NO el set moderno de Material Design Icons -- sin esto, el ícono de
+# campana de custom/notifications en waybar/config.jsonc se renderiza vacío.
+pacman_install ttf-nerd-fonts-symbols-mono
 
 # --- Rust / cargo (necesario para eza: NO instalar eza vía pacman) ---------
 if ! command -v cargo >/dev/null 2>&1; then
@@ -192,6 +207,35 @@ else
     log "Claude Code ya está instalado"
 fi
 
+# --- claudebar (uso del plan de Claude en waybar, ver waybar/config.jsonc) ----
+# No hay AUR helper en esta máquina y este script no es un mecanismo de
+# auto-update (se corre una sola vez), así que from-source es más simple que
+# bootstrapear yay para un solo paquete. Bash puro, "make install" no compila
+# nada -- mismo patrón que kitty/eza de arriba: binario a ~/.local/bin.
+if ! command -v claudebar >/dev/null 2>&1; then
+    log "Instalando claudebar"
+    claudebar_tmp=$(mktemp -d)
+    git clone --depth 1 https://github.com/mryll/claudebar.git "$claudebar_tmp"
+    make -C "$claudebar_tmp" install PREFIX="$HOME/.local"
+    rm -rf "$claudebar_tmp"
+else
+    log "claudebar ya está instalado"
+fi
+
+# --- tickerbar (precios cripto/dólar en waybar, ver waybar/config.jsonc) -----
+# Mismo patrón que claudebar: from-source, sin AUR. A diferencia de claudebar
+# esto SÍ compila (Rust, ~1min con cargo/rustc de arriba) -- no es un problema,
+# ya instalamos rustup para eza más arriba en este mismo script.
+if ! command -v tickerbar >/dev/null 2>&1; then
+    log "Instalando tickerbar"
+    tickerbar_tmp=$(mktemp -d)
+    git clone --depth 1 https://github.com/mryll/tickerbar.git "$tickerbar_tmp"
+    make -C "$tickerbar_tmp" install PREFIX="$HOME/.local"
+    rm -rf "$tickerbar_tmp"
+else
+    log "tickerbar ya está instalado"
+fi
+
 # --- Verificación final -------------------------------------------------------
 log "Verificando instalación"
 any_check_failed=0
@@ -210,6 +254,8 @@ check "eza"    'command -v eza'
 check "go"     'command -v go'
 check "fisher" "fish -c 'type -q fisher'"
 check "claude" 'command -v claude'
+check "claudebar" 'command -v claudebar'
+check "tickerbar" 'command -v tickerbar'
 
 if [ "$any_check_failed" -eq 1 ]; then
     printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisá los logs arriba antes de dar la instalación por buena.\033[0m\n'
@@ -218,7 +264,9 @@ fi
 log "Listo. Pendiente MANUAL (no lo hace este script):"
 cat <<'EOF'
   - nvim: descargar el tarball, extraer en /opt/nvim (ver README.md > "Comandos").
-  - ssh-keygen -t ed25519 -a 100 -C "tu-email" y añadir la key pública a GitHub.
-  - git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles (si no lo tienes ya).
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock environment
+  - claude: si es la primera vez, corré `claude` y logueate (OAuth interactivo,
+    no se puede scriptear). Sin esto claudebar muestra un ícono de error de
+    autenticación en waybar en vez de tu uso real -- no rompe nada, pero no
+    sirve hasta que lo hagas.
+  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako fuzzel wlogout matugen gtklock environment
 EOF

@@ -22,6 +22,8 @@ dotfiles/
 ├── starship/    -> ~/.config/starship.toml
 ├── sway/        -> ~/.config/sway
 ├── waybar/      -> ~/.config/waybar
+├── mako/        -> ~/.config/mako
+├── tickerbar/   -> ~/.config/tickerbar
 ├── fuzzel/      -> ~/.config/fuzzel
 ├── wlogout/     -> ~/.config/wlogout
 ├── matugen/     -> ~/.config/matugen
@@ -44,6 +46,13 @@ corren una sola vez (ver [Instalación](#-instalación)).
 Único sistema soportado: Arch/CachyOS + sway (ver `HISTORY.md` para la
 migración desde Debian/Ubuntu).
 
+> **Antes de esto:** si el repo es privado y clonás por SSH, necesitás una
+> key ya agregada a tu cuenta de Git *antes* del primer comando de abajo —
+> no hay forma de scriptear este paso, porque el script de instalación vive
+> adentro del propio repo que todavía no clonaste:
+> `ssh-keygen -t ed25519 -a 100 -C "tu-email"` y sumar la key pública en
+> GitHub → Settings → SSH Keys.
+
 ```bash
 git clone <este-repo> ~/dotfiles
 
@@ -51,7 +60,7 @@ cd ~/dotfiles/install
 ./install-arch.sh
 
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock environment
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako tickerbar fuzzel wlogout matugen gtklock environment
 ```
 
 `install-arch.sh` instala vía pacman/cargo/curl casi todo lo de la tabla de
@@ -89,6 +98,8 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 | [bun](https://bun.sh/) | runtime/paquetería JS, usado vía `$BUN_INSTALL` |
 | [dbeaver](https://dbeaver.io/) | cliente SQL universal |
 | [Claude Code](https://claude.com/claude-code) | CLI de IA |
+| [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude (sesión/semanal/extra) en waybar, reemplaza `sway/window` — se instala from-source (`make install PREFIX=~/.local`), no pacman ni AUR. Requiere `claude` logueado (`~/.claude/.credentials.json`); sin login muestra un ícono de error, no rompe waybar |
+| [tickerbar](https://github.com/mryll/tickerbar) | precios de cripto/dólar (BTC, ETH, Dólar Blue vía `dolarapi`) en waybar, junto a claudebar en `group/personal` — Rust, from-source (`make install PREFIX=~/.local`), sin API key. Símbolos configurables en `tickerbar/.config/tickerbar/config.toml` |
 | [yazi](https://github.com/sxyazi/yazi) | file manager TUI, integrado en nvim vía `yazi.nvim` |
 | [starship](https://starship.rs/) | prompt |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` inteligente, aprende directorios frecuentes |
@@ -97,6 +108,7 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 | [fd](https://github.com/sharkdp/fd) | find rápido |
 | [fzf](https://github.com/junegunn/fzf) | fuzzy finder, usado en popups de tmux y en yazi |
 | [waybar](https://github.com/Alexays/Waybar) | barra de estado de sway |
+| [mako](https://mako-project.org) | daemon de notificaciones — corre como `systemctl --user` unit (no `exec` en sway), colores generados por matugen (`mako/.config/mako/colors`), toggle de Do Not Disturb en waybar (`custom/notifications`) |
 | [fuzzel](https://codeberg.org/dnkl/fuzzel) | lanzador de aplicaciones |
 | [wmenu](https://codeberg.org/adnano/wmenu) | lanzador alternativo (backup de fuzzel) |
 | [matugen](https://github.com/InioX/matugen) | genera la paleta Material-You desde el wallpaper actual (`$mod+Shift+w`) |
@@ -105,6 +117,7 @@ Cada paquete de stow es opcional: `stow <paquete>` instala solo ese, `stow -D <p
 | [flameshot](https://flameshot.org/) | capturas de pantalla con anotaciones |
 | [pavucontrol](https://freedesktop.org/software/pulseaudio/pavucontrol/) | mixer de audio gráfico |
 | [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) | fuente usada en kitty, alacritty, waybar y fuzzel |
+| [Symbols Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) (`ttf-nerd-fonts-symbols-mono`) | fallback de íconos en waybar (set moderno de Material Design Icons, ~7000 glyphs) — sin este paquete, `custom/notifications` (la campana) se renderiza vacío |
 | swayidle, swaybg, grim, playerctl, pamixer, brightnessctl | utilidades que sway invoca desde sus keybinds: idle-lock, fondo de pantalla, capturas, media, volumen, brillo |
 | [stow](https://www.gnu.org/software/stow/) | symlink manager, instala/desinstala cada paquete de este repo por separado |
 

@@ -12,3 +12,8 @@ post_hook = "swaymsg reload"
 [templates.fuzzel]
 input_path = "~/.config/matugen/templates/fuzzel.ini"
 output_path = "~/.config/fuzzel/fuzzel.ini"
+
+[templates.mako]
+input_path = "~/.config/matugen/templates/mako.tpl"
+output_path = "~/.config/mako/colors"
+post_hook = "makoctl reload"

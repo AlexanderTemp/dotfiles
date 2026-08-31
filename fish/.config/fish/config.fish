@@ -150,6 +150,7 @@ fish_add_path $HOME/.local/bin
 # así que apuntamos directo al symlink `current` que sdkman sí mantiene al día)
 set -gx SDKMAN_DIR $HOME/.sdkman
 fish_add_path -p $SDKMAN_DIR/candidates/java/current/bin
+fish_add_path -p $SDKMAN_DIR/candidates/gradle/current/bin
 
 if type -q pyenv
     pyenv init - | source

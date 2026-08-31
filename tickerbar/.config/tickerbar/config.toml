@@ -1,0 +1,50 @@
+# tickerbar config — ver config.example.toml del repo para el resto de opciones
+# (rotate mode, stocks/indices via CNBC, dolarapi, etc.)
+#
+# [[asset]] de abajo = tu watchlist completo, SIEMPRE visible al hacer hover
+# (tooltip). `bar` de acá abajo = cuáles de esos labels se ven fijos en la
+# barra (máx 2). Para trackear una moneda puntual por una operación (ej. XRP,
+# BNB) sin perder el resto del watchlist: agregás un [[asset]] nuevo con su
+# id de CoinGecko (buscalo con `curl -s "https://api.coingecko.com/api/v3/search?query=NOMBRE" | jq`)
+# y lo sumás/cambiás en `bar` -- no hace falta tocar ni borrar los demás.
+
+[display]
+mode = "fixed"
+max_on_bar = 2
+icons = "nerd"
+# bar_format = "{label} {price} {arrow}{change_pct}"
+bar_format = "{label} {price} {change_pct}"
+bar = ["BTC", "XRP"]
+
+[market_hours]
+enabled = true
+
+[[asset]]
+label = "BTC"
+provider = "coingecko"
+id = "bitcoin"
+quote = "usd"
+
+[[asset]]
+label = "ETH"
+provider = "coingecko"
+id = "ethereum"
+quote = "usd"
+
+[[asset]]
+label = "XRP"
+provider = "coingecko"
+id = "ripple"
+quote = "usd"
+
+[[asset]]
+label = "BNB"
+provider = "coingecko"
+id = "binancecoin"
+quote = "usd"
+
+[[asset]]
+label = "SUI"
+provider = "coingecko"
+id = "sui"
+quote = "usd"

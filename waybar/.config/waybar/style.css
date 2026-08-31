@@ -4,7 +4,11 @@
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: "FantasqueSansM Nerd Font Mono";
+  /* fallback: FantasqueSansM Nerd Font Mono trae los sets clasicos (FA,
+     Octicons, Devicons, Weather...) pero NO el set moderno de Material
+     Design Icons (7000+ glyphs) -- ese vive solo en el paquete
+     ttf-nerd-fonts-symbols-mono, family "Symbols Nerd Font Mono" */
+  font-family: "FantasqueSansM Nerd Font Mono", "Symbols Nerd Font Mono";
   font-size: 16px;
   font-weight: 500;
   padding: 0;
@@ -26,7 +30,8 @@ tooltip {
    edges use 16px to match the measured gap tiled windows get (gaps
    horizontal 4 + default_border 4 isn't 1:1 with that, so this is the real
    measured pixel value, not the raw config number) */
-#custom-launcher,
+#personal,
+#custom-tickerbar,
 #workspaces,
 .modules-center,
 #system,
@@ -37,8 +42,16 @@ tooltip {
   padding: 0 10px;
 }
 
-#custom-launcher {
+/* sin custom-launcher, #personal es la isla más a la izquierda -- necesita
+   su propio margen contra el borde de pantalla (antes lo daba el launcher) */
+#personal {
   margin-left: 12px;
+}
+
+/* menos padding lateral que el resto de las islas -- los botones ya traen
+   su propio padding (6px c/u), sumado al de acá se sentía muy separado */
+#workspaces {
+  padding: 0 4px;
 }
 
 #clock {
@@ -53,7 +66,8 @@ tooltip {
 #network,
 #pulseaudio,
 #window,
-#mode {
+#mode,
+#custom-notifications {
   padding: 0 6px;
 }
 
@@ -75,4 +89,18 @@ tooltip {
 
 #battery, #tray, #clock, #cpu, #pulseaudio, #memory {
   color: @primary;
+}
+
+/* único módulo que se queda con ícono en vez de letra (bell) -- CPU/memoria/
+   volumen probados y revertidos, a 16-20px esos glifos no se leen bien */
+#custom-notifications {
+  font-size: 24px;
+}
+
+#custom-notifications.active {
+  color: @primary;
+}
+
+#custom-notifications.dnd {
+  color: #f44336;
 }

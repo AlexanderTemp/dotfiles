@@ -9,18 +9,13 @@
     "interval": "once",
     "tooltip": false
   },
-  "custom/launcher": {
-    "format": "ム",
-    "tooltip": false,
-    "on-click": "exec wlogout -p layer-shell"
-  },
   "modules-left": [
-    "custom/launcher",
-    "sway/workspaces",
-    "sway/mode"
+    "group/personal",
+    "custom/tickerbar"
   ],
   "modules-center": [
-    "sway/window"
+    "sway/workspaces",
+    "sway/mode"
   ],
   "modules-right": [
     "group/system",
@@ -31,6 +26,8 @@
     "modules": [
       "tray",
       "custom/separator",
+      "custom/notifications",
+      "custom/separator",
       "cpu",
       "custom/separator",
       "memory",
@@ -39,11 +36,36 @@
       "battery"
     ]
   },
+  "custom/notifications": {
+    "exec": "~/.config/waybar/scripts/mako_dnd.sh",
+    "return-type": "json",
+    "interval": 5,
+    "on-click": "makoctl mode -t do-not-disturb",
+    "tooltip": true
+  },
+  "custom/claudebar": {
+    "exec": "claudebar --tooltip-font 'FantasqueSansM Nerd Font Mono'",
+    "return-type": "json",
+    "interval": 300,
+    "signal": 13,
+    "tooltip": true,
+    "on-click": "xdg-open https://claude.ai/settings/usage"
+  },
+  "custom/tickerbar": {
+    "exec": "tickerbar",
+    "return-type": "json",
+    "interval": 60,
+    "signal": 8,
+    "tooltip": true
+  },
+  "group/personal": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/claudebar"
+    ]
+  },
   "sway/workspaces": {
     "disable-scroll": true
-  },
-  "sway/window": {
-    "max-length": 50
   },
   "tray": {
     "spacing": 10,

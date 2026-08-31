@@ -1,0 +1,10 @@
+text-color=#dee4e1
+border-color=#84d6c3
+progress-color=over #84d6c3
+
+[urgency=low]
+border-color=#89938f
+
+[urgency=critical]
+border-color=#ffb4ab
+text-color=#ffb4ab
