@@ -74,7 +74,7 @@ Base LazyVim. Leader: **`<Space>`**.
 | `<leader>fv` | Telescope help_tags |
 | `<leader>fp` | Telescope builtin picker list |
 
-Nota: `lua/custom/custom.lua` implementa "cowboy mode" — avisa si abusás de `h j k l + - e w b` sin count prefix. `lua/plugins/example.lua` está deshabilitado (`if true then return {} end`), no se carga. `lua/plugins/md-prev.lua` tiene rutas CSS hardcodeadas de otra máquina (`/Users/michaelwilliams/...`), probablemente rota.
+Nota: `lua/custom/custom.lua` implementa "cowboy mode" — avisa si abusás de `h j k l + - e w b` sin count prefix. `lua/plugins/example.lua` está deshabilitado (`if true then return {} end`), no se carga.
 
 ## kitty (`kitty/.config/kitty/kitty.conf`)
 

@@ -16,7 +16,7 @@ matugen/.config/matugen/colors.css
 sway/.config/sway/config.d/colors
 sway/.config/sway/config.d/wallpaper
 
-# TEMA DE KITTY (regenerado por shipwright.nvim / kitty)
+# TEMA DE KITTY (regenerado por `kitty +kitten themes`)
 kitty/.config/kitty/current-theme.conf
 kitty/.config/kitty/past-current-theme.conf
 *.bak

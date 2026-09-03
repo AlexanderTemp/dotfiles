@@ -65,7 +65,7 @@ dotfiles/
 
 `fuzzel/` tampoco es paquete: no tiene fuente propia, `~/.config/fuzzel/fuzzel.ini` lo escribe matugen por completo (junto con `sway/config.d/colors`, `mako/colors` y `matugen/colors.css`). Estos 4 archivos están en `.gitignore` a propósito — cambian con cada wallpaper elegido, así que trackearlos generaba conflicto en cada `git pull`.
 
-Mismo motivo para `kitty/.config/kitty/current-theme.conf` (regenerado por shipwright.nvim en cada cambio de colorscheme) y `past-current-theme.conf` (backup automático de kitty): también en `.gitignore`, nunca son fuente.
+Mismo motivo para `kitty/.config/kitty/current-theme.conf` y `past-current-theme.conf` (los regenera `kitty +kitten themes` al elegir tema): también en `.gitignore`, nunca son fuente.
 
 ## 🧰 Herramientas
 
