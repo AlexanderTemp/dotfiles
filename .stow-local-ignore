@@ -15,6 +15,7 @@ _darcs
 
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
+\.bak$       # editor backup files
 
 README\.md
 TODO\.md

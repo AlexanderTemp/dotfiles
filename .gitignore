@@ -10,6 +10,17 @@ fish/.config/fish/fish_history
 # TMUX RESURRECT (estado local por máquina, no se comparte)
 tmux/.tmux/resurrect/
 
+# TEMA GENERADO POR MATUGEN (regenerado en cada wallpaper elegido)
+mako/.config/mako/colors
+matugen/.config/matugen/colors.css
+sway/.config/sway/config.d/colors
+sway/.config/sway/config.d/wallpaper
+
+# TEMA DE KITTY (regenerado por shipwright.nvim / kitty)
+kitty/.config/kitty/current-theme.conf
+kitty/.config/kitty/past-current-theme.conf
+*.bak
+
 # EDITORES
 .vscode/
 .idea/

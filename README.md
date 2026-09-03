@@ -21,7 +21,13 @@ cd ~/dotfiles/install
 ./install-arch.sh   # idempotente — instala todo salvo nvim (manual, ver abajo)
 
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako fuzzel wlogout matugen gtklock environment
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
+
+# tema inicial: matugen genera sway/config.d/colors, mako/colors,
+# matugen/colors.css y ~/.config/fuzzel/fuzzel.ini (ninguno vive en el
+# repo — ver sección Estructura). sway/config incluye colors a mano, así
+# que hace falta esto antes del primer arranque de sway.
+~/.local/bin/set-wallpaper   # elegí el único wallpaper listado
 ```
 
 ```bash
@@ -46,7 +52,6 @@ dotfiles/
 ├── sway/        -> ~/.config/sway
 ├── waybar/      -> ~/.config/waybar
 ├── mako/        -> ~/.config/mako
-├── fuzzel/      -> ~/.config/fuzzel
 ├── wlogout/     -> ~/.config/wlogout
 ├── matugen/     -> ~/.config/matugen
 ├── gtklock/     -> ~/.config/gtklock
@@ -56,7 +61,11 @@ dotfiles/
 └── scripts/     -> ~/docker-ps-visual.sh, ~/.local/bin/set-wallpaper
 ```
 
-`wallpapers/` e `install/` no son paquetes de stow: el primero se referencia por ruta directa, el segundo son scripts de bootstrap de una sola vez (ver arriba).
+`wallpapers/` e `install/` no son paquetes de stow: el primero se referencia por ruta directa, el segundo son scripts de bootstrap de una sola vez (ver arriba). `wallpapers/` guarda un único wallpaper default (`higuruma-jujutsu-kaisen.png`); `set-wallpaper` (`$mod+Shift+w`) permite usar cualquier otra imagen que se copie ahí a mano, elegible con fuzzel.
+
+`fuzzel/` tampoco es paquete: no tiene fuente propia, `~/.config/fuzzel/fuzzel.ini` lo escribe matugen por completo (junto con `sway/config.d/colors`, `mako/colors` y `matugen/colors.css`). Estos 4 archivos están en `.gitignore` a propósito — cambian con cada wallpaper elegido, así que trackearlos generaba conflicto en cada `git pull`.
+
+Mismo motivo para `kitty/.config/kitty/current-theme.conf` (regenerado por shipwright.nvim en cada cambio de colorscheme) y `past-current-theme.conf` (backup automático de kitty): también en `.gitignore`, nunca son fuente.
 
 ## 🧰 Herramientas
 

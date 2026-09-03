@@ -255,5 +255,10 @@ cat <<'EOF'
     no se puede scriptear). Sin esto claudebar muestra un ícono de error de
     autenticación en waybar en vez de tu uso real -- no rompe nada, pero no
     sirve hasta que lo hagas.
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako fuzzel wlogout matugen gtklock environment
+  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
+  - Tema inicial (matugen genera sway/config.d/colors, mako/colors,
+    matugen/colors.css y ~/.config/fuzzel/fuzzel.ini -- ninguno vive en el
+    repo, sway no arranca bien sin esto porque config.d/colors se incluye
+    a mano en sway/config): tras el stow de arriba, correr
+    ~/.local/bin/set-wallpaper una vez y elegir el único wallpaper listado.
 EOF
