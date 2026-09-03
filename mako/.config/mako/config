@@ -1,0 +1,32 @@
+# Layout/comportamiento (estático). Colores en ~/.config/mako/colors,
+# regenerado por matugen -- mismo patrón que sway/config.d/colors y
+# matugen/colors.css (ver matugen/.config/matugen/config.toml).
+sort=-time
+layer=overlay
+anchor=top-center
+margin=10
+padding=12
+border-size=1
+border-radius=4
+width=350
+height=110
+max-visible=5
+default-timeout=5000
+ignore-timeout=0
+icons=1
+max-icon-size=48
+font=FantasqueSansM Nerd Font Mono 11
+
+# fijo, no viene de matugen: el "surface" del tema trae tinte según el
+# wallpaper y se sentía "fuerte" -- esto es negro puro con opacidad
+background-color=#000000cc
+
+include=~/.config/mako/colors
+
+[urgency=critical]
+default-timeout=0
+
+# nombre reservado que togglea `custom/notifications` en waybar
+# (bindsym/on-click: makoctl mode -t do-not-disturb)
+[mode=do-not-disturb]
+invisible=1

@@ -9,5 +9,11 @@ repo y no debe symlinkearse a `$HOME`.
   soportado — **excepto nvim** (ese va por tarball a mano, ver `README.md`
   del repo).
 
+Prerequisito de SSH: ver `README.md` de la raíz, sección Instalación.
+
+Si algo falla, el script corta ahí mismo (`set -euo pipefail` + trap en
+`ERR`) con la línea exacta — es idempotente, así que solo hace falta
+resolver y volver a correrlo.
+
 Ver `../HISTORY.md` para el detalle de qué se instaló manualmente en la
 última instalación limpia y el registro de la migración desde Debian/Ubuntu.

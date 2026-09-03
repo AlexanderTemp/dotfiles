@@ -1,10 +1,11 @@
 {
   "extras": [
-    "lazyvim.plugins.extras.lang.typescript.biome",
+    "lazyvim.plugins.extras.lang.java",
     "lazyvim.plugins.extras.lang.json",
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.tailwind",
-    "lazyvim.plugins.extras.lang.typescript"
+    "lazyvim.plugins.extras.lang.typescript",
+    "lazyvim.plugins.extras.lang.typescript.biome"
   ],
   "install_version": 8,
   "news": {
@@ -12,4 +13,3 @@
   },
   "version": 8
 }
-

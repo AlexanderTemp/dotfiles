@@ -14,6 +14,10 @@ tmux/.tmux/resurrect/
 .vscode/
 .idea/
 
+# PYTHON
+__pycache__/
+*.pyc
+
 # SYSTEM FILES
 .DS_Store
 *.swp

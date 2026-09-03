@@ -45,7 +45,9 @@ if [ ! -d "/usr/lib/modules/$(uname -r)" ]; then
 fi
 
 # --- Base ---------------------------------------------------------------
-pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop
+# python: no viene garantizado en un Arch mínimo -- lo necesita
+# waybar/scripts/coinwatch.py (stdlib, sin pip packages).
+pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop python
 
 # --- Shell / prompt / navegación ----------------------------------------
 pacman_install fish starship zoxide fzf ripgrep fd tmux
@@ -55,7 +57,16 @@ pacman_install fish starship zoxide fzf ripgrep fd tmux
 # --- Wayland / sway / waybar ---------------------------------------------
 # sway y waybar suelen venir con el perfil "sway" de archinstall; --needed
 # hace que esto sea un no-op si ya están.
-pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen
+pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako
+
+# mako trae su propio systemd --user unit (Type=dbus, BusName=org.freedesktop.Notifications,
+# WantedBy=graphical-session.target) pero llega "disabled": sin esto no arranca solo tras reiniciar.
+if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
+    log "Habilitando y arrancando mako.service (--user)"
+    systemctl --user enable --now mako.service
+else
+    log "mako.service ya está habilitado"
+fi
 
 # --- Utilidades de escritorio ---------------------------------------------
 pacman_install flameshot pavucontrol
@@ -110,6 +121,12 @@ pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick chafa
 # --- Fuente usada en kitty/alacritty/waybar (FantasqueSansM Nerd Font) ----
 pacman_install ttf-fantasque-nerd
 
+# --- Fallback de íconos para waybar (family "Symbols Nerd Font Mono") --------
+# FantasqueSansM Nerd Font trae los sets clásicos (FA, Octicons, Devicons...)
+# pero NO el set moderno de Material Design Icons -- sin esto, el ícono de
+# campana de custom/notifications en waybar/config.jsonc se renderiza vacío.
+pacman_install ttf-nerd-fonts-symbols-mono
+
 # --- Rust / cargo (necesario para eza: NO instalar eza vía pacman) ---------
 if ! command -v cargo >/dev/null 2>&1; then
     log "Instalando rustup"
@@ -148,7 +165,7 @@ fi
 # --- kitty (instalador oficial, no pacman) -----------------------------------
 if ! command -v kitty >/dev/null 2>&1 && [ ! -x "$HOME/.local/kitty.app/bin/kitty" ]; then
     log "Instalando kitty"
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    curl -fL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
     mkdir -p "$HOME/.local/bin" "$HOME/.local/share/applications"
     ln -sf "$HOME/.local/kitty.app/bin/kitty" "$HOME/.local/kitty.app/bin/kitten" "$HOME/.local/bin/"
     cp "$HOME/.local/kitty.app/share/applications/kitty.desktop" "$HOME/.local/share/applications/"
@@ -170,7 +187,7 @@ fi
 # "installation path set but no installation found there".
 if [ ! -d "$HOME/.sdkman" ]; then
     log "Instalando SDKMAN"
-    curl -s "https://get.sdkman.io" | bash
+    curl -fsS "https://get.sdkman.io" | bash
 else
     log "SDKMAN ya está instalado"
 fi
@@ -178,7 +195,7 @@ fi
 # --- fisher + plugins de fish -------------------------------------------------
 if ! fish -c 'type -q fisher' >/dev/null 2>&1; then
     log "Instalando fisher y plugins de fish (jorgebucaran/nvm.fish, reitzig/sdkman-for-fish)"
-    fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
+    fish -c 'curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
     fish -c 'fisher install jorgebucaran/nvm.fish reitzig/sdkman-for-fish'
 else
     log "fisher ya está instalado"
@@ -190,6 +207,21 @@ if ! command -v claude >/dev/null 2>&1; then
     curl -fsSL https://claude.ai/install.sh | bash
 else
     log "Claude Code ya está instalado"
+fi
+
+# --- claudebar (uso del plan de Claude en waybar, ver waybar/config.jsonc) ----
+# No hay AUR helper en esta máquina y este script no es un mecanismo de
+# auto-update (se corre una sola vez), así que from-source es más simple que
+# bootstrapear yay para un solo paquete. Bash puro, "make install" no compila
+# nada -- mismo patrón que kitty/eza de arriba: binario a ~/.local/bin.
+if ! command -v claudebar >/dev/null 2>&1; then
+    log "Instalando claudebar"
+    claudebar_tmp=$(mktemp -d)
+    git clone --depth 1 https://github.com/mryll/claudebar.git "$claudebar_tmp"
+    make -C "$claudebar_tmp" install PREFIX="$HOME/.local"
+    rm -rf "$claudebar_tmp"
+else
+    log "claudebar ya está instalado"
 fi
 
 # --- Verificación final -------------------------------------------------------
@@ -210,6 +242,7 @@ check "eza"    'command -v eza'
 check "go"     'command -v go'
 check "fisher" "fish -c 'type -q fisher'"
 check "claude" 'command -v claude'
+check "claudebar" 'command -v claudebar'
 
 if [ "$any_check_failed" -eq 1 ]; then
     printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisá los logs arriba antes de dar la instalación por buena.\033[0m\n'
@@ -218,7 +251,9 @@ fi
 log "Listo. Pendiente MANUAL (no lo hace este script):"
 cat <<'EOF'
   - nvim: descargar el tarball, extraer en /opt/nvim (ver README.md > "Comandos").
-  - ssh-keygen -t ed25519 -a 100 -C "tu-email" y añadir la key pública a GitHub.
-  - git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles (si no lo tienes ya).
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar fuzzel wlogout matugen gtklock environment
+  - claude: si es la primera vez, corré `claude` y logueate (OAuth interactivo,
+    no se puede scriptear). Sin esto claudebar muestra un ícono de error de
+    autenticación en waybar en vez de tu uso real -- no rompe nada, pero no
+    sirve hasta que lo hagas.
+  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako fuzzel wlogout matugen gtklock environment
 EOF
