@@ -21,7 +21,7 @@ if status is-interactive
 
     # Common use get it from sway config utils
     alias tarnow="tar -acf "
-    alias untar="tar -zxvf "
+    alias untar="tar -xvf "
     alias ..="cd .."
     alias ...="cd ../.."
     alias psmem10='ps auxf | sort -nr -k 4 | head -10'
@@ -143,6 +143,14 @@ fish_add_path $GOPATH/bin
 # PYENV_ROOT
 set -Ux PYENV_ROOT $HOME/.pyenv
 fish_add_path $PYENV_ROOT/bin
+
+# SDKMAN (java) -- fish no soporta sourcear sdkman-init.sh (es bash),
+# asi que se apunta directo al symlink "current" que administra sdkman con
+# "sdk default"/"sdk use". Se prepende con fish_add_path para que gane sobre
+# cualquier java del sistema.
+set -gx SDKMAN_DIR $HOME/.sdkman
+set -gx JAVA_HOME $SDKMAN_DIR/candidates/java/current
+fish_add_path $JAVA_HOME/bin
 
 fish_add_path $HOME/.local/bin
 
