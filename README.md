@@ -115,5 +115,5 @@ Mismo motivo para `kitty/.config/kitty/current-theme.conf` y `past-current-theme
 
 ## 🧭 Uso
 
-- Atajos de teclado y alias: [./SHORTCUTS.md](SHORTCUTS).
-- Para importar los comandos de git usados por mi [./GIT-ALIAS.md](GIT-ALIAS).
+- Atajos de teclado y alias: [SHORTCUTS.md](SHORTCUTS.md).
+- Para importar los comandos de git usados por mi: [GIT-ALIAS.md](GIT-ALIAS.md).
