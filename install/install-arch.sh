@@ -75,6 +75,9 @@ fi
 # --- Utilidades de escritorio ---------------------------------------------
 pacman_install flameshot pavucontrol
 
+# --- lazygit (integración de LazyVim, <leader>gg, ya trae el bind, falta el binario) ----
+pacman_install lazygit
+
 # --- udiskie (automontaje de pendrives/discos externos, sway no trae DE) ----
 pacman_install udisks2 udiskie
 
@@ -270,4 +273,7 @@ cat <<'EOF'
     a mano en sway/config): tras el stow de arriba, correr
     ~/.local/bin/set-wallpaper una vez -- con un solo wallpaper en
     wallpapers/ lo aplica directo, sin preguntar nada.
+  - kitty: current-theme.conf tampoco vive en el repo (mismo motivo, ver
+    README.md), así que arranca con la paleta default hasta que se genere.
+    Tras el stow de arriba: kitty +kitten themes --cache-age -1 kanagawabones
 EOF

@@ -28,6 +28,9 @@ stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako
 # repo — ver sección Estructura). sway/config incluye colors a mano, así
 # que hace falta esto antes del primer arranque de sway.
 ~/.local/bin/set-wallpaper   # con un solo wallpaper en wallpapers/, lo aplica directo, sin preguntar
+
+# kitty: current-theme.conf tampoco vive en el repo, arranca con la paleta default hasta esto
+kitty +kitten themes --cache-age -1 kanagawabones
 ```
 
 ```bash
