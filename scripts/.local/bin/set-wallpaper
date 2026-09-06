@@ -2,11 +2,24 @@
 # Pick a wallpaper via fuzzel, apply it live via sway's own output bg, retheme with matugen.
 WALLPAPER_DIR="$HOME/dotfiles/wallpapers"
 
-selected=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -printf "%f\n" | fuzzel --dmenu --prompt "Wallpaper: ")
-[ -z "$selected" ] && exit 0
+mapfile -t wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -printf "%f\n" | sort)
+
+if [ "${#wallpapers[@]}" -eq 0 ]; then
+    exit 0
+elif [ "${#wallpapers[@]}" -eq 1 ]; then
+    selected="${wallpapers[0]}"
+else
+    selected=$(printf '%s\n' "${wallpapers[@]}" | fuzzel --dmenu --prompt "Wallpaper: ")
+    [ -z "$selected" ] && exit 0
+fi
+
+# matugen escribe fuzzel.ini ahí (no hay paquete de stow para fuzzel) -- sin
+# esto, la primera vez tira "folder doesn't exist" en rojo.
+mkdir -p "$HOME/.config/fuzzel"
 
 # written before matugen so its swaymsg-reload post-process re-asserts this, not the old bg
 echo "output * bg \"$WALLPAPER_DIR/$selected\" fill" > "$HOME/.config/sway/config.d/wallpaper"
 
 matugen image "$WALLPAPER_DIR/$selected" --prefer saturation
-swaymsg output '*' bg "$WALLPAPER_DIR/$selected" fill
+# sway puede no estar corriendo (p.ej. llamado desde install-arch.sh)
+swaymsg output '*' bg "$WALLPAPER_DIR/$selected" fill 2>/dev/null || true

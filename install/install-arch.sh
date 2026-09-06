@@ -11,6 +11,10 @@
 
 set -euo pipefail
 
+# Fuerza mensajes de pacman en inglés (Y/n en vez de S/n) solo para este
+# script -- no toca /etc/locale.conf ni el teclado (vconsole/XKB en "es").
+export LC_ALL=C.UTF-8
+
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 
 # -e mudo es imposible de debuggear: marca línea y comando exacto al fallar.
@@ -57,7 +61,7 @@ pacman_install fish starship zoxide fzf ripgrep fd tmux
 # --- Wayland / sway / waybar ---------------------------------------------
 # sway y waybar suelen venir con el perfil "sway" de archinstall; --needed
 # hace que esto sea un no-op si ya están.
-pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako
+pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
 
 # mako trae su propio systemd --user unit (Type=dbus, BusName=org.freedesktop.Notifications,
 # WantedBy=graphical-session.target) pero llega "disabled": sin esto no arranca solo tras reiniciar.
@@ -81,6 +85,10 @@ if ! command -v fuzzel >/dev/null 2>&1; then
 else
     log "fuzzel ya está instalado"
 fi
+
+# fuzzel no es paquete de stow (matugen escribe fuzzel.ini ahí); sin este dir
+# ya creado, la primera vez que corre matugen tira "folder doesn't exist" en rojo.
+mkdir -p "$HOME/.config/fuzzel"
 
 # --- dbeaver (cliente SQL) ---------------------------------------------------
 if ! command -v dbeaver >/dev/null 2>&1; then
@@ -260,5 +268,6 @@ cat <<'EOF'
     matugen/colors.css y ~/.config/fuzzel/fuzzel.ini -- ninguno vive en el
     repo, sway no arranca bien sin esto porque config.d/colors se incluye
     a mano en sway/config): tras el stow de arriba, correr
-    ~/.local/bin/set-wallpaper una vez y elegir el único wallpaper listado.
+    ~/.local/bin/set-wallpaper una vez -- con un solo wallpaper en
+    wallpapers/ lo aplica directo, sin preguntar nada.
 EOF

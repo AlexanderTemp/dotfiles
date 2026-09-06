@@ -32,6 +32,10 @@ input type:keyboard {
 	xkb_layout "es"
 }
 
+input type:touchpad {
+	tap enabled
+}
+
 # all workspaces
 gaps horizontal 2
 gaps vertical 2

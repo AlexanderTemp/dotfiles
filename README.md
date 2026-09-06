@@ -27,7 +27,7 @@ stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako
 # matugen/colors.css y ~/.config/fuzzel/fuzzel.ini (ninguno vive en el
 # repo — ver sección Estructura). sway/config incluye colors a mano, así
 # que hace falta esto antes del primer arranque de sway.
-~/.local/bin/set-wallpaper   # elegí el único wallpaper listado
+~/.local/bin/set-wallpaper   # con un solo wallpaper en wallpapers/, lo aplica directo, sin preguntar
 ```
 
 ```bash
