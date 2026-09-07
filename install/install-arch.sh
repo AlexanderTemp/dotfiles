@@ -261,19 +261,11 @@ fi
 
 log "Listo. Pendiente MANUAL (no lo hace este script):"
 cat <<'EOF'
-  - nvim: descargar el tarball, extraer en /opt/nvim (ver README.md > "Comandos").
-  - claude: si es la primera vez, corré `claude` y logueate (OAuth interactivo,
-    no se puede scriptear). Sin esto claudebar muestra un ícono de error de
-    autenticación en waybar en vez de tu uso real -- no rompe nada, pero no
-    sirve hasta que lo hagas.
-  - cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
-  - Tema inicial (matugen genera sway/config.d/colors, mako/colors,
-    matugen/colors.css y ~/.config/fuzzel/fuzzel.ini -- ninguno vive en el
-    repo, sway no arranca bien sin esto porque config.d/colors se incluye
-    a mano en sway/config): tras el stow de arriba, correr
-    ~/.local/bin/set-wallpaper una vez -- con un solo wallpaper en
-    wallpapers/ lo aplica directo, sin preguntar nada.
-  - kitty: current-theme.conf tampoco vive en el repo (mismo motivo, ver
-    README.md), así que arranca con la paleta default hasta que se genere.
-    Tras el stow de arriba: kitty +kitten themes --cache-age -1 kanagawabones
+  - nvim (tarball manual, ver README.md > "Comandos")
+  - claude (login OAuth interactivo, primera vez): claude
+
+  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
+
+  - tema inicial (sway/mako/fuzzel): ~/.local/bin/set-wallpaper
+  - tema inicial (kitty): kitty +kitten themes kanagawabones
 EOF

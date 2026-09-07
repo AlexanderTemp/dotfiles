@@ -23,14 +23,11 @@ cd ~/dotfiles/install
 cd ~/dotfiles
 stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
 
-# tema inicial: matugen genera sway/config.d/colors, mako/colors,
-# matugen/colors.css y ~/.config/fuzzel/fuzzel.ini (ninguno vive en el
-# repo — ver sección Estructura). sway/config incluye colors a mano, así
-# que hace falta esto antes del primer arranque de sway.
-~/.local/bin/set-wallpaper   # con un solo wallpaper en wallpapers/, lo aplica directo, sin preguntar
+# tema inicial (sway/mako/fuzzel, no vive en el repo — ver Estructura)
+~/.local/bin/set-wallpaper
 
-# kitty: current-theme.conf tampoco vive en el repo, arranca con la paleta default hasta esto
-kitty +kitten themes --cache-age -1 kanagawabones
+# tema inicial (kitty, tampoco vive en el repo)
+kitty +kitten themes kanagawabones
 ```
 
 ```bash
