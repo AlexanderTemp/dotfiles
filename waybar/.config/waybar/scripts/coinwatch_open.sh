@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Click en el módulo de coinwatch -> elegís una moneda con fuzzel -> se abre
+# Click en el módulo de coinwatch -> se elige una moneda con fuzzel -> se abre
 # su página en CoinGecko. Duplica los labels/ids de coinwatch.py a propósito
 # (mantener cada script independiente y chico gana sobre compartir estado
-# entre un .py y un .sh) -- si agregás una moneda al watchlist, sumala acá
-# también si querés que aparezca en este picker.
+# entre un .py y un .sh) -- al agregar una moneda al watchlist, sumarla aquí
+# también para que aparezca en este picker.
 declare -A IDS=(
     [BTC]=bitcoin
     [ETH]=ethereum

@@ -38,7 +38,10 @@ Prefix: **`Ctrl-a`** (el default `Ctrl-b` está deshabilitado).
 | `prefix Ctrl-n` | pedir nombre y crear nueva sesión |
 | `prefix Ctrl-j` | popup fzf con lista de sesiones, cambiar a la elegida |
 | `prefix s` | split horizontal |
-| `prefix x` | split vertical |
+| `prefix c` | split vertical |
+| `prefix v` | nueva ventana |
+| `prefix x` | copy-mode (vi) |
+| `y` / arrastrar mouse (en copy-mode) | copiar selección al portapapeles (`wl-copy`) |
 | `prefix h/j/k/l` | navegar entre panes (estilo vim) |
 | `prefix Ctrl-s` | tmux-resurrect: guardar snapshot "last" |
 | `prefix Ctrl-r` | tmux-resurrect: restaurar snapshot "last" |

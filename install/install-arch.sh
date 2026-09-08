@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
-# Bootstrap de paquetes para una instalación limpia de Arch/CachyOS (pacman).
-# Deliberadamente NO instala nvim: eso se hace a mano vía tarball (ver README.md).
-#
-# Uso:
-#   cd ~/dotfiles/install
-#   ./install-arch.sh
-#
-# No es un paquete de stow: vive fuera de $HOME y solo se ejecuta una vez
-# (o cuando se reinstala la máquina), no se re-corre en cada `stow -R`.
+# Bootstrap de paquetes para Arch/CachyOS -- no instala nvim (manual, ver README.md).
 
 set -euo pipefail
 
-# Fuerza mensajes de pacman en inglés (Y/n en vez de S/n) solo para este
-# script -- no toca /etc/locale.conf ni el teclado (vconsole/XKB en "es").
+# Fuerza mensajes de pacman en inglés (Y/n) sin tocar el locale/teclado del sistema.
 export LC_ALL=C.UTF-8
 
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
@@ -43,28 +34,20 @@ sudo pacman -Syu # -Syu, no -Sy: evita dejar el sistema en partial upgrade
 
 # -Syu pudo traer un kernel nuevo sin reiniciar: eso rompe docker/nftables más abajo.
 if [ ! -d "/usr/lib/modules/$(uname -r)" ]; then
-    printf '\n\033[1;33m⚠ El kernel se actualizó (corriendo %s, sin módulos en disco) — reiniciá y volvé a correr este script.\033[0m\n' "$(uname -r)"
+    printf '\n\033[1;33m⚠ El kernel se actualizó (corriendo %s, sin módulos en disco) — reiniciar y volver a correr este script.\033[0m\n' "$(uname -r)"
     printf 'El script es idempotente: lo ya instalado se saltea, así que reiniciar no repite trabajo.\n'
     exit 0
 fi
 
-# --- Base ---------------------------------------------------------------
-# python: no viene garantizado en un Arch mínimo -- lo necesita
-# waybar/scripts/coinwatch.py (stdlib, sin pip packages).
+# base + python (no viene garantizado en Arch mínimo, lo necesita coinwatch.py de waybar)
 pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop python
 
-# --- Shell / prompt / navegación ----------------------------------------
 pacman_install fish starship zoxide fzf ripgrep fd tmux
 
-# --- Terminal multiplexer / lanzador de apps ya cubiertos arriba (tmux) --
-
-# --- Wayland / sway / waybar ---------------------------------------------
-# sway y waybar suelen venir con el perfil "sway" de archinstall; --needed
-# hace que esto sea un no-op si ya están.
+# Wayland/sway/waybar (--needed hace no-op si ya vienen del perfil "sway" de archinstall)
 pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
 
-# mako trae su propio systemd --user unit (Type=dbus, BusName=org.freedesktop.Notifications,
-# WantedBy=graphical-session.target) pero llega "disabled": sin esto no arranca solo tras reiniciar.
+# mako trae su unit systemd --user pero llega deshabilitada: sin esto no arranca solo tras reiniciar.
 if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
     log "Habilitando y arrancando mako.service (--user)"
     systemctl --user enable --now mako.service
@@ -72,42 +55,16 @@ else
     log "mako.service ya está habilitado"
 fi
 
-# --- Utilidades de escritorio ---------------------------------------------
 pacman_install flameshot pavucontrol
+pacman_install lazygit   # integración LazyVim <leader>gg, ya trae el bind, falta el binario
+pacman_install udisks2 udiskie   # automontaje de pendrives/discos, sway no trae DE
 
-# --- lazygit (integración de LazyVim, <leader>gg, ya trae el bind, falta el binario) ----
-pacman_install lazygit
-
-# --- udiskie (automontaje de pendrives/discos externos, sway no trae DE) ----
-pacman_install udisks2 udiskie
-
-# --- fuzzel (lanzador de aplicaciones) --------------------------------------
-if ! command -v fuzzel >/dev/null 2>&1; then
-    log "Instalando fuzzel"
-    pacman_install fuzzel
-else
-    log "fuzzel ya está instalado"
-fi
-
-# fuzzel no es paquete de stow (matugen escribe fuzzel.ini ahí); sin este dir
-# ya creado, la primera vez que corre matugen tira "folder doesn't exist" en rojo.
+pacman_install fuzzel
+# matugen escribe fuzzel.ini aquí (fuzzel no es paquete de stow); sin el dir, la primera corrida tira error.
 mkdir -p "$HOME/.config/fuzzel"
 
-# --- dbeaver (cliente SQL) ---------------------------------------------------
-if ! command -v dbeaver >/dev/null 2>&1; then
-    log "Instalando dbeaver"
-    pacman_install dbeaver
-else
-    log "dbeaver ya está instalado"
-fi
-
-# --- docker -------------------------------------------------------------------
-if ! command -v docker >/dev/null 2>&1; then
-    log "Instalando docker"
-    pacman_install docker docker-compose
-else
-    log "docker ya está instalado"
-fi
+pacman_install dbeaver
+pacman_install docker docker-compose
 
 if ! systemctl is-enabled --quiet docker.service 2>/dev/null; then
     log "Habilitando y arrancando docker.service"
@@ -123,22 +80,14 @@ else
     log "$USER ya pertenece al grupo docker"
 fi
 
-# --- Yazi y sus dependencias ------------------------------------------------
-# chafa: fallback de preview de imágenes cuando la terminal no soporta el
-# protocolo gráfico de kitty (p.ej. dentro de tmux mal configurado, u otra
-# terminal) — sin esto yazi se queda sin preview en vez de degradar.
+# yazi + deps -- chafa es el fallback de preview cuando la terminal no soporta el protocolo gráfico de kitty
 pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick chafa
 
-# --- Fuente usada en kitty/alacritty/waybar (FantasqueSansM Nerd Font) ----
-pacman_install ttf-fantasque-nerd
-
-# --- Fallback de íconos para waybar (family "Symbols Nerd Font Mono") --------
-# FantasqueSansM Nerd Font trae los sets clásicos (FA, Octicons, Devicons...)
-# pero NO el set moderno de Material Design Icons -- sin esto, el ícono de
-# campana de custom/notifications en waybar/config.jsonc se renderiza vacío.
+pacman_install ttf-fantasque-nerd   # fuente principal: kitty/alacritty/waybar
+# fallback: FantasqueSansM no trae el set Material Design -- sin esto el ícono de notificaciones de waybar sale vacío
 pacman_install ttf-nerd-fonts-symbols-mono
 
-# --- Rust / cargo (necesario para eza: NO instalar eza vía pacman) ---------
+# rustup/cargo -- eza se instala vía cargo, no pacman
 if ! command -v cargo >/dev/null 2>&1; then
     log "Instalando rustup"
     curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -154,12 +103,9 @@ else
     log "eza ya está instalado"
 fi
 
-# --- Go -----------------------------------------------------------------------
 pacman_install go
 
-# --- pyenv --------------------------------------------------------------------
-# Deps de compilación: sin esto `pyenv install <version>` falla a mitad de
-# build (openssl/zlib/etc faltantes) aunque pyenv en sí se haya instalado bien.
+# deps de compilación para pyenv -- sin esto `pyenv install <version>` falla a mitad de build
 pacman_install openssl zlib xz bzip2 readline sqlite tk libffi
 
 if [ ! -x "$HOME/.pyenv/bin/pyenv" ]; then
@@ -173,7 +119,7 @@ else
     log "pyenv ya está instalado"
 fi
 
-# --- kitty (instalador oficial, no pacman) -----------------------------------
+# kitty -- instalador oficial, no pacman
 if ! command -v kitty >/dev/null 2>&1 && [ ! -x "$HOME/.local/kitty.app/bin/kitty" ]; then
     log "Instalando kitty"
     curl -fL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
@@ -192,10 +138,7 @@ else
     log "kitty ya está instalado"
 fi
 
-# --- SDKMAN (core) --------------------------------------------------------------
-# El plugin de fish (reitzig/sdkman-for-fish, más abajo) es solo un wrapper:
-# necesita que esto ya esté instalado, si no cada `sdk` tira el warning de
-# "installation path set but no installation found there".
+# SDKMAN core -- el plugin de fish (más abajo) es solo un wrapper, necesita esto ya instalado
 if [ ! -d "$HOME/.sdkman" ]; then
     log "Instalando SDKMAN"
     curl -fsS "https://get.sdkman.io" | bash
@@ -203,7 +146,7 @@ else
     log "SDKMAN ya está instalado"
 fi
 
-# --- fisher + plugins de fish -------------------------------------------------
+# fisher + plugins de fish
 if ! fish -c 'type -q fisher' >/dev/null 2>&1; then
     log "Instalando fisher y plugins de fish (jorgebucaran/nvm.fish, reitzig/sdkman-for-fish)"
     fish -c 'curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
@@ -212,7 +155,6 @@ else
     log "fisher ya está instalado"
 fi
 
-# --- Claude Code CLI -----------------------------------------------------------
 if ! command -v claude >/dev/null 2>&1; then
     log "Instalando Claude Code"
     curl -fsSL https://claude.ai/install.sh | bash
@@ -220,11 +162,7 @@ else
     log "Claude Code ya está instalado"
 fi
 
-# --- claudebar (uso del plan de Claude en waybar, ver waybar/config.jsonc) ----
-# No hay AUR helper en esta máquina y este script no es un mecanismo de
-# auto-update (se corre una sola vez), así que from-source es más simple que
-# bootstrapear yay para un solo paquete. Bash puro, "make install" no compila
-# nada -- mismo patrón que kitty/eza de arriba: binario a ~/.local/bin.
+# claudebar (uso de Claude en waybar) -- from-source: no hay AUR helper aquí y es un solo paquete
 if ! command -v claudebar >/dev/null 2>&1; then
     log "Instalando claudebar"
     claudebar_tmp=$(mktemp -d)
@@ -235,7 +173,6 @@ else
     log "claudebar ya está instalado"
 fi
 
-# --- Verificación final -------------------------------------------------------
 log "Verificando instalación"
 any_check_failed=0
 check() {
@@ -256,7 +193,7 @@ check "claude" 'command -v claude'
 check "claudebar" 'command -v claudebar'
 
 if [ "$any_check_failed" -eq 1 ]; then
-    printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisá los logs arriba antes de dar la instalación por buena.\033[0m\n'
+    printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisar los logs arriba antes de dar la instalación por buena.\033[0m\n'
 fi
 
 log "Listo. Pendiente MANUAL (no lo hace este script):"

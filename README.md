@@ -11,7 +11,7 @@
 
 ## 🔧 Instalación
 
-Arch/CachyOS + sway únicamente ([SSH keygen](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) primero si clonás por SSH).
+Arch/CachyOS + sway únicamente ([SSH keygen](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) primero si se clona por SSH).
 
 ```bash
 git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles   # SSH, con key ya agregada — para pushear cambios
@@ -69,49 +69,19 @@ Mismo motivo para `kitty/.config/kitty/current-theme.conf` y `past-current-theme
 
 ## 🧰 Herramientas
 
-| Herramienta | Descripción |
+El listado completo (con el motivo de cada paquete) vive comentado en [`install/install-arch.sh`](install/install-arch.sh) — es la única fuente de verdad, así no hay dos listas que se desincronicen. Acá solo lo que **no** instala pacman o necesita una nota:
+
+| Herramienta | Nota |
 |---|---|
-| [nvim](https://neovim.io/) | editor — manual, ver arriba |
-| [LazyVim](https://www.lazyvim.org/) | config base de nvim |
-| [tmux](https://github.com/tmux/tmux) | multiplexer, prefix `Ctrl-a` |
-| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | guarda sesiones, vendorizado |
-| [fish](https://fishshell.com/) | shell interactivo |
-| [fisher](https://github.com/jorgebucaran/fisher) | plugins fish (`nvm.fish`, `sdkman-for-fish`) |
-| [sway](https://swaywm.org/) | compositor Wayland tiling |
-| [kitty](https://sw.kovidgoyal.net/kitty/) | terminal GPU |
-| [alacritty](https://alacritty.org/) | terminal alternativa |
-| [docker](https://www.docker.com/) + compose | contenedores |
-| [cargo/rustup](https://rustup.rs/) | Rust y su gestor |
+| [nvim](https://neovim.io/) + [LazyVim](https://www.lazyvim.org/) | manual, vía tarball (ver Instalación) |
 | [pyenv](https://github.com/pyenv/pyenv) | Python version manager |
-| [nvm](https://github.com/nvm-sh/nvm) | Node, plugin `nvm.fish` |
-| [SDKMAN!](https://sdkman.io/) | JVM version manager |
-| [.NET SDK](https://dotnet.microsoft.com/) | vía `$DOTNET_ROOT` |
-| [Go](https://go.dev/) | PATH en `config.fish` |
-| [bun](https://bun.sh/) | runtime JS, `$BUN_INSTALL` |
-| [dbeaver](https://dbeaver.io/) | cliente SQL |
-| [Claude Code](https://claude.com/claude-code) | CLI de IA |
-| [claudebar](https://github.com/mryll/claudebar) | uso de Claude en waybar, from-source |
+| [SDKMAN!](https://sdkman.io/) | JVM version manager (Java/Kotlin/Gradle) |
+| [nvm.fish](https://github.com/jorgebucaran/nvm.fish) | Node version manager, plugin de fisher |
+| [rustup](https://rustup.rs/) + [eza](https://github.com/eza-community/eza) | eza va por `cargo install`, no por pacman |
+| [.NET SDK](https://dotnet.microsoft.com/) / [bun](https://bun.sh/) | manuales — `$DOTNET_ROOT`/`$BUN_INSTALL` ya están en `config.fish` para cuando los instales |
+| [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude en waybar, se compila from-source |
 | coinwatch (`waybar/scripts/coinwatch.py`) | precios cripto en waybar, script propio |
-| [yazi](https://github.com/sxyazi/yazi) | file manager TUI, vía `yazi.nvim` |
-| [starship](https://starship.rs/) | prompt |
-| [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` inteligente |
-| [eza](https://github.com/eza-community/eza) | reemplazo `ls`, alias `lf/la/ll/qw` |
-| [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`) | grep rápido |
-| [fd](https://github.com/sharkdp/fd) | find rápido |
-| [fzf](https://github.com/junegunn/fzf) | fuzzy finder |
-| [waybar](https://github.com/Alexays/Waybar) | barra de estado |
-| [mako](https://mako-project.org) | notificaciones, coloreado por matugen |
-| [fuzzel](https://codeberg.org/dnkl/fuzzel) | lanzador de apps |
-| [wmenu](https://codeberg.org/adnano/wmenu) | lanzador alt, backup fuzzel |
-| [matugen](https://github.com/InioX/matugen) | paleta desde wallpaper, `$mod+Shift+w` |
-| [gtklock](https://github.com/jovanlanik/gtklock) | pantalla de bloqueo |
-| [wlogout](https://github.com/ArtsyMacaw/wlogout) | menú de sesión, `$mod+Shift+e` |
-| [flameshot](https://flameshot.org/) | capturas con anotaciones |
-| [pavucontrol](https://freedesktop.org/software/pulseaudio/pavucontrol/) | mixer de audio |
-| [FantasqueSansM Nerd Font](https://www.nerdfonts.com/) | fuente principal |
-| [Symbols Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) | fallback íconos waybar |
-| swayidle, swaybg, grim, playerctl, pamixer, brightnessctl | utilidades de keybinds sway |
-| [stow](https://www.gnu.org/software/stow/) | symlink manager |
+| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | vendorizado en `tmux/.tmux/plugins/`, no vía TPM |
 
 ## 🧭 Uso
 

@@ -4,5 +4,5 @@ exec udiskie --tray --notify
 
 # Notificaciones: el paquete mako trae su propio systemd user unit
 # (Type=dbus, BusName=org.freedesktop.Notifications, WantedBy=graphical-session.target)
-# -- NO usar `exec mako` acá, pelearía por el bus con esa unit. Se habilita una
+# -- NO usar `exec mako` aquí, pelearía por el bus con esa unit. Se habilita una
 # sola vez con `systemctl --user enable --now mako.service` (ver install-arch.sh).

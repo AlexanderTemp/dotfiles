@@ -54,7 +54,7 @@ tooltip {
 }
 
 /* menos padding lateral que el resto de las islas -- los botones ya traen
-   su propio padding (6px c/u), sumado al de acá se sentía muy separado */
+   su propio padding (6px c/u), sumado al de aquí se sentía muy separado */
 #workspaces {
   padding: 0 4px;
 }
