@@ -165,3 +165,6 @@ if type -q pyenv
 end
 
 source ~/.adas-cli/.adas-cli-completion-fish
+
+# opencode
+fish_add_path /home/attemptxwk/.opencode/bin
