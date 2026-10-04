@@ -164,3 +164,6 @@ bindsym $mod+r mode "resize"
 
     # Print: captura con selección + anotación (flameshot gui)
     bindsym Print exec flameshot gui
+
+    # Shift+Print: alternativa sin anotación si flameshot falla (grim + slurp + wl-copy)
+    bindsym Shift+Print exec grim -g "$(slurp)" - | wl-copy

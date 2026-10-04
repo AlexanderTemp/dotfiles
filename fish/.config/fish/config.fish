@@ -167,4 +167,4 @@ end
 source ~/.adas-cli/.adas-cli-completion-fish
 
 # opencode
-fish_add_path /home/attemptxwk/.opencode/bin
+fish_add_path $HOME/.opencode/bin
