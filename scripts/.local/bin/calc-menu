@@ -1,0 +1,17 @@
+#!/bin/bash
+# Calculadora con resultado en vivo (rofi-calc, motor qalc). Enter copia el resultado (wl-copy).
+# Solo para esto se usa rofi: el launcher sigue siendo fuzzel.
+
+# el tema lo genera matugen (igual que fuzzel.ini); antes del primer set-wallpaper
+# no existe, así que cae al tema default de rofi en vez de fallar.
+theme="$HOME/.config/rofi/calc.rasi"
+
+args=(
+    -show calc -modi calc
+    -no-show-match -no-sort
+    -display-calc " = "
+    -calc-command "echo -n '{result}' | wl-copy"
+)
+[ -f "$theme" ] && args+=(-theme "$theme")
+
+exec rofi "${args[@]}"

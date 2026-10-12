@@ -164,7 +164,10 @@ if type -q pyenv
     pyenv init - | source
 end
 
-source ~/.adas-cli/.adas-cli-completion-fish
+# adas-cli no lo instala install-arch.sh: sin el guard, fish tira error en una máquina nueva
+if test -f ~/.adas-cli/.adas-cli-completion-fish
+    source ~/.adas-cli/.adas-cli-completion-fish
+end
 
 # opencode
-fish_add_path /home/attemptxwk/.opencode/bin
+fish_add_path $HOME/.opencode/bin

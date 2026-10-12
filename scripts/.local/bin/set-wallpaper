@@ -13,9 +13,9 @@ else
     [ -z "$selected" ] && exit 0
 fi
 
-# matugen escribe fuzzel.ini ahí (no hay paquete de stow para fuzzel) -- sin
+# matugen escribe fuzzel.ini y rofi/calc.rasi ahí (no hay paquete de stow para fuzzel) -- sin
 # esto, la primera vez tira "folder doesn't exist" en rojo.
-mkdir -p "$HOME/.config/fuzzel"
+mkdir -p "$HOME/.config/fuzzel" "$HOME/.config/rofi"
 
 # written before matugen so its swaymsg-reload post-process re-asserts this, not the old bg
 echo "output * bg \"$WALLPAPER_DIR/$selected\" fill" > "$HOME/.config/sway/config.d/wallpaper"

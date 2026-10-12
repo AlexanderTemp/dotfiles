@@ -8,6 +8,9 @@
     # Start your launcher
     bindsym $mod+d exec $menu
 
+    # Calculadora con resultado en vivo (rofi-calc), Enter copia el resultado
+    bindsym $mod+c exec calc-menu
+
     # Start your browser
     bindsym $mod+x exec $browser
 

@@ -63,7 +63,7 @@ dotfiles/
 
 `wallpapers/` e `install/` no son paquetes de stow: el primero se referencia por ruta directa, el segundo son scripts de bootstrap de una sola vez (ver arriba). `wallpapers/` guarda un único wallpaper default (`higuruma-jujutsu-kaisen.png`); `set-wallpaper` (`$mod+Shift+w`) permite usar cualquier otra imagen que se copie ahí a mano, elegible con fuzzel.
 
-`fuzzel/` tampoco es paquete: no tiene fuente propia, `~/.config/fuzzel/fuzzel.ini` lo escribe matugen por completo (junto con `sway/config.d/colors`, `mako/colors` y `matugen/colors.css`). Estos 4 archivos están en `.gitignore` a propósito — cambian con cada wallpaper elegido, así que trackearlos generaba conflicto en cada `git pull`.
+`fuzzel/` y `rofi/` tampoco son paquetes: no tienen fuente propia, `~/.config/fuzzel/fuzzel.ini` y `~/.config/rofi/calc.rasi` los escribe matugen por completo (junto con `sway/config.d/colors`, `mako/colors` y `matugen/colors.css`). rofi solo se usa para la calculadora (`$mod+c`); el launcher es fuzzel. Los archivos de colores de sway/mako/matugen están en `.gitignore` a propósito — cambian con cada wallpaper elegido, así que trackearlos generaba conflicto en cada `git pull`.
 
 Mismo motivo para `kitty/.config/kitty/current-theme.conf` y `past-current-theme.conf` (los regenera `kitty +kitten themes` al elegir tema): también en `.gitignore`, nunca son fuente.
 
@@ -79,6 +79,7 @@ El listado completo (con el motivo de cada paquete) vive comentado en [`install/
 | [nvm.fish](https://github.com/jorgebucaran/nvm.fish) | Node version manager, plugin de fisher |
 | [rustup](https://rustup.rs/) + [eza](https://github.com/eza-community/eza) | eza va por `cargo install`, no por pacman |
 | [.NET SDK](https://dotnet.microsoft.com/) / [bun](https://bun.sh/) | manuales — `$DOTNET_ROOT`/`$BUN_INSTALL` ya están en `config.fish` para cuando los instales |
+| [opencode](https://opencode.ai/) | agente de código, instalador oficial en `~/.opencode/bin` (login manual: `opencode auth login`) |
 | [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude en waybar, se compila from-source |
 | coinwatch (`waybar/scripts/coinwatch.py`) | precios cripto en waybar, script propio |
 | [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | vendorizado en `tmux/.tmux/plugins/`, no vía TPM |

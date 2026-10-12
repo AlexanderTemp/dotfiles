@@ -63,6 +63,11 @@ pacman_install fuzzel
 # matugen escribe fuzzel.ini aquí (fuzzel no es paquete de stow); sin el dir, la primera corrida tira error.
 mkdir -p "$HOME/.config/fuzzel"
 
+# calculadora con resultado en vivo ($mod+c -> calc-menu). rofi solo para esto, el launcher sigue siendo fuzzel;
+# rofi-calc trae libqalculate (qalc) como dependencia. Mismo caso que fuzzel: matugen escribe el tema ahí.
+pacman_install rofi rofi-calc
+mkdir -p "$HOME/.config/rofi"
+
 pacman_install dbeaver
 pacman_install docker docker-compose
 
@@ -162,6 +167,19 @@ else
     log "Claude Code ya está instalado"
 fi
 
+# opencode -- instalador oficial a ~/.opencode/bin (así se auto-actualiza con `opencode upgrade`).
+# --no-modify-path: el PATH ya lo pone fish/config.fish, sin esto el instalador duplica la línea.
+if ! command -v opencode >/dev/null 2>&1 && [ ! -x "$HOME/.opencode/bin/opencode" ]; then
+    log "Instalando opencode"
+    curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
+else
+    log "opencode ya está instalado"
+fi
+
+# codex CLI -- lo usa codex.nvim (<leader>ac). Por pacman para que el autoinstall del plugin
+# no dependa de npm global (node vive en nvm.fish, invisible para nvim fuera de fish).
+pacman_install openai-codex
+
 # claudebar (uso de Claude en waybar) -- from-source: no hay AUR helper aquí y es un solo paquete
 if ! command -v claudebar >/dev/null 2>&1; then
     log "Instalando claudebar"
@@ -191,6 +209,9 @@ check "go"     'command -v go'
 check "fisher" "fish -c 'type -q fisher'"
 check "claude" 'command -v claude'
 check "claudebar" 'command -v claudebar'
+check "opencode" '"$HOME/.opencode/bin/opencode" --version'
+check "codex"  'command -v codex'
+check "rofi-calc" 'pacman -Q rofi-calc'
 
 if [ "$any_check_failed" -eq 1 ]; then
     printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisar los logs arriba antes de dar la instalación por buena.\033[0m\n'
@@ -200,6 +221,8 @@ log "Listo. Pendiente MANUAL (no lo hace este script):"
 cat <<'EOF'
   - nvim (tarball manual, ver README.md > "Comandos")
   - claude (login OAuth interactivo, primera vez): claude
+  - opencode (login del proveedor, primera vez): opencode auth login
+  - codex (login, primera vez): codex login
 
   cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
 

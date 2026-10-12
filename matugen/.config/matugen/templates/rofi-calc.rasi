@@ -1,0 +1,64 @@
+/* Tema de calc-menu (rofi-calc), a juego con fuzzel.ini: mismos colores/fuente/bordes.
+   Generado por matugen -- solo colores de acento; el resto fijo. */
+
+* {
+    font: "FantasqueSansM Nerd Font Mono 13";
+    bg: #1f1f28f0;
+    fg: #ddd8bbff;
+    accent: #{{colors.primary.default.hex_stripped}}ff;
+    border-col: #{{colors.outline.default.hex_stripped}}ff;
+    prompt-col: #7eb3c9ff;
+    muted: #6a6a58ff;
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    width: 40%;
+    background-color: @bg;
+    border: 1px;
+    border-color: @border-col;
+    border-radius: 0;
+    padding: 14px 22px;
+}
+
+mainbox {
+    children: [ inputbar, message, listview ];
+    spacing: 6px;
+}
+
+inputbar {
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @prompt-col;
+}
+
+entry {
+    placeholder: "Calcular… (Enter copia el resultado)";
+    placeholder-color: @muted;
+}
+
+textbox {
+    text-color: @muted;
+}
+
+listview {
+    lines: 8;
+    fixed-height: false;
+    scrollbar: false;
+    spacing: 2px;
+}
+
+element {
+    padding: 2px 0;
+}
+
+element selected.normal {
+    text-color: @accent;
+}
+
+element-text {
+    text-color: inherit;
+}
