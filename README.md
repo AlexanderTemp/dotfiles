@@ -21,7 +21,7 @@ cd ~/dotfiles/install
 ./install-arch.sh   # idempotente — instala todo salvo nvim (manual, ver abajo)
 
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment cli-chess
 
 # tema inicial (sway/mako/fuzzel, no vive en el repo — ver Estructura)
 ~/.local/bin/set-wallpaper
@@ -58,6 +58,7 @@ dotfiles/
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
 ├── environment/ -> ~/.config/environment.d
+├── cli-chess/   -> ~/.config/cli-chess/custom_style.py
 └── scripts/     -> ~/docker-ps-visual.sh, ~/.local/bin/set-wallpaper
 ```
 
@@ -78,11 +79,16 @@ El listado completo (con el motivo de cada paquete) vive comentado en [`install/
 | [SDKMAN!](https://sdkman.io/) | JVM version manager (Java/Kotlin/Gradle) |
 | [nvm.fish](https://github.com/jorgebucaran/nvm.fish) | Node version manager, plugin de fisher |
 | [rustup](https://rustup.rs/) + [eza](https://github.com/eza-community/eza) | eza va por `cargo install`, no por pacman |
+| [Bookokrat](https://github.com/bugzmanov/bookokrat) | lector EPUB/PDF/DJVU, instalado con Cargo; comando corto `zen` en Fish |
+| [cli-chess](https://github.com/trevorbayless/cli-chess) | ajedrez en terminal, instalado en un entorno aislado con `uv tool install cli-chess` |
+| Flutter + Android Studio | instalación de SDK/IDE manual; rutas de Fish y pasos de restauración en [`install/README.md`](install/README.md) |
 | [.NET SDK](https://dotnet.microsoft.com/) / [bun](https://bun.sh/) | manuales — `$DOTNET_ROOT`/`$BUN_INSTALL` ya están en `config.fish` para cuando los instales |
 | [opencode](https://opencode.ai/) | agente de código, instalador oficial en `~/.opencode/bin` (login manual: `opencode auth login`) |
 | [claudebar](https://github.com/mryll/claudebar) | uso del plan de Claude en waybar, se compila from-source |
 | coinwatch (`waybar/scripts/coinwatch.py`) | precios cripto en waybar, script propio |
 | [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | vendorizado en `tmux/.tmux/plugins/`, no vía TPM |
+
+La calculadora (`rofi-calc`, `$mod+c`) ya está incluida en el instalador y en los atajos. Las herramientas frecuentes del historial que faltaban (`netstat`, `lsof`, `qpdf`, `trivy`, `ufw`) también se instalan ahora; los comandos privados, credenciales y reglas de firewall no se guardan en el repo.
 
 ## 🧭 Uso
 

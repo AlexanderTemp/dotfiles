@@ -5,6 +5,7 @@ set -euo pipefail
 
 # Fuerza mensajes de pacman en inglés (Y/n) sin tocar el locale/teclado del sistema.
 export LC_ALL=C.UTF-8
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 
@@ -43,6 +44,24 @@ fi
 pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop python
 
 pacman_install fish starship zoxide fzf ripgrep fd tmux
+
+# Herramientas de uso recurrente en el historial: puertos, PDFs y análisis de proyectos.
+pacman_install net-tools lsof qpdf trivy ufw
+# ufw se instala, pero las reglas y su activación se deciden en cada equipo.
+
+# Flutter web/Linux y compilación de Bookokrat con soporte PDF/DJVU.
+pacman_install chromium clang cmake ninja gtk3 fontconfig pkgconf
+
+# Aplicaciones Python aisladas: no usar pip contra el Python del sistema.
+pacman_install uv
+if ! command -v cli-chess >/dev/null 2>&1; then
+    log "uv tool install cli-chess"
+    uv tool install cli-chess
+else
+    log "cli-chess ya está instalado"
+fi
+# opciones del tablero discreto en config.ini (los colores van por stow cli-chess)
+"$(dirname "$0")/../scripts/.local/bin/cli-chess-tema" || true
 
 # Wayland/sway/waybar (--needed hace no-op si ya vienen del perfil "sway" de archinstall)
 pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
@@ -106,6 +125,14 @@ if ! command -v eza >/dev/null 2>&1; then
     cargo install eza
 else
     log "eza ya está instalado"
+fi
+
+# Lector de terminal; fish lo expone también como `zen`.
+if ! command -v bookokrat >/dev/null 2>&1; then
+    log "cargo install bookokrat --locked"
+    cargo install bookokrat --locked
+else
+    log "bookokrat ya está instalado"
 fi
 
 pacman_install go
@@ -212,6 +239,11 @@ check "claudebar" 'command -v claudebar'
 check "opencode" '"$HOME/.opencode/bin/opencode" --version'
 check "codex"  'command -v codex'
 check "rofi-calc" 'pacman -Q rofi-calc'
+check "bookokrat (zen)" 'command -v bookokrat'
+check "cli-chess" 'cli-chess --version'
+check "Chromium" 'command -v chromium'
+check "CMake" 'cmake --version'
+check "Ninja" 'ninja --version'
 
 if [ "$any_check_failed" -eq 1 ]; then
     printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisar los logs arriba antes de dar la instalación por buena.\033[0m\n'
@@ -223,6 +255,7 @@ cat <<'EOF'
   - claude (login OAuth interactivo, primera vez): claude
   - opencode (login del proveedor, primera vez): opencode auth login
   - codex (login, primera vez): codex login
+  - Flutter + Android Studio y adas-cli: ver install/README.md
 
   cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
 
