@@ -1,4 +1,3 @@
--- telescope.nvim
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -75,7 +74,6 @@ return {
       telescope.load_extension("zoxide")
       telescope.load_extension("ui-select")
 
-      -- Keymaps
       vim.keymap.set("n", "<leader>jk", builtin.find_files, { desc = "Find files" })
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
       vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Diagnostics" })

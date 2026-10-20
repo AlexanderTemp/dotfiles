@@ -13,12 +13,10 @@ import urllib.request
 URL = "https://www.bcb.gob.bo/bcb_tco_publico_ultima_cotizacion.php"
 HEADER, DIM = "#61afef", "#5c6370"
 
-
 def fetch():
     req = urllib.request.Request(URL, headers={"User-Agent": "dotfiles-bcbrate"})
     with urllib.request.urlopen(req, timeout=5) as resp:
         return resp.read().decode("utf-8")
-
 
 def main():
     try:
@@ -74,7 +72,6 @@ def main():
     tooltip = f"<span font_family='FantasqueSansM Nerd Font Mono'>{tooltip_body}</span>"
 
     print(json.dumps({"text": text, "tooltip": tooltip, "class": "ok"}))
-
 
 if __name__ == "__main__":
     main()

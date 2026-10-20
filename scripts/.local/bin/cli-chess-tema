@@ -1,19 +1,13 @@
 #!/bin/bash
-# Opciones de cli-chess que van con el tablero discreto (los colores viven en el paquete
-# stow `cli-chess` -> ~/.config/cli-chess/custom_style.py). config.ini no se versiona porque
-# guarda el token de Lichess, así que solo se tocan estas claves.
-
 set -euo pipefail
 
 config="$HOME/.config/cli-chess/config.ini"
 
-# config.ini lo crea cli-chess en el primer arranque
 if [ ! -f "$config" ]; then
     echo "aviso: abrir cli-chess una vez y volver a correr el script" >&2
     exit 0
 fi
 
-# Color 24 bits: en 8 bits los tonos tan cercanos se redondean y las casillas se confunden.
 sed -i \
     -e 's/^show_board_coordinates = .*/show_board_coordinates = False/' \
     -e 's/^show_material_diff_in_unicode = .*/show_material_diff_in_unicode = False/' \

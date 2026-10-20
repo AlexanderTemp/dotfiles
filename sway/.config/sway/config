@@ -1,6 +1,4 @@
-### Variables
 set $mod Mod4
-# Home row direction keys, like vim
 set $left h
 set $down j
 set $up k
@@ -10,19 +8,16 @@ set $term kitty
 set $menu fuzzel
 set $browser firefox
 
-# Output config (no-op on machines without these outputs)
 set $monitor_primary HDMI-A-1
 set $monitor_secondary DVI-D-1
 
 output $monitor_primary pos 0 0
-# use "pos 1920 0" to dock secondary right instead
 output $monitor_secondary pos -1366 0
 output * allow_tearing yes
 output * max_render_time off
 
 workspace 9 output $monitor_secondary
 
-### Idle configuration
 exec swayidle -w \
 	timeout 3000 'gtklock' \
 	timeout 6000 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
@@ -36,7 +31,6 @@ input type:touchpad {
 	tap enabled
 }
 
-# all workspaces
 gaps horizontal 2
 gaps vertical 2
 gaps inner 8
@@ -44,7 +38,6 @@ gaps inner 8
 default_border pixel 1
 default_floating_border pixel 1
 
-# colors first: keybinds/bar reference $primary/$surface, include order matters
 include ~/.config/sway/config.d/colors
 include ~/.config/sway/config.d/*
 include /etc/sway/config.d/*

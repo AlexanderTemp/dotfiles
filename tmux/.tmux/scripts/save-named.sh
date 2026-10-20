@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Guarda la sesión/estructura de paneles actual bajo un nombre, usando tmux-resurrect.
 set -euo pipefail
 
 name="$1"

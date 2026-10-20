@@ -29,14 +29,12 @@ BAR_COINS = {"BTC", "XRP"}
 UP, DOWN, FLAT = "#9ADE7B", "#FF8F8F", "#abb2bf"
 HEADER, DIM = "#61afef", "#5c6370"
 
-
 def arrow_and_color(change):
     if change > 0:
         return "↑", UP
     if change < 0:
         return "↓", DOWN
     return "→", FLAT
-
 
 def fetch():
     ids = ",".join(c[0] for c in WATCHLIST)
@@ -47,7 +45,6 @@ def fetch():
     req = urllib.request.Request(url, headers={"User-Agent": "dotfiles-coinwatch"})
     with urllib.request.urlopen(req, timeout=5) as resp:
         return json.load(resp)
-
 
 def main():
     try:
@@ -69,7 +66,6 @@ def main():
         price_fmt = f"{price:,.{decimals}f}"
         change_fmt = f"{abs(change):.2f}"
 
-        # etiqueta neutra (color del tema), solo precio+variación toman color
         rows.append(
             f"  {label:<4}<span foreground='{color}'>${price_fmt:<14} {arrow}{change_fmt}%</span>"
         )
@@ -88,7 +84,6 @@ def main():
     tooltip = f"<span font_family='FantasqueSansM Nerd Font Mono'>{tooltip_body}</span>"
 
     print(json.dumps({"text": text, "tooltip": tooltip, "class": "ok"}))
-
 
 if __name__ == "__main__":
     main()

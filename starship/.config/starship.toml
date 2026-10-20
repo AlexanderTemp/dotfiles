@@ -1,7 +1,3 @@
-# Kanagawa Theme for Starship
-# Inspired by the beautiful Kanagawa theme for Neovim
-# https://github.com/rebelot/kanagawa.nvim
-
 "$schema" = 'https://starship.rs/config-schema.json'
 add_newline = true
 command_timeout = 2000
@@ -43,30 +39,27 @@ $character\
 palette = 'kanagawa'
 
 [palettes.kanagawa]
-color_ok = '#98BB6C'              # springGreen - success states
-color_danger = '#E82424'          # samuraiRed - errors
-color_caution = '#FF9E3B'         # roninYellow - warnings
-color_os = '#7E9CD8'              # crystalBlue - OS identifier
-color_username = '#7FB4CA'        # lightBlue - username
-color_directory = '#FFA066'       # surimiOrange - directory path
-color_git = '#7AA89F'             # waveAqua2 - git info
-color_git_added = '#98BB6C'       # springGreen - additions
-color_git_deleted = '#E82424'     # samuraiRed - deletions
-color_env = '#938AA9'             # oniViolet - programming environments
-color_kubernetes = '#957FB8'      # oniViolet2 - kubernetes
-color_docker = '#6A9589'          # waveAqua1 - docker
-color_shell = '#727169'           # oldWhite - shell indicator
-color_container = '#C34043'       # peachRed - containers
-color_other = '#54546D'           # sumiInk4 - misc info
-color_time = '#C8C093'            # oldWhite - time
-color_duration = '#C8C093'        # oldWhite - duration
-color_vimcmd_ok = '#7AA89F'       # waveAqua2 - vim normal
-color_vimcmd_replace = '#D27E99'  # sakuraPink - vim replace
-color_vimcmd_visual = '#FFA066'   # surimiOrange - vim visual
+color_ok = '#98BB6C'
+color_danger = '#E82424'
+color_caution = '#FF9E3B'
+color_os = '#7E9CD8'
+color_username = '#7FB4CA'
+color_directory = '#FFA066'
+color_git = '#7AA89F'
+color_git_added = '#98BB6C'
+color_git_deleted = '#E82424'
+color_env = '#938AA9'
+color_kubernetes = '#957FB8'
+color_docker = '#6A9589'
+color_shell = '#727169'
+color_container = '#C34043'
+color_other = '#54546D'
+color_time = '#C8C093'
+color_duration = '#C8C093'
+color_vimcmd_ok = '#7AA89F'
+color_vimcmd_replace = '#D27E99'
+color_vimcmd_visual = '#FFA066'
 
-# ============================================================================
-# Alternative Palettes (Gruvbox kept for compatibility)
-# ============================================================================
 [palettes.default]
 color_ok = 'bright-green'
 color_danger = 'bright-red'
@@ -132,10 +125,6 @@ color_duration = '#282828'
 color_vimcmd_ok = '#689d6a'
 color_vimcmd_replace = '#b16286'
 color_vimcmd_visual = '#d79921'
-
-# ============================================================================
-# Module Configuration
-# ============================================================================
 
 [os]
 disabled = false
@@ -309,6 +298,7 @@ symbol_threshold = 1
 number_threshold = 1
 
 [custom.memory_usage]
+shell = ["sh"]
 command = "starship module memory_usage"
 when = '[ "${STARSHIP_COCKPIT_MEMORY_USAGE_ENABLED:-false}" = "true" ]'
 format = "($output)"
@@ -322,6 +312,7 @@ format = '([$symbol ${ram} ]($style))'
 disabled = false
 
 [custom.battery]
+shell = ["sh"]
 command = """
 battery_info=$(starship module battery)
 if [ -n "$battery_info" ]; then
@@ -396,13 +387,8 @@ vimcmd_replace_symbol = '[❮](bold fg:color_vimcmd_replace)'
 vimcmd_visual_symbol = '[❮](bold fg:color_vimcmd_visual)'
 
 [custom.keyboard_layout]
+shell = ["sh"]
 command = """
-# Set env variables if you want to use layout aliases (in uppercase)
-#     export STARSHIP_COCKPIT_KEYBOARD_LAYOUT_ABC=ENG
-#     export STARSHIP_COCKPIT_KEYBOARD_LAYOUT_UKRAINIAN=UKR
-# 
-# Implementations:
-#     macOS
 if [ "$(uname -s)" = "Darwin" ]; then
         input_source=$(defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleCurrentKeyboardLayoutInputSourceID)
         layout_id=$(echo "$input_source" | cut -d '.' -f4)

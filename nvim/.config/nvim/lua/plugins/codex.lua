@@ -20,9 +20,9 @@ return {
       border = "rounded",
       width = 0.8,
       height = 0.8,
-      model = nil, -- default to the latest model
+      model = nil,
       autoinstall = true,
-      panel = false, -- floating window instead of side-panel
+      panel = false,
       use_buffer = false,
     },
   },

@@ -88,7 +88,7 @@ El listado completo (con el motivo de cada paquete) vive comentado en [`install/
 | coinwatch (`waybar/scripts/coinwatch.py`) | precios cripto en waybar, script propio |
 | [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | vendorizado en `tmux/.tmux/plugins/`, no vía TPM |
 
-La calculadora (`rofi-calc`, `$mod+c`) ya está incluida en el instalador y en los atajos. Las herramientas frecuentes del historial que faltaban (`netstat`, `lsof`, `qpdf`, `trivy`, `ufw`) también se instalan ahora; los comandos privados, credenciales y reglas de firewall no se guardan en el repo.
+La calculadora (`rofi-calc`, `$mod+c`) ya está incluida en el instalador y en los atajos. Las herramientas frecuentes del historial que faltaban (`netstat`, `lsof`, `qpdf`, `trivy`, `ufw`, `ncdu`) también se instalan ahora; los comandos privados, credenciales y reglas de firewall no se guardan en el repo.
 
 ## 🧭 Uso
 

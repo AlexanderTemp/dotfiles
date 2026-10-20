@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
-# Bootstrap de paquetes para Arch/CachyOS -- no instala nvim (manual, ver README.md).
-
 set -euo pipefail
 
-# Fuerza mensajes de pacman en inglés (Y/n) sin tocar el locale/teclado del sistema.
 export LC_ALL=C.UTF-8
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 
-# -e mudo es imposible de debuggear: marca línea y comando exacto al fallar.
 on_error() {
     local exit_code=$?
     printf '\n\033[1;31m✗ FALLÓ (línea %s): %s\033[0m\n' "$1" "$2" >&2
@@ -18,7 +14,6 @@ on_error() {
 trap 'on_error "$LINENO" "$BASH_COMMAND"' ERR
 
 pacman_install() {
-    # pacman -T respeta Provides (evita chocar con reemplazos de CachyOS, ej. zlib-ng-compat vs zlib)
     local missing
     missing=$(pacman -T "$@" 2>/dev/null || true)
     if [ -z "$missing" ]; then
@@ -31,28 +26,22 @@ pacman_install() {
 }
 
 log "Actualizando índices de paquetes y el sistema"
-sudo pacman -Syu # -Syu, no -Sy: evita dejar el sistema en partial upgrade
+sudo pacman -Syu
 
-# -Syu pudo traer un kernel nuevo sin reiniciar: eso rompe docker/nftables más abajo.
 if [ ! -d "/usr/lib/modules/$(uname -r)" ]; then
     printf '\n\033[1;33m⚠ El kernel se actualizó (corriendo %s, sin módulos en disco) — reiniciar y volver a correr este script.\033[0m\n' "$(uname -r)"
     printf 'El script es idempotente: lo ya instalado se saltea, así que reiniciar no repite trabajo.\n'
     exit 0
 fi
 
-# base + python (no viene garantizado en Arch mínimo, lo necesita coinwatch.py de waybar)
 pacman_install git curl wget stow base-devel zip unzip pandoc xdg-utils hwinfo btop python
 
 pacman_install fish starship zoxide fzf ripgrep fd tmux
 
-# Herramientas de uso recurrente en el historial: puertos, PDFs y análisis de proyectos.
-pacman_install net-tools lsof qpdf trivy ufw
-# ufw se instala, pero las reglas y su activación se deciden en cada equipo.
+pacman_install net-tools lsof qpdf trivy ufw ncdu
 
-# Flutter web/Linux y compilación de Bookokrat con soporte PDF/DJVU.
 pacman_install chromium clang cmake ninja gtk3 fontconfig pkgconf
 
-# Aplicaciones Python aisladas: no usar pip contra el Python del sistema.
 pacman_install uv
 if ! command -v cli-chess >/dev/null 2>&1; then
     log "uv tool install cli-chess"
@@ -60,13 +49,10 @@ if ! command -v cli-chess >/dev/null 2>&1; then
 else
     log "cli-chess ya está instalado"
 fi
-# opciones del tablero discreto en config.ini (los colores van por stow cli-chess)
 "$(dirname "$0")/../scripts/.local/bin/cli-chess-tema" || true
 
-# Wayland/sway/waybar (--needed hace no-op si ya vienen del perfil "sway" de archinstall)
 pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
 
-# mako trae su unit systemd --user pero llega deshabilitada: sin esto no arranca solo tras reiniciar.
 if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
     log "Habilitando y arrancando mako.service (--user)"
     systemctl --user enable --now mako.service
@@ -75,15 +61,12 @@ else
 fi
 
 pacman_install flameshot pavucontrol
-pacman_install lazygit   # integración LazyVim <leader>gg, ya trae el bind, falta el binario
-pacman_install udisks2 udiskie   # automontaje de pendrives/discos, sway no trae DE
+pacman_install lazygit
+pacman_install udisks2 udiskie
 
 pacman_install fuzzel
-# matugen escribe fuzzel.ini aquí (fuzzel no es paquete de stow); sin el dir, la primera corrida tira error.
 mkdir -p "$HOME/.config/fuzzel"
 
-# calculadora con resultado en vivo ($mod+c -> calc-menu). rofi solo para esto, el launcher sigue siendo fuzzel;
-# rofi-calc trae libqalculate (qalc) como dependencia. Mismo caso que fuzzel: matugen escribe el tema ahí.
 pacman_install rofi rofi-calc
 mkdir -p "$HOME/.config/rofi"
 
@@ -104,14 +87,11 @@ else
     log "$USER ya pertenece al grupo docker"
 fi
 
-# yazi + deps -- chafa es el fallback de preview cuando la terminal no soporta el protocolo gráfico de kitty
 pacman_install yazi ffmpeg 7zip jq poppler resvg imagemagick chafa
 
-pacman_install ttf-fantasque-nerd   # fuente principal: kitty/alacritty/waybar
-# fallback: FantasqueSansM no trae el set Material Design -- sin esto el ícono de notificaciones de waybar sale vacío
+pacman_install ttf-fantasque-nerd
 pacman_install ttf-nerd-fonts-symbols-mono
 
-# rustup/cargo -- eza se instala vía cargo, no pacman
 if ! command -v cargo >/dev/null 2>&1; then
     log "Instalando rustup"
     curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -127,7 +107,6 @@ else
     log "eza ya está instalado"
 fi
 
-# Lector de terminal; fish lo expone también como `zen`.
 if ! command -v bookokrat >/dev/null 2>&1; then
     log "cargo install bookokrat --locked"
     cargo install bookokrat --locked
@@ -137,7 +116,6 @@ fi
 
 pacman_install go
 
-# deps de compilación para pyenv -- sin esto `pyenv install <version>` falla a mitad de build
 pacman_install openssl zlib xz bzip2 readline sqlite tk libffi
 
 if [ ! -x "$HOME/.pyenv/bin/pyenv" ]; then
@@ -151,7 +129,6 @@ else
     log "pyenv ya está instalado"
 fi
 
-# kitty -- instalador oficial, no pacman
 if ! command -v kitty >/dev/null 2>&1 && [ ! -x "$HOME/.local/kitty.app/bin/kitty" ]; then
     log "Instalando kitty"
     curl -fL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
@@ -170,7 +147,6 @@ else
     log "kitty ya está instalado"
 fi
 
-# SDKMAN core -- el plugin de fish (más abajo) es solo un wrapper, necesita esto ya instalado
 if [ ! -d "$HOME/.sdkman" ]; then
     log "Instalando SDKMAN"
     curl -fsS "https://get.sdkman.io" | bash
@@ -178,7 +154,6 @@ else
     log "SDKMAN ya está instalado"
 fi
 
-# fisher + plugins de fish
 if ! fish -c 'type -q fisher' >/dev/null 2>&1; then
     log "Instalando fisher y plugins de fish (jorgebucaran/nvm.fish, reitzig/sdkman-for-fish)"
     fish -c 'curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
@@ -194,8 +169,6 @@ else
     log "Claude Code ya está instalado"
 fi
 
-# opencode -- instalador oficial a ~/.opencode/bin (así se auto-actualiza con `opencode upgrade`).
-# --no-modify-path: el PATH ya lo pone fish/config.fish, sin esto el instalador duplica la línea.
 if ! command -v opencode >/dev/null 2>&1 && [ ! -x "$HOME/.opencode/bin/opencode" ]; then
     log "Instalando opencode"
     curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
@@ -203,11 +176,8 @@ else
     log "opencode ya está instalado"
 fi
 
-# codex CLI -- lo usa codex.nvim (<leader>ac). Por pacman para que el autoinstall del plugin
-# no dependa de npm global (node vive en nvm.fish, invisible para nvim fuera de fish).
 pacman_install openai-codex
 
-# claudebar (uso de Claude en waybar) -- from-source: no hay AUR helper aquí y es un solo paquete
 if ! command -v claudebar >/dev/null 2>&1; then
     log "Instalando claudebar"
     claudebar_tmp=$(mktemp -d)
@@ -257,7 +227,7 @@ cat <<'EOF'
   - codex (login, primera vez): codex login
   - Flutter + Android Studio y adas-cli: ver install/README.md
 
-  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
+  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment cli-chess
 
   - tema inicial (sway/mako/fuzzel): ~/.local/bin/set-wallpaper
   - tema inicial (kitty): kitty +kitten themes kanagawabones

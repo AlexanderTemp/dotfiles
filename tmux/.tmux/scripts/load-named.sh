@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Muestra un selector fzf con los layouts guardados y restaura el elegido con tmux-resurrect.
 set -euo pipefail
 
 resurrect_dir="$HOME/.tmux/resurrect"

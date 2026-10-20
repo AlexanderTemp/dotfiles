@@ -57,7 +57,6 @@ dps() {
             echo -e "\n${WHITE}🐳 RESUMEN DOCKER${NC} ${GRAY}(${GREEN}$TOTAL${GRAY} activos)${NC}\n"
         fi
 
-        # Agrupar contenedores por estado
         declare -A ACTIVE STOPPED PAUSED UNKNOWN
 
         while IFS='|' read -r name status; do
@@ -115,7 +114,6 @@ dps() {
         return
     fi
 
-    # Resto del modo detallado (no tocado)
     if [ "$SHOW_ALL" = true ]; then
         echo -e "\n${WHITE}🐳 DOCKER CONTAINERS${NC} ${GRAY}(Total: ${CYAN}$TOTAL${GRAY} | ${GREEN}$RUNNING${GRAY} activos | ${RED}$STOPPED${GRAY} detenidos)${NC}\n"
     else

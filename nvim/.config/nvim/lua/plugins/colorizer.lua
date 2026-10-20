@@ -4,7 +4,7 @@ return {
   opts = {
     user_default_options = {
       tailwind = true,
-      names = true, -- named colors like "red", "blue"
+      names = true,
     },
   },
   config = function(_, opts)

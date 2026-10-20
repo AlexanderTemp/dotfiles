@@ -1,12 +1,3 @@
-# This file is used to override the default style of cli-chess. It must be kept in dictionary format.
-# Colors are expected to be HTML color names (e.g. seagreen) or HTML hex colors (e.g. #2E8B57)
-# Restarting cli-chess or pressing [CTRL+R] on any screen will force a style refresh.
-# Visit the cli-chess github page (https://github.com/trevorbayless/cli-chess/) for more styling information.
-
-# Tablero discreto: casillas casi del color del fondo de kitty (#1F1F28) y piezas apagadas.
-# Piezas blancas #a9a596, negras #5f5f75; cada clase de casilla las repite porque el
-# estilo por defecto las define por casilla.
-
 {
     "rank-label": "fg:#3a3a46",
     "file-label": "fg:#3a3a46",

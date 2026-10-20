@@ -19,7 +19,6 @@ if status is-interactive
     alias rgf="rg --files | rg"
     alias rgh="rg --files --hidden | rg"
 
-    # Common use get it from sway config utils
     alias tarnow="tar -acf "
     alias untar="tar -xvf "
     alias ..="cd .."
@@ -74,7 +73,6 @@ if status is-interactive
     alias dpa="~/docker-ps-visual.sh -a"
     alias dpar="~/docker-ps-visual.sh -a -r"
 
-    # tmux customization
     alias t="tmux"
     function tn
         tmux new -s $argv
@@ -130,44 +128,29 @@ set -Ux fish_user_paths \
     $HOME/.config/herd-lite/bin \
     $fish_user_paths
 
-# DOTNET
 set -gx DOTNET_ROOT $HOME/.dotnet
 
-# BUN
 set -gx BUN_INSTALL $HOME/.bun
 
-# GOPATH
 set -gx GOPATH $HOME/go
 fish_add_path $GOPATH/bin
 
-# PYENV_ROOT
 set -Ux PYENV_ROOT $HOME/.pyenv
 fish_add_path $PYENV_ROOT/bin
 
-# SDKMAN (java) -- fish no soporta sourcear sdkman-init.sh (es bash),
-# asi que se apunta directo al symlink "current" que administra sdkman con
-# "sdk default"/"sdk use". Se prepende con fish_add_path para que gane sobre
-# cualquier java del sistema.
 set -gx SDKMAN_DIR $HOME/.sdkman
 set -gx JAVA_HOME $SDKMAN_DIR/candidates/java/current
-fish_add_path $JAVA_HOME/bin
+fish_add_path -p $JAVA_HOME/bin
+fish_add_path -p $SDKMAN_DIR/candidates/gradle/current/bin
 
 fish_add_path $HOME/.local/bin
-
-# SDKMAN (el plugin sdkman-for-fish no actualiza el PATH en `sdk use`/`sdk default`,
-# así que apuntamos directo al symlink `current` que sdkman sí mantiene al día)
-set -gx SDKMAN_DIR $HOME/.sdkman
-fish_add_path -p $SDKMAN_DIR/candidates/java/current/bin
-fish_add_path -p $SDKMAN_DIR/candidates/gradle/current/bin
 
 if type -q pyenv
     pyenv init - | source
 end
 
-# adas-cli no lo instala install-arch.sh: sin el guard, fish tira error en una máquina nueva
 if test -f ~/.adas-cli/.adas-cli-completion-fish
     source ~/.adas-cli/.adas-cli-completion-fish
 end
 
-# opencode
 fish_add_path $HOME/.opencode/bin

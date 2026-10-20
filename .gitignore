@@ -1,39 +1,30 @@
-# FISH
 fish/.config/fish/fish_variables*
 fish/.config/fish/fish_history
 
-# RUNTIME STATE
 .cache/
 .local/share/
 .run/
 
-# TMUX RESURRECT (estado local por máquina, no se comparte)
 tmux/.tmux/resurrect/
 
-# TEMA GENERADO POR MATUGEN (regenerado en cada wallpaper elegido)
 mako/.config/mako/colors
 matugen/.config/matugen/colors.css
 sway/.config/sway/config.d/colors
 sway/.config/sway/config.d/wallpaper
 
-# TEMA DE KITTY (regenerado por `kitty +kitten themes`)
 kitty/.config/kitty/current-theme.conf
 kitty/.config/kitty/past-current-theme.conf
 *.bak
 
-# EDITORES
 .vscode/
 .idea/
 
-# PYTHON
 __pycache__/
 *.pyc
 
-# SYSTEM FILES
 .DS_Store
 *.swp
 *.log
 
-# SSH KEYS (si están en repo accidentalmente)
 *.key
 *.pem

@@ -1,4 +1,3 @@
-# Flutter y Android comparten el SDK usado por Android Studio.
 set -gx FLUTTER_ROOT $HOME/.local/share/flutter
 set -gx ANDROID_HOME $HOME/Android/Sdk
 set -gx ANDROID_SDK_ROOT $ANDROID_HOME

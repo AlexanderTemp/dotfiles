@@ -87,6 +87,7 @@ Se revisaron nombres de comandos y frecuencia de uso, sin copiar el historial ni
 | `lsof` | paquete `lsof` en el bootstrap |
 | `qpdf` | paquete `qpdf` en el bootstrap |
 | `trivy` | paquete `trivy` en el bootstrap |
+| `ncdu` | paquete `ncdu` en el bootstrap (uso de disco interactivo) |
 | `ufw` | paquete `ufw`; reglas y activación manuales por equipo |
 | `adas-cli` | binario personal en `~/.local/bin/adas-cli`; reinstalar desde su distribución original y repetir su configuración/login |
 

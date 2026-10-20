@@ -1,6 +1,3 @@
-/* Tema de calc-menu (rofi-calc), a juego con fuzzel.ini: mismos colores/fuente/bordes.
-   Generado por matugen -- solo colores de acento; el resto fijo. */
-
 * {
     font: "FantasqueSansM Nerd Font Mono 13";
     bg: #1f1f28f0;

@@ -1,5 +1,4 @@
 return {
-  -- Mason
   {
     "mason-org/mason.nvim",
     opts = function(_, opts)
@@ -16,7 +15,6 @@ return {
     end,
   },
 
-  -- LSP configuration
   {
     "neovim/nvim-lspconfig",
     opts = {
@@ -26,7 +24,6 @@ return {
 
       servers = {
 
-        -- TypeScript / JavaScript
         vtsls = {
           settings = {
             typescript = {
@@ -54,7 +51,6 @@ return {
           },
         },
 
-        -- ESLint
         eslint = {
           settings = {
             workingDirectory = {
@@ -88,10 +84,8 @@ return {
           },
         },
 
-        -- CSS
         cssls = {},
 
-        -- Tailwind
         tailwindcss = {
           root_dir = function(...)
             return require("lspconfig.util").root_pattern(
@@ -103,10 +97,8 @@ return {
           end,
         },
 
-        -- HTML
         html = {},
 
-        -- YAML
         yamlls = {
           settings = {
             yaml = {
@@ -115,7 +107,6 @@ return {
           },
         },
 
-        -- Lua
         lua_ls = {
           settings = {
             Lua = {
