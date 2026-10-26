@@ -23,6 +23,9 @@ return {
           },
         },
       })
+      opts.jdtls = vim.tbl_deep_extend("force", opts.jdtls or {}, {
+        init_options = { settings = opts.settings },
+      })
     end,
   },
 }
