@@ -24,7 +24,7 @@ WATCHLIST = [
     ("binancecoin", 4, "BNB"),
     ("sui", 4, "SUI"),
 ]
-BAR_COINS = {"BTC", "XRP"}
+BAR_COINS = {"BTC", "XRP", "SUI"}
 
 UP, DOWN, FLAT = "#9ADE7B", "#FF8F8F", "#abb2bf"
 HEADER, DIM = "#61afef", "#5c6370"
