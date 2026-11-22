@@ -53,6 +53,18 @@ fi
 
 pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
 
+sway_nvidia_session=/usr/share/wayland-sessions/sway-nvidia.desktop
+if lsmod | grep -q '^nvidia' && [ ! -f "$sway_nvidia_session" ]; then
+    log "Creando sesión Sway (Nvidia) con --unsupported-gpu"
+    sudo tee "$sway_nvidia_session" >/dev/null <<'EOF'
+[Desktop Entry]
+Name=Sway (Nvidia)
+Comment=Sway con drivers propietarios
+Exec=sway --unsupported-gpu
+Type=Application
+EOF
+fi
+
 if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
     log "Habilitando y arrancando mako.service (--user)"
     systemctl --user enable --now mako.service
@@ -230,5 +242,6 @@ cat <<'EOF'
   cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment cli-chess
 
   - tema inicial (sway/mako/fuzzel): ~/.local/bin/set-wallpaper
+  - con Nvidia: elegir la sesión "Sway (Nvidia)" en ly (se recuerda en los siguientes inicios)
   - tema inicial (kitty): kitty +kitten themes kanagawabones
 EOF
