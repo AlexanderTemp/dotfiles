@@ -50,7 +50,7 @@ def main():
     try:
         data = fetch()
     except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError):
-        print(json.dumps({"text": "⚠ sin datos", "tooltip": "CoinGecko no respondió", "class": "error"}))
+        print(json.dumps({"text": "sin datos", "tooltip": "CoinGecko no respondió", "class": "error"}))
         return
 
     bar_parts = []
@@ -72,7 +72,7 @@ def main():
 
         if label in BAR_COINS:
             sign = "+" if change > 0 else "-" if change < 0 else ""
-            bar_parts.append(f"{label} <span foreground='{color}'>${price_fmt} {sign}{change_fmt}%</span>")
+            bar_parts.append(f"{label} ${price_fmt} <span foreground='{color}'>{sign}{change_fmt}%</span>")
 
     text = "   ".join(bar_parts)
 

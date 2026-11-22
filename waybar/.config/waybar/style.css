@@ -16,9 +16,9 @@ window#waybar {
 }
 
 tooltip {
-  background-color: @surface;
-  border: 1px solid alpha(@primary, 0.3);
-  border-radius: 6px;
+  background-color: alpha(@surface, 0.85);
+  border: 1px solid alpha(@on_surface, 0.15);
+  border-radius: 12px;
   padding: 10px 14px;
   min-width: 260px;
 }
@@ -30,10 +30,10 @@ tooltip {
 .modules-center,
 #system,
 #clock {
-  background-color: alpha(@surface, 0.9);
-  border-radius: 4px;
-  margin: 0px 4px 0 4px;
-  padding: 0 10px;
+  background-color: alpha(@surface, 0.45);
+  border-radius: 14px;
+  margin: 0 4px 6px 4px;
+  padding: 2px 12px;
 }
 
 #personal {
@@ -41,7 +41,18 @@ tooltip {
 }
 
 #workspaces {
-  padding: 0 4px;
+  background: transparent;
+  margin: 0;
+}
+
+.modules-center {
+  padding: 0 3px;
+}
+
+#workspaces {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 #clock {
@@ -62,19 +73,40 @@ tooltip {
 }
 
 #workspaces button {
-  color: @primary;
-  padding: 0 6px;
-  border-radius: 2px;
+  color: alpha(@on_surface, 0.55);
+  padding: 1px 10px;
+  margin: 3px 1px;
+  min-width: 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: none;
+  box-shadow: none;
+  text-shadow: none;
+  font-weight: 700;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
-#workspaces button.focused {
-  background-color: @primary;
-  color: @surface;
+#workspaces button:hover {
+  background: alpha(@on_surface, 0.08);
+  color: @on_surface;
+  box-shadow: none;
 }
 
-#workspaces button.active {
-  background-color: @surface;
-  color: @primary;
+#workspaces button.focused,
+#workspaces button.focused:hover {
+  background: alpha(@on_surface, 0.14);
+  border-color: alpha(@on_surface, 0.22);
+  color: @on_surface;
+}
+
+#workspaces button.visible {
+  border-color: alpha(@on_surface, 0.12);
+  color: alpha(@on_surface, 0.85);
+}
+
+#workspaces button.urgent {
+  color: @error;
+  border-color: alpha(@error, 0.4);
 }
 
 #battery, #tray, #clock, #cpu, #pulseaudio, #memory {
@@ -91,4 +123,9 @@ tooltip {
 
 #custom-notifications.dnd {
   color: #f44336;
+}
+
+#custom-coinwatch.error,
+#custom-bcbrate.error {
+  color: alpha(@on_surface, 0.75);
 }

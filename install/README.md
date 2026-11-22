@@ -35,7 +35,7 @@ uv tool upgrade cli-chess
 uv tool uninstall cli-chess
 ```
 
-El tablero usa un tema discreto (casillas casi del color del fondo, piezas apagadas): los colores están en el paquete stow `cli-chess` (`~/.config/cli-chess/custom_style.py`, sobrevive a `uv tool upgrade`) y `cli-chess-tema` (paquete `scripts`) ajusta en `config.ini` las coordenadas, el material y el color de 24 bits.
+`cli-chess-tema` (paquete `scripts`) ajusta en `config.ini` las coordenadas, el material y el color de 24 bits.
 
 El acceso a Lichess es opcional y se configura dentro del entorno local del usuario, sin guardar tokens en dotfiles.
 

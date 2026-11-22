@@ -2,40 +2,36 @@
 
 * {
   all: unset;
+  font-family: "FantasqueSansM Nerd Font Mono";
+  color: #ffffff;
 }
 
 window {
-  background-image: url("../../dotfiles/wallpapers/wallpaper_2.png");
+  background-image:
+    linear-gradient(to bottom, alpha(black, 0.35), alpha(black, 0) 45%, alpha(black, 0) 65%, alpha(black, 0.4)),
+    url("../../.cache/wallpaper/current.jpg");
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
 }
 
 #window-box {
-  background-color: alpha(#101010, 0.95);
-  border: 1px solid alpha(@primary, 0.5);
-  padding: 0 32px;
-  box-shadow:
-    0 60px 80px rgba(0, 0, 0, 0.6),
-    0 45px 26px rgba(0, 0, 0, 0.14);
-  border-radius: 4px;
+  margin-top: 40px;
 }
 
 #time-box {
-  font-size: 0;
+  margin-bottom: 36px;
+}
+
+#date-label {
+  font-size: 24px;
+  font-weight: 600;
+  color: alpha(white, 0.9);
 }
 
 #clock-label {
-  min-width: 320px;
-  background-color: alpha(@primary, 0.1);
-  color: @primary;
-  font-weight: 500;
-  font-size: 14px;
-  padding: 10px 30px;
-  margin-bottom: 10px;
-  border-radius: 0 0 4px 4px;
-  border: 1px solid alpha(@primary, 0.5);
-  border-top: 0;
+  font-size: 132px;
+  font-weight: 700;
+  margin-top: -10px;
 }
 
 #input-label {
@@ -43,27 +39,41 @@ window {
 }
 
 #input-field {
-  border-radius: 8px;
-  padding: 10px 15px;
-  border: 1px solid #3d3d3d;
-  margin-top: 12px;
+  min-width: 300px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background-color: alpha(white, 0.16);
+  border: 1px solid alpha(white, 0.28);
+  font-size: 16px;
+  caret-color: white;
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 #input-field:focus {
-  border: 1px solid @primary;
+  background-color: alpha(white, 0.22);
+  border-color: alpha(white, 0.5);
 }
 
 #warning-label,
-#error-label,
-#unlock-button {
+#error-label {
   margin-top: 12px;
-  padding: 10px 2rem;
-  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+#error-label {
+  color: @error;
 }
 
 #unlock-button {
-  border-radius: 8px;
-  background-color: alpha(@primary, 0.1);
-  color: @primary;
-  border: 1px solid alpha(@primary, 0.5);
+  margin-top: 14px;
+  padding: 8px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: alpha(white, 0.75);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+#unlock-button:hover {
+  background-color: alpha(white, 0.14);
+  color: white;
 }

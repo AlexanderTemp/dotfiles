@@ -11,14 +11,14 @@
   },
   "modules-left": [
     "group/personal",
-    "custom/coinwatch",
-    "custom/bcbrate"
+    "custom/coinwatch"
   ],
   "modules-center": [
     "sway/workspaces",
     "sway/mode"
   ],
   "modules-right": [
+    "custom/bcbrate",
     "group/system",
     "clock"
   ],

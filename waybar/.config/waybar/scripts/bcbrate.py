@@ -22,13 +22,13 @@ def main():
     try:
         html = fetch()
     except (urllib.error.URLError, TimeoutError, OSError):
-        print(json.dumps({"text": "⚠ BOB sin datos", "tooltip": "BCB no respondió", "class": "error"}))
+        print(json.dumps({"text": "sin datos", "tooltip": "BCB no respondió", "class": "error"}))
         return
 
     current_m = re.search(r'tco-public-value">Bs ([\d,]+)/\$us', html)
     vigencia_m = re.search(r"VIGENCIA:\s*([^<]+)", html)
     if not current_m:
-        print(json.dumps({"text": "⚠ BOB sin datos", "tooltip": "No se pudo parsear BCB", "class": "error"}))
+        print(json.dumps({"text": "sin datos", "tooltip": "No se pudo parsear BCB", "class": "error"}))
         return
 
     current = current_m.group(1)

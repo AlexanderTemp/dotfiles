@@ -31,17 +31,58 @@ input type:touchpad {
 	tap enabled
 }
 
-gaps horizontal 2
-gaps vertical 2
-gaps inner 8
+gaps horizontal 4
+gaps vertical 4
+gaps inner 10
 
 default_border pixel 1
 default_floating_border pixel 1
+
+corner_radius 12
+smart_corner_radius enable
+
+blur enable
+blur_passes 2
+blur_radius 5
+blur_noise 0.02
+blur_saturation 1.1
+
+shadows enable
+shadow_blur_radius 24
+shadow_offset 0 6
+shadow_color #00000080
+shadow_inactive_color #00000050
+
+animation_duration_ms 150
+default_dim_inactive 0
+
+
+layer_effects "waybar" {
+    blur enable;
+    blur_ignore_transparent enable;
+}
+layer_effects "notifications" {
+    blur enable;
+    blur_ignore_transparent enable;
+}
+layer_effects "launcher" {
+    blur enable;
+    shadows enable;
+    corner_radius 14;
+}
+layer_effects "rofi" {
+    blur enable;
+    shadows enable;
+    corner_radius 14;
+}
+layer_effects "logout_dialog" {
+    blur enable;
+}
 
 include ~/.config/sway/config.d/colors
 include ~/.config/sway/config.d/*
 include /etc/sway/config.d/*
 
-client.focused $primary $primary #000000 $primary $primary
-client.focused_inactive $surface $surface $primary $surface $surface
-client.unfocused $surface $surface $primary $surface $surface
+client.focused #ffffff66 $primary #000000 #ffffff66 #ffffff66
+client.focused_inactive #ffffff10 $surface $primary #ffffff10 #ffffff10
+client.unfocused #ffffff10 $surface $primary #ffffff10 #ffffff10

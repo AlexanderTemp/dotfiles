@@ -51,19 +51,7 @@ else
 fi
 "$(dirname "$0")/../scripts/.local/bin/cli-chess-tema" || true
 
-pacman_install sway waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
-
-sway_nvidia_session=/usr/share/wayland-sessions/sway-nvidia.desktop
-if lsmod | grep -q '^nvidia' && [ ! -f "$sway_nvidia_session" ]; then
-    log "Creando sesión Sway (Nvidia) con --unsupported-gpu"
-    sudo tee "$sway_nvidia_session" >/dev/null <<'EOF'
-[Desktop Entry]
-Name=Sway (Nvidia)
-Comment=Sway con drivers propietarios
-Exec=sway --unsupported-gpu
-Type=Application
-EOF
-fi
+pacman_install swayfx waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
 
 if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
     log "Habilitando y arrancando mako.service (--user)"
@@ -83,7 +71,7 @@ pacman_install rofi rofi-calc
 mkdir -p "$HOME/.config/rofi"
 
 pacman_install dbeaver
-pacman_install docker docker-compose
+pacman_install docker docker-compose lazydocker
 
 if ! systemctl is-enabled --quiet docker.service 2>/dev/null; then
     log "Habilitando y arrancando docker.service"
@@ -213,6 +201,7 @@ check() {
 check "pyenv"  '"$HOME/.pyenv/bin/pyenv" --version'
 check "kitty"  '"$HOME/.local/bin/kitty" --version'
 check "docker" 'command -v docker'
+check "lazydocker" 'command -v lazydocker'
 check "eza"    'command -v eza'
 check "go"     'command -v go'
 check "fisher" "fish -c 'type -q fisher'"
@@ -220,6 +209,7 @@ check "claude" 'command -v claude'
 check "claudebar" 'command -v claudebar'
 check "opencode" '"$HOME/.opencode/bin/opencode" --version'
 check "codex"  'command -v codex'
+check "SwayFX" 'pacman -Q swayfx'
 check "rofi-calc" 'pacman -Q rofi-calc'
 check "bookokrat (zen)" 'command -v bookokrat'
 check "cli-chess" 'cli-chess --version'
@@ -239,9 +229,8 @@ cat <<'EOF'
   - codex (login, primera vez): codex login
   - Flutter + Android Studio y adas-cli: ver install/README.md
 
-  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment cli-chess
+  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
 
   - tema inicial (sway/mako/fuzzel): ~/.local/bin/set-wallpaper
-  - con Nvidia: elegir la sesión "Sway (Nvidia)" en ly (se recuerda en los siguientes inicios)
   - tema inicial (kitty): kitty +kitten themes kanagawabones
 EOF

@@ -21,7 +21,7 @@ cd ~/dotfiles/install
 ./install-arch.sh   # idempotente — instala todo salvo nvim (manual, ver abajo)
 
 cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment cli-chess
+stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
 
 # tema inicial (sway/mako/fuzzel, no vive en el repo — ver Estructura)
 ~/.local/bin/set-wallpaper
@@ -58,7 +58,6 @@ dotfiles/
 ├── tmux/        -> ~/.tmux, ~/.tmux.conf
 ├── ideavim/     -> ~/.ideavimrc
 ├── environment/ -> ~/.config/environment.d
-├── cli-chess/   -> ~/.config/cli-chess/custom_style.py
 └── scripts/     -> ~/docker-ps-visual.sh, ~/.local/bin/set-wallpaper
 ```
 

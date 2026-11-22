@@ -16,5 +16,10 @@ mkdir -p "$HOME/.config/fuzzel" "$HOME/.config/rofi"
 
 echo "output * bg \"$WALLPAPER_DIR/$selected\" fill" > "$HOME/.config/sway/config.d/wallpaper"
 
+# Copias para gtklock (nítida) y wlogout (desenfocada)
+mkdir -p "$HOME/.cache/wallpaper"
+magick "$WALLPAPER_DIR/$selected" -resize 1920x1080^ -quality 92 "$HOME/.cache/wallpaper/current.jpg"
+magick "$WALLPAPER_DIR/$selected" -resize 1920x1080^ -blur 0x18 -quality 90 "$HOME/.cache/wallpaper/blur.jpg"
+
 matugen image "$WALLPAPER_DIR/$selected" --prefer saturation
 swaymsg output '*' bg "$WALLPAPER_DIR/$selected" fill 2>/dev/null || true
