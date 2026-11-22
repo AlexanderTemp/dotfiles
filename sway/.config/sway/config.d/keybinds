@@ -57,6 +57,7 @@
 
     bindsym $mod+b splith
     bindsym $mod+v splitv
+    bindsym $mod+p exec cliphist list | fuzzel --dmenu --with-nth 2 --prompt '󰅍 ' --placeholder 'Historial del portapapeles' | cliphist decode | wl-copy
 
     bindsym $mod+s layout stacking
     bindsym $mod+w layout tabbed

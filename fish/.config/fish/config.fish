@@ -1,6 +1,9 @@
 if status is-interactive
     starship init fish | source
 
+    # brblack del tema se pierde sobre la terminal translúcida
+    set -g fish_color_autosuggestion 9a98a8
+
     if type -q zoxide
         zoxide init fish --cmd cd | source
     end

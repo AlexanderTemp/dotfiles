@@ -68,12 +68,11 @@ layer_effects "notifications" {
 layer_effects "launcher" {
     blur enable;
     shadows enable;
-    corner_radius 14;
+    corner_radius 12;
 }
 layer_effects "rofi" {
     blur enable;
-    shadows enable;
-    corner_radius 14;
+    blur_ignore_transparent enable;
 }
 layer_effects "logout_dialog" {
     blur enable;

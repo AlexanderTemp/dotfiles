@@ -4,7 +4,9 @@ theme="$HOME/.config/rofi/calc.rasi"
 args=(
     -show calc -modi calc
     -no-show-match -no-sort
-    -display-calc " = "
+    -hint-result " "
+    -no-history
+    -display-calc "󰃬"
     -calc-command "echo -n '{result}' | wl-copy"
 )
 [ -f "$theme" ] && args+=(-theme "$theme")

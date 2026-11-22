@@ -51,7 +51,7 @@ else
 fi
 "$(dirname "$0")/../scripts/.local/bin/cli-chess-tema" || true
 
-pacman_install swayfx waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard
+pacman_install swayfx waybar wmenu swaybg swayidle gtklock brightnessctl grim playerctl wlogout pamixer matugen mako wl-clipboard cliphist
 
 if ! systemctl --user is-enabled --quiet mako.service 2>/dev/null; then
     log "Habilitando y arrancando mako.service (--user)"
@@ -211,6 +211,7 @@ check "opencode" '"$HOME/.opencode/bin/opencode" --version'
 check "codex"  'command -v codex'
 check "SwayFX" 'pacman -Q swayfx'
 check "rofi-calc" 'pacman -Q rofi-calc'
+check "cliphist" 'command -v cliphist'
 check "bookokrat (zen)" 'command -v bookokrat'
 check "cli-chess" 'cli-chess --version'
 check "Chromium" 'command -v chromium'

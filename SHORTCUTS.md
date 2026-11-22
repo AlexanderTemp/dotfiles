@@ -123,4 +123,5 @@ Plugins: `surround`, `quickscope` (mappings default propios, no listados).
 |---|---|
 | `docker-ps-visual.sh` | contenedores Docker en cajas ASCII coloreadas. `-a` incluye detenidos, `-r` modo resumen agrupado por estado. Invocado por los alias `dps`/`dpr`/`dpa`/`dpar` de fish. |
 | `calc-menu` | calculadora con resultado en vivo (rofi-calc, motor qalc): `2^10`, `20% de 150`, `5 km a millas`, `100 USD a EUR`. Enter copia el resultado al portapapeles. Bindeado a `$mod+c` en sway. |
+| `cliphist` (sway) | historial del portapapeles (texto e imágenes). `$mod+p` lo abre en fuzzel; Enter vuelve a copiar la entrada elegida. |
 | `toggle-kitty` | enfoca una instancia de kitty existente (vía socket `unix:/tmp/kitty-socket`) o lanza una nueva si no hay ninguna escuchando. Pensado para bindearse a un hotkey global del window manager (esa parte no vive en este repo). |

@@ -1,59 +1,81 @@
 * {
-    font: "FantasqueSansM Nerd Font Mono 13";
-    bg: #1f1f28f0;
-    fg: #ddd8bbff;
+    font: "FantasqueSansM Nerd Font Mono 14";
+    bg: #{{colors.surface.default.hex_stripped}}99;
+    fg: #{{colors.on_surface.default.hex_stripped}}ff;
     accent: #{{colors.primary.default.hex_stripped}}ff;
-    border-col: #{{colors.outline.default.hex_stripped}}ff;
-    prompt-col: #7eb3c9ff;
-    muted: #6a6a58ff;
+    muted: #{{colors.on_surface.default.hex_stripped}}73;
+    line: #ffffff17;
+    selected: #{{colors.primary.default.hex_stripped}}2e;
     background-color: transparent;
     text-color: @fg;
 }
 
 window {
-    width: 40%;
+    width: 640px;
+    location: north;
+    y-offset: 220px;
     background-color: @bg;
     border: 1px;
-    border-color: @border-col;
-    border-radius: 14px;
-    padding: 14px 22px;
+    border-color: #ffffff66;
+    border-radius: 12px;
 }
 
 mainbox {
-    children: [ inputbar, message, listview ];
-    spacing: 6px;
+    children: [ inputbar, message ];
+    spacing: 0;
 }
 
 inputbar {
     children: [ prompt, entry ];
+    spacing: 14px;
+    padding: 18px 22px;
 }
 
 prompt {
-    text-color: @prompt-col;
+    font: "Symbols Nerd Font Mono 20";
+    text-color: @accent;
+    vertical-align: 0.5;
 }
 
 entry {
-    placeholder: "Calcular… (Enter copia el resultado)";
+    font: "FantasqueSansM Nerd Font Mono 20";
+    placeholder: "Calcular";
     placeholder-color: @muted;
+    vertical-align: 0.5;
+}
+
+message {
+    padding: 16px 22px;
+    border: 1px 0 0 0;
+    border-color: @line;
 }
 
 textbox {
-    text-color: @muted;
+    font: "FantasqueSansM Nerd Font Mono Bold 20";
+    text-color: @fg;
 }
 
 listview {
-    lines: 8;
+    lines: 5;
     fixed-height: false;
     scrollbar: false;
     spacing: 2px;
+    padding: 0 10px 10px 10px;
 }
 
 element {
-    padding: 2px 0;
+    padding: 9px 12px;
+    border-radius: 8px;
+}
+
+element normal.normal,
+element alternate.normal {
+    text-color: @muted;
 }
 
 element selected.normal {
-    text-color: @accent;
+    background-color: @selected;
+    text-color: @fg;
 }
 
 element-text {
