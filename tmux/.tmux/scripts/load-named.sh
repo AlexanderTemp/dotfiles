@@ -6,7 +6,7 @@ named_dir="$resurrect_dir/named"
 
 mkdir -p "$named_dir"
 
-name="$(ls "$named_dir" 2>/dev/null | sed 's/\.txt$//' | fzf --reverse --prompt='Cargar layout> ')"
+name="$(ls "$named_dir" 2>/dev/null | sed 's/\.txt$//' | fzf --reverse --prompt='Load layout> ')"
 [ -z "${name:-}" ] && exit 0
 
 ln -sf "$named_dir/${name}.txt" "$resurrect_dir/last"

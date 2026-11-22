@@ -2,12 +2,14 @@
 
 Referencia de todos los atajos de teclado, alias y funciones configurados en este repo de dotfiles. Documentación únicamente — no se lee por ningún tool ni se symlinkea (ver `.stow-local-ignore`). Actualizar manualmente si cambian los configs.
 
-## fish (`fish/.config/fish/config.fish`)
+## fish (`fish/.config/fish/conf.d/aliases.fish`)
 
 | Comando | Equivale a | Descripción |
 |---|---|---|
 | `g` | `git` | atajo corto |
 | `ga` | `git add .` | stage todo |
+| `gac <mensaje>` | `git add . && git commit -m "<mensaje>"` | stage + commit en un paso |
+| `claude`, `cl` | `claude` | abre Claude Code sin el diálogo de confianza de carpeta |
 | `d` | `docker` | atajo corto |
 | `x` | `exit` | salir de la shell |
 | `ii` | `npm install` | |
@@ -43,18 +45,21 @@ Prefix: **`Ctrl-a`** (el default `Ctrl-b` está deshabilitado).
 | `prefix r` | recargar config (con mensaje de confirmación) |
 | `prefix Ctrl-n` | pedir nombre y crear nueva sesión |
 | `prefix Ctrl-j` | popup fzf con lista de sesiones, cambiar a la elegida |
-| `prefix s` | split horizontal |
-| `prefix c` | split vertical |
-| `prefix v` | nueva ventana |
+| `prefix s` | split horizontal (en la carpeta del panel actual) |
+| `prefix c` | split vertical (en la carpeta del panel actual) |
+| `prefix v` | nueva ventana (en la carpeta del panel actual) |
 | `prefix x` | copy-mode (vi) |
 | `y` / arrastrar mouse (en copy-mode) | copiar selección al portapapeles (`wl-copy`) |
 | `prefix h/j/k/l` | navegar entre panes (estilo vim) |
-| `prefix Ctrl-s` | tmux-resurrect: guardar snapshot "last" |
-| `prefix Ctrl-r` | tmux-resurrect: restaurar snapshot "last" |
+| `prefix Alt-s` | tmux-resurrect: guardar snapshot "last" |
+| `prefix Alt-r` | tmux-resurrect: restaurar la última sesión guardada |
 | `prefix S` | guardar layout **con nombre** (`save-named.sh`) → `~/.tmux/resurrect/named/<nombre>.txt` |
 | `prefix L` | popup fzf para cargar un layout con nombre (`load-named.sh`) |
+| `prefix Espacio` | tmux-which-key: menú de acciones; `m` abre "My shortcuts" (definido en `tmux/.tmux/plugins/tmux-which-key/config.yaml`) |
+| `prefix p` | tmux-floax: mostrar/ocultar panel flotante |
+| `prefix P` | tmux-floax: menú del panel flotante (tamaño, pantalla completa, embeber) |
 
-Plugins vendorizados en `tmux/.tmux/plugins/`: `tpm`, `tmux-sensible`, `vim-tmux-navigator`, `rose-pine`, `tmux-resurrect`.
+Plugins vendorizados en `tmux/.tmux/plugins/`: `tpm`, `tmux-sensible`, `vim-tmux-navigator`, `rose-pine`, `tmux-resurrect`, `tmux-which-key`, `tmux-floax`.
 
 ## nvim (`nvim/.config/nvim/`)
 
