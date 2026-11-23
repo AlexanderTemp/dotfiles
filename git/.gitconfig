@@ -1,0 +1,25 @@
+[alias]
+	pod = pull origin develop
+	pom = pull origin main
+	st = status -s
+	sw = switch
+	co = checkout -b
+	logs = log --graph --decorate --all
+	b = branch
+	br = branch -r
+	cm = commit -m
+	brd = branch -d
+	undo = reset HEAD~1
+	amend = commit --amend --no-edit
+	cp = cherry-pick
+	rl = reflog
+	save = stash push
+	pop = stash pop
+	apply = stash apply
+[user]
+	email = aaalex2025@gmail.com
+	name = Alexander Nina
+[merge]
+	conflictStyle = diff3
+[core]
+	hooksPath = ~/.git-hooks

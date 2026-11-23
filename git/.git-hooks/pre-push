@@ -1,0 +1,8 @@
+#!/bin/sh
+while read local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/develop|refs/heads/master|refs/heads/main)
+      echo "Push bloqueado a ${remote_ref#refs/heads/}. Usa un merge request."
+      exit 1 ;;
+  esac
+done

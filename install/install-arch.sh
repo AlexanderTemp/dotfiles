@@ -230,7 +230,7 @@ cat <<'EOF'
   - codex (login, primera vez): codex login
   - Flutter + Android Studio y adas-cli: ver install/README.md
 
-  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment
+  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment git
 
   - tema inicial (sway/mako/fuzzel): ~/.local/bin/set-wallpaper
   - tema inicial (kitty): kitty +kitten themes kanagawabones
