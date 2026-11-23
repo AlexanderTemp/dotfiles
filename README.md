@@ -18,10 +18,7 @@ git clone git@github.com:AlexanderTemp/dotfiles.git ~/dotfiles   # SSH, con key 
 # git clone https://github.com/AlexanderTemp/dotfiles.git ~/dotfiles  # HTTPS — solo lectura, sin key
 
 cd ~/dotfiles/install
-./install-arch.sh   # idempotente — instala todo salvo nvim (manual, ver abajo)
-
-cd ~/dotfiles
-stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment git
+./install-arch.sh   # idempotente — instala todo salvo nvim y aplica stow (el repo pisa cualquier archivo en conflicto)
 
 # tema inicial (sway/mako/fuzzel, no vive en el repo — ver Estructura)
 ~/.local/bin/set-wallpaper

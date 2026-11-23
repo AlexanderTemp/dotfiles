@@ -222,6 +222,20 @@ if [ "$any_check_failed" -eq 1 ]; then
     printf '\n\033[1;31mAlgunas herramientas no quedaron operativas — revisar los logs arriba antes de dar la instalación por buena.\033[0m\n'
 fi
 
+log "Enlazando dotfiles con stow"
+STOW_PACKAGES=(fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment git)
+cd "$(dirname "$0")/.."
+for pkg in "${STOW_PACKAGES[@]}"; do
+    while IFS= read -r -d '' src; do
+        target="$HOME/${src#"$pkg"/}"
+        if [ -e "$target" ] && [ ! -L "$target" ] && [ "$(realpath "$target")" != "$(realpath "$src")" ]; then
+            rm -f "$target"
+        fi
+    done < <(find "$pkg" -type f -print0)
+done
+printf '  stow -R %s\n' "${STOW_PACKAGES[*]}"
+stow -R "${STOW_PACKAGES[@]}"
+
 log "Listo. Pendiente MANUAL (no lo hace este script):"
 cat <<'EOF'
   - nvim (tarball manual, ver README.md > "Comandos")
@@ -229,8 +243,6 @@ cat <<'EOF'
   - opencode (login del proveedor, primera vez): opencode auth login
   - codex (login, primera vez): codex login
   - Flutter + Android Studio y adas-cli: ver install/README.md
-
-  cd ~/dotfiles && stow -R fish nvim kitty alacritty starship tmux ideavim scripts sway waybar mako wlogout matugen gtklock environment git
 
   - tema inicial (sway/mako/fuzzel): ~/.local/bin/set-wallpaper
   - tema inicial (kitty): kitty +kitten themes kanagawabones
