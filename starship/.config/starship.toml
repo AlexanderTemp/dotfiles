@@ -1,4 +1,5 @@
 "$schema" = 'https://starship.rs/config-schema.json'
+right_format = "$status$cmd_duration$time"
 add_newline = true
 command_timeout = 2000
 
@@ -29,9 +30,6 @@ $jobs\
 ${custom.memory_usage}\
 ${custom.battery}\
 ${custom.keyboard_layout}\
-$time\
-$cmd_duration\
-$status\
 $line_break\
 $character\
 """
@@ -45,16 +43,16 @@ color_caution = '#FF9E3B'
 color_os = '#7E9CD8'
 color_username = '#7FB4CA'
 color_directory = '#FFA066'
-color_git = '#7AA89F'
+color_git = '#8FD1C2'
 color_git_added = '#98BB6C'
 color_git_deleted = '#E82424'
-color_env = '#938AA9'
+color_env = '#B8AEE8'
 color_kubernetes = '#957FB8'
 color_docker = '#6A9589'
 color_shell = '#727169'
 color_container = '#C34043'
-color_other = '#54546D'
-color_time = '#C8C093'
+color_other = '#B5B3A8'
+color_time = '#E6DFB8'
 color_duration = '#C8C093'
 color_vimcmd_ok = '#7AA89F'
 color_vimcmd_replace = '#D27E99'
@@ -140,8 +138,10 @@ format = '[$user ]($style)'
 [directory]
 style = "bold fg:color_directory"
 read_only_style = "bold fg:color_directory"
-repo_root_style = "bold underline fg:color_directory"
-format = "[$path ]($style)"
+repo_root_style = "bold fg:color_directory"
+repo_root_format = "[󰉋 $before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+before_repo_root_style = "fg:color_directory"
+format = "[󰉋 $path]($style)[$read_only]($read_only_style) "
 read_only = "󰌾 "
 home_symbol = "~"
 truncation_symbol = "…/"
@@ -153,7 +153,7 @@ use_logical_path = true
 [git_branch]
 symbol = ""
 style = "bold fg:color_git"
-format = '[(on $symbol $branch )]($style)'
+format = '[($symbol $branch )]($style)'
 only_attached = true
 ignore_branches = []
 truncation_length = 30
@@ -171,7 +171,7 @@ tag_disabled = false
 disabled = false
 
 [git_status]
-style = "fg:color_git"
+style = "bold fg:color_git"
 format = '[(\[$ahead_behind$all_status\] )]($style)'
 stashed = "󰜦${count}"
 ahead = "⇡${count}"
@@ -208,55 +208,55 @@ disabled = false
 
 [nodejs]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [c]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [rust]
 symbol = "󱘗"
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [golang]
 symbol = "󰟓"
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [php]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [java]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [kotlin]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [haskell]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [python]
 symbol = ""
-style = "fg:color_env"
-format = '[($symbol $version$virtualenv )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version( $virtualenv) ]($style)'
 version_format = '${raw}'
 
 [package]
 disabled = false
 symbol = "󰏗"
-style = "fg:color_env"
-format = '[($symbol $version )]($style)'
+style = "bold fg:color_env"
+format = '[· ](fg:color_other)[$symbol $version ]($style)'
 
 [docker_context]
 symbol = ""
@@ -348,17 +348,17 @@ threshold = 100
 style = "fg:color_other"
 
 [time]
-disabled = true
+disabled = false
 time_format = "%R"
-style = "fg:color_time"
-format = '[󰔛 $time ]($style)'
+style = "bold fg:color_time"
+format = '[󰔛 $time]($style)'
 
 [cmd_duration]
 min_time = 2000
 format = '[󱫑 $duration ]($style)'
-style = 'fg:color_duration'
+style = 'bold fg:color_duration'
 show_milliseconds = false
-disabled = true
+disabled = false
 
 [status]
 disabled = false

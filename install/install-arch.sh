@@ -43,9 +43,9 @@ pacman_install net-tools lsof qpdf trivy ufw ncdu
 pacman_install chromium clang cmake ninja gtk3 fontconfig pkgconf
 
 pacman_install uv
-if ! command -v cli-chess >/dev/null 2>&1; then
+if ! uv tool list 2>/dev/null | grep -q '^cli-chess '; then
     log "uv tool install cli-chess"
-    uv tool install cli-chess
+    uv tool install --force cli-chess
 else
     log "cli-chess ya está instalado"
 fi

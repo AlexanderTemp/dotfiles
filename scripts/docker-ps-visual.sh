@@ -1,176 +1,124 @@
-#!/bin/bash
-BLUE='\033[1;34m'
-GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
-CYAN='\033[1;36m'
-MAGENTA='\033[1;35m'
-WHITE='\033[1;37m'
-GRAY='\033[0;90m'
-NC='\033[0m'
+#!/usr/bin/env bash
+# docker-ps-visual — dps / dpa / dpr / dpar
+#   -a  incluye detenidos      -r  vista resumen (tabla)
 
-dps() {
-    local SHOW_ALL=false
-    local SHOW_RESUME=false
+e=$'\e'
+R="${e}[0m"; B="${e}[1m"
+fg() { printf '%s[1;38;2;%d;%d;%dm' "$e" "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
+BORDE=$(fg 7FB4CA); BLANCO=$(fg FFFFFF); VERDE=$(fg A6E36E); ROJO=$(fg FF6B6B)
+AMARILLO=$(fg FFC66D); CELESTE=$(fg 8FD3FF); GRIS=$(fg C8C8C8)
 
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            -a)
-                SHOW_ALL=true
-                shift
-                ;;
-            -r)
-                SHOW_RESUME=true
-                shift
-                ;;
-            *)
-                shift
-                ;;
-        esac
+SHOW_ALL=false; SHOW_RESUME=false
+for a in "$@"; do
+    case $a in
+        -a) SHOW_ALL=true ;; -r) SHOW_RESUME=true ;;
+        -ar|-ra) SHOW_ALL=true; SHOW_RESUME=true ;;
+    esac
+done
+command -v jq >/dev/null || { echo "docker-ps-visual: falta jq"; exit 1; }
+
+ANSI_RE=$'\e\\[[0-9;]*m'
+largo() { local s=$1; while [[ $s =~ $ANSI_RE ]]; do s=${s//"${BASH_REMATCH[0]}"/}; done; echo "${#s}"; }
+pad()   { local n; n=$(largo "$1"); printf '%s%*s' "$1" $(( $2 > n ? $2 - n : 0 )) ''; }
+rep()   { local i; for (( i=0; i<$2; i++ )); do printf '%s' "$1"; done; }
+
+if $SHOW_ALL; then mapfile -t IDS < <(docker ps -aq); else mapfile -t IDS < <(docker ps -q); fi
+TOTAL=$(docker ps -aq | wc -l); ACTIVOS=$(docker ps -q | wc -l); DETENIDOS=$((TOTAL - ACTIVOS))
+
+echo
+if $SHOW_ALL; then
+    echo -e "${BLANCO}🐳 RESUMEN DOCKER${R}  ${GRIS}Total: ${CELESTE}${TOTAL}${GRIS} | ${VERDE}${ACTIVOS} activos${GRIS} | ${ROJO}${DETENIDOS} detenidos${R}"
+else
+    echo -e "${BLANCO}🐳 RESUMEN DOCKER${R}  ${VERDE}${ACTIVOS} activos${R}"
+fi
+echo
+(( ${#IDS[@]} == 0 )) && { echo -e "  ${AMARILLO}No hay contenedores${R}\n"; exit 0; }
+
+# nombre|estado|codigo_salida|imagen|puertos   (puertos: "ext>int,..." ; ext vacío = no publicado)
+JQ='.[] |
+(.NetworkSettings.Ports // {}) as $p |
+([ $p | to_entries[] | .key as $k | (.value // [])[] | select((.HostIp // "") | test(":") | not)
+   | "\(.HostPort)>\($k | split("/")[0])" ] | unique) as $pub |
+([ (.Config.ExposedPorts // {} | keys[]), ($p | keys[]) ] | unique
+   | map(select(. as $k | ($p[$k] // null) == null) | split("/")[0])) as $exp |
+(if .HostConfig.NetworkMode == "host" then [ $exp[] | "\(.)>\(.)" ] else [ $exp[] | ">\(.)" ] end) as $rest |
+[ (.Name | ltrimstr("/")), .State.Status, (.State.ExitCode | tostring), .Config.Image,
+  (($pub + $rest) | join(",")) ] | join("|")'
+mapfile -t FILAS < <(docker inspect "${IDS[@]}" | jq -r "$JQ" | sort)
+
+puertos() {  # "ext>int,..." -> una línea por puerto
+    local it ext int
+    IFS=',' read -ra P <<<"$1"
+    (( ${#P[@]} == 0 )) && { echo "${GRIS}-"; return; }
+    for it in "${P[@]}"; do
+        ext=${it%%>*}; int=${it#*>}
+        if [[ -n $ext ]]; then echo "${AMARILLO}${ext} ${GRIS}→ ${CELESTE}${int}"
+        else echo "${GRIS}  - → ${CELESTE}${int}"; fi
     done
-
-    if [ "$SHOW_ALL" = true ]; then
-        TOTAL=$(docker ps -a -q | wc -l)
-        RUNNING=$(docker ps -q | wc -l)
-        STOPPED=$((TOTAL - RUNNING))
-        CMD="docker ps -a"
-    else
-        TOTAL=$(docker ps -q | wc -l)
-        RUNNING=$TOTAL
-        STOPPED=0
-        CMD="docker ps"
-    fi
-
-    if [ "$TOTAL" -eq 0 ]; then
-        echo -e "${CYAN}┌─────────────────────────────────────────────────────┐${NC}"
-        echo -e "${CYAN}│${WHITE}            🐳 DOCKER CONTAINERS                 ${CYAN}│${NC}"
-        echo -e "${CYAN}├─────────────────────────────────────────────────────┤${NC}"
-        echo -e "${CYAN}│${YELLOW}  No hay contenedores                               ${CYAN}│${NC}"
-        echo -e "${CYAN}└─────────────────────────────────────────────────────┘${NC}"
-        return
-    fi
-
-    if [ "$SHOW_RESUME" = true ]; then
-        if [ "$SHOW_ALL" = true ]; then
-            echo -e "\n${WHITE}🐳 RESUMEN DOCKER${NC} ${GRAY}(Total: ${CYAN}$TOTAL${GRAY} | ${GREEN}$RUNNING${GRAY} activos | ${RED}$STOPPED${GRAY} detenidos)${NC}\n"
-        else
-            echo -e "\n${WHITE}🐳 RESUMEN DOCKER${NC} ${GRAY}(${GREEN}$TOTAL${GRAY} activos)${NC}\n"
-        fi
-
-        declare -A ACTIVE STOPPED PAUSED UNKNOWN
-
-        while IFS='|' read -r name status; do
-            if [[ $status == *"Up"* ]]; then
-                ACTIVE["$name"]="$status"
-            elif [[ $status == *"Exited"* ]]; then
-                STOPPED["$name"]="$status"
-            elif [[ $status == *"Paused"* ]]; then
-                PAUSED["$name"]="$status"
-            else
-                UNKNOWN["$name"]="$status"
-            fi
-        done < <($CMD --format "{{.Names}}|{{.Status}}")
-
-        print_group() {
-            local group_name=$1
-            local color=$2
-            local icon=$3
-            shift 3
-            declare -n group=$group_name
-
-            [ ${#group[@]} -eq 0 ] && return
-
-            echo -e "${color}${icon} ${WHITE}${group_name^}${NC}\n"
-            echo -e "${CYAN}┌────────────────────────────────────────────────────────────────┐${NC}"
-            printf "${CYAN}│${NC} %-40s ${CYAN}│${NC} %-18s ${CYAN}│${NC}\n" "NOMBRE" "ESTADO"
-            echo -e "${CYAN}├────────────────────────────────────────────────────────────────┤${NC}"
-
-            for name in "${!group[@]}"; do
-                local status="${group[$name]}"
-                local status_color status_icon status_text
-
-                case $group_name in
-                    ACTIVE)
-                        status_color=$GREEN; status_icon="✓"; status_text="Activo" ;;
-                    STOPPED)
-                        status_color=$RED; status_icon="✗"; status_text="Detenido" ;;
-                    PAUSED)
-                        status_color=$YELLOW; status_icon="⏸"; status_text="Pausado" ;;
-                    *)
-                        status_color=$GRAY; status_icon="○"; status_text="Desconocido" ;;
-                esac
-
-                printf "${CYAN}│${NC} %-40s ${CYAN}│${NC} ${status_color}%-2s %-15s${NC} ${CYAN}│${NC}\n" "$name" "$status_icon" "$status_text"
-            done
-
-            echo -e "${CYAN}└────────────────────────────────────────────────────────────────┘${NC}\n"
-        }
-
-        print_group ACTIVE "$GREEN" "🟢"
-        print_group PAUSED "$YELLOW" "⏸️ "
-        print_group STOPPED "$RED" "🔴"
-        print_group UNKNOWN "$GRAY" "⚪"
-
-        return
-    fi
-
-    if [ "$SHOW_ALL" = true ]; then
-        echo -e "\n${WHITE}🐳 DOCKER CONTAINERS${NC} ${GRAY}(Total: ${CYAN}$TOTAL${GRAY} | ${GREEN}$RUNNING${GRAY} activos | ${RED}$STOPPED${GRAY} detenidos)${NC}\n"
-    else
-        echo -e "\n${WHITE}🐳 DOCKER CONTAINERS${NC} ${GRAY}(${GREEN}$TOTAL${GRAY} activos)${NC}\n"
-    fi
-
-    $CMD --format "{{.Names}}|{{.Image}}|{{.ID}}|{{.Status}}|{{.Ports}}" | while IFS='|' read -r name image id status ports; do
-        echo -e "${CYAN}┌──────────────────────────────────────────────────────────────────────┐${NC}"
-
-        if [[ $status == *"Up"* ]]; then
-            status_color=$GREEN
-            status_icon="✓"
-            name_icon="📦"
-        elif [[ $status == *"Exited"* ]]; then
-            status_color=$RED
-            status_icon="✗"
-            name_icon="⏹️  "
-        elif [[ $status == *"Paused"* ]]; then
-            status_color=$YELLOW
-            status_icon="⏸"
-            name_icon="⏸️  "
-        else
-            status_color=$GRAY
-            status_icon="○"
-            name_icon="📦"
-        fi
-
-        if [[ $status == *"Up"* ]]; then
-            echo -e "${CYAN}│${NC} ${BLUE}$name_icon $name${NC}"
-        else
-            echo -e "${CYAN}│${NC} ${GRAY}$name_icon $name${NC}"
-        fi
-
-        echo -e "${CYAN}│${NC} ${GRAY}├─${NC} ${WHITE}Imagen:${NC} ${MAGENTA}$image${NC}"
-        id_short=$(echo "$id" | cut -c1-12)
-        echo -e "${CYAN}│${NC} ${GRAY}├─${NC} ${WHITE}ID:${NC} ${YELLOW}$id_short${NC}"
-        echo -e "${CYAN}│${NC} ${GRAY}├─${NC} ${WHITE}Estado:${NC} ${status_color}$status_icon $status${NC}"
-
-        if [[ $status == *"Up"* ]]; then
-            if [ -z "$ports" ]; then
-                echo -e "${CYAN}│${NC} ${GRAY}└─${NC} ${WHITE}Puertos:${NC} ${GRAY}-${NC}"
-            else
-                echo -e "${CYAN}│${NC} ${GRAY}└─${NC} ${WHITE}Puertos:${NC}"
-                echo "$ports" | tr ',' '\n' | while read -r port; do
-                    [ -n "$port" ] && echo -e "${CYAN}│${NC}    ${GREEN}→${NC} ${GREEN}$(echo $port | xargs)${NC}"
-                done
-            fi
-        else
-            echo -e "${CYAN}│${NC} ${GRAY}└─${NC} ${WHITE}Puertos:${NC} ${GRAY}N/A${NC}"
-        fi
-
-        echo -e "${CYAN}└──────────────────────────────────────────────────────────────────────┘${NC}"
-        echo ""
-    done
-
-    echo -e "${GRAY}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
 }
 
-dps "$@"
+estado() {  # estado codigo
+    case $1 in
+        running)    echo "${VERDE}✓ Activo" ;;
+        paused)     echo "${AMARILLO}⏸ Pausado" ;;
+        restarting) echo "${AMARILLO}↻ Reiniciando" ;;
+        exited)     [[ $2 == 0 ]] && echo "${ROJO}✗ Detenido" || echo "${ROJO}✗ Error ($2)" ;;
+        *)          echo "${GRIS}○ $1" ;;
+    esac
+}
 
+# ── anchos según el contenido ──
+WN=6; WE=14; WP=17
+for f in "${FILAS[@]}"; do
+    IFS='|' read -r n _ _ _ p <<<"$f"
+    (( ${#n} > WN )) && WN=${#n}
+    while read -r l; do l=$(largo "$l"); (( l > WP )) && WP=$l; done < <(puertos "$p")
+done
+
+if $SHOW_RESUME; then
+    linea() { echo -e "${BORDE}$1$(rep ─ $((WN+2)))$2$(rep ─ $((WE+2)))$2$(rep ─ $((WP+2)))$3${R}"; }
+    fila()  { echo -e "${BORDE}│${R} $(pad "$1" $WN) ${BORDE}│${R} $(pad "$2" $WE) ${BORDE}│${R} $(pad "$3" $WP) ${BORDE}│${R}"; }
+
+    grupo() {  # titulo filtro
+        local sel=() f n st xc img p
+        for f in "${FILAS[@]}"; do
+            IFS='|' read -r n st _ <<<"$f"
+            case $2 in
+                activos)   [[ $st == running || $st == restarting || $st == paused ]] ;;
+                detenidos) [[ $st != running && $st != restarting && $st != paused ]] ;;
+            esac && sel+=("$f")
+        done
+        (( ${#sel[@]} == 0 )) && return
+        echo -e "$1 ${GRIS}(${#sel[@]})${R}\n"
+        linea ┌ ┬ ┐
+        fila "${BLANCO}NOMBRE" "${BLANCO}ESTADO" "${BLANCO}PUERTOS ${GRIS}ext → int"
+        linea ├ ┼ ┤
+        for f in "${sel[@]}"; do
+            IFS='|' read -r n st xc img p <<<"$f"
+            local nom est k pl
+            mapfile -t pl < <(puertos "$p")
+            [[ $st == running ]] && nom="${BLANCO}${n}" || nom="${GRIS}${n}"
+            est=$(estado "$st" "$xc")
+            for (( k=0; k<${#pl[@]}; k++ )); do
+                (( k == 0 )) && fila "$nom" "$est" "${pl[k]}" || fila "" "" "${pl[k]}"
+            done
+        done
+        linea └ ┴ ┘
+        echo
+    }
+    grupo "${VERDE}🟢 ACTIVOS${R}" activos
+    grupo "${ROJO}🔴 DETENIDOS${R}" detenidos
+else
+    for f in "${FILAS[@]}"; do
+        IFS='|' read -r n st xc img p <<<"$f"
+        [[ $st == running ]] && echo -e "${BORDE}┌─${R} 📦 ${BLANCO}${n}${R}" || echo -e "${BORDE}┌─${R} ⏹️  ${GRIS}${n}${R}"
+        echo -e "${BORDE}│${R}  ${GRIS}Imagen:  ${CELESTE}${img}${R}"
+        echo -e "${BORDE}│${R}  ${GRIS}Estado:  $(estado "$st" "$xc")${R}"
+        first=true
+        while read -r l; do
+            $first && echo -e "${BORDE}│${R}  ${GRIS}Puertos: ${l}${R}" || echo -e "${BORDE}│${R}           ${l}${R}"
+            first=false
+        done < <(puertos "$p")
+        echo -e "${BORDE}└─${R}\n"
+    done
+fi
