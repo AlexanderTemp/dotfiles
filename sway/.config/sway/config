@@ -78,6 +78,9 @@ layer_effects "logout_dialog" {
     blur enable;
 }
 
+# Diálogos de abrir/guardar: GTK dibuja su propia sombra transparente y el blur la convierte en un borde borroso
+for_window [app_id="xdg-desktop-portal-gtk"] floating enable, blur disable, shadows disable, resize set 960 640, move position center
+
 include ~/.config/sway/config.d/colors
 include ~/.config/sway/config.d/*
 include /etc/sway/config.d/*

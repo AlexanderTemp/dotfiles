@@ -29,7 +29,7 @@ tooltip {
 #workspaces,
 .modules-center,
 #system,
-#clock {
+#custom-clock {
   background-color: alpha(@surface, 0.45);
   border-radius: 14px;
   margin: 0 4px 6px 4px;
@@ -55,11 +55,11 @@ tooltip {
   padding: 0;
 }
 
-#clock {
+#custom-clock {
   margin-right: 12px;
 }
 
-#clock,
+#custom-clock,
 #tray,
 #cpu,
 #memory,
@@ -109,7 +109,7 @@ tooltip {
   border-color: alpha(@error, 0.4);
 }
 
-#battery, #tray, #clock, #cpu, #pulseaudio, #memory {
+#battery, #tray, #custom-clock, #cpu, #pulseaudio, #memory {
   color: @primary;
 }
 

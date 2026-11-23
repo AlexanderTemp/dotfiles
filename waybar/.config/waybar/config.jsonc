@@ -20,7 +20,7 @@
   "modules-right": [
     "custom/bcbrate",
     "group/system",
-    "clock"
+    "custom/clock"
   ],
   "group/system": {
     "orientation": "horizontal",
@@ -105,8 +105,11 @@
     "on-click-right": "pavucontrol",
     "tooltip": false
   },
-  "clock": {
-    "format": "{:%a %d %b  %H:%M}"
+  "custom/clock": {
+    "exec": "~/.config/waybar/scripts/clock_tooltip.py",
+    "return-type": "json",
+    "interval": 30,
+    "tooltip": true
   },
   "custom/coinwatch": {
     "exec": "~/.config/waybar/scripts/coinwatch.py",
