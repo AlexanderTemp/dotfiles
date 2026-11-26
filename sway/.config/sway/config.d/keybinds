@@ -5,6 +5,7 @@
     bindsym $mod+d exec $menu
 
     bindsym $mod+c exec calc-menu
+    bindsym $mod+F1 exec atajos | fuzzel --dmenu --width 120 --lines 20 --prompt '󰌌 ' --placeholder 'Buscar atajo o comando'
 
     bindsym $mod+x exec $browser
 

@@ -1,0 +1,26 @@
+#!/bin/bash
+# Lista buscable de atajos generada desde las tablas de SHORTCUTS.md y los alias de GIT-ALIAS.md.
+docs="$HOME/dotfiles"
+
+list() {
+    awk '
+        /^## / { sec = $2; next }
+        /^\|---/ { next }
+        /^\| *(Comando|Atajo|Script) *\|/ { next }
+        /^\| / {
+            gsub(/\\\|/, "\001")
+            gsub(/`/, "")
+            n = split($0, c, "|")
+            for (i = 2; i < n; i++) { gsub(/^ +| +$/, "", c[i]); gsub("\001", "|", c[i]) }
+            desc = (n > 4 && c[4] != "") ? c[4] " → " c[3] : c[3]
+            printf "%-8s %-28s %s\n", sec, c[2], desc
+        }
+    ' "$docs/SHORTCUTS.md"
+    awk '/^\t[a-z]+ = / { sub(/^\t/, ""); split($0, p, " = "); printf "%-8s %-28s %s\n", "git", "git " p[1], p[2] }' "$docs/GIT-ALIAS.md"
+}
+
+if [ -t 1 ]; then
+    list | fzf --no-sort --prompt '󰌌 ' --header 'Atajos y comandos'
+else
+    list
+fi

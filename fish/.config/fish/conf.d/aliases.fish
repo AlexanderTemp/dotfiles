@@ -20,6 +20,50 @@ if status is-interactive
     alias untar="tar -xvf "
     alias ..="cd .."
     alias ...="cd ../.."
+    alias ....="cd ../../.."
+
+    alias ff "fzf --preview 'bat --style=numbers --color=always {}'"
+    function eff
+        set -l file (ff)
+        and test -n "$file"
+        and nvim $file $argv
+    end
+
+    function open
+        for f in $argv
+            xdg-open $f >/dev/null 2>&1 &
+            disown
+        end
+    end
+
+    function fip
+        if test (count $argv) -lt 2
+            echo "Uso: fip <host> <puerto1> [puerto2] ..."
+            return 1
+        end
+        set -l host $argv[1]
+        for port in $argv[2..]
+            ssh -f -N -L $port:localhost:$port $host
+            and echo "Túnel: localhost:$port -> $host:$port"
+        end
+    end
+
+    function dip
+        if test (count $argv) -eq 0
+            echo "Uso: dip <puerto1> [puerto2] ..."
+            return 1
+        end
+        for port in $argv
+            pkill -f "ssh.*-L $port:localhost:$port"
+            and echo "Túnel cerrado: $port"
+            or echo "No hay túnel en el puerto $port"
+        end
+    end
+
+    function lip
+        pgrep -af "ssh.*-L [0-9]+:localhost:[0-9]+"
+        or echo "No hay túneles activos"
+    end
     alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 
     alias hw='hwinfo --short'

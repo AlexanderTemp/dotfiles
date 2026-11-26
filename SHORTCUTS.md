@@ -1,6 +1,47 @@
 # Shortcuts
 
-Referencia de todos los atajos de teclado, alias y funciones configurados en este repo de dotfiles. Documentación únicamente — no se lee por ningún tool ni se symlinkea (ver `.stow-local-ignore`). Actualizar manualmente si cambian los configs.
+Referencia de todos los atajos de teclado, alias y funciones configurados en este repo de dotfiles. No se symlinkea (ver `.stow-local-ignore`), pero el script `atajos` lee sus tablas para mostrar el menú buscable (`$mod+F1` en sway, o `atajos` en la terminal). Actualizar manualmente si cambian los configs.
+
+## sway (`sway/.config/sway/config.d/keybinds`)
+
+`$mod` es **Super**. Direcciones: `h/j/k/l` o flechas.
+
+| Atajo | Acción |
+|---|---|
+| `Super+F1` | este menú de atajos |
+| `Super+Return` | terminal (kitty) |
+| `Super+d` | lanzador de apps (fuzzel) |
+| `Super+x` | navegador (firefox) |
+| `Super+c` | calculadora (calc-menu) |
+| `Super+p` | historial del portapapeles |
+| `Super+o` | cambiar salida de audio |
+| `Super+Shift+q` | cerrar ventana |
+| `Super+Shift+c` | recargar config de sway |
+| `Super+Shift+e` | menú de apagado (wlogout) |
+| `Super+Shift+w` | cambiar fondo de pantalla |
+| `Super+h/j/k/l` | mover foco entre ventanas |
+| `Super+Shift+h/j/k/l` | mover ventana |
+| `Super+1..0` | ir al workspace 1..10 |
+| `Super+Shift+1..0` | mandar ventana al workspace 1..10 |
+| `Super+b` / `Super+v` | próxima ventana se abre al lado / debajo |
+| `Super+s` / `Super+w` / `Super+e` | layout apilado / pestañas / alternar split |
+| `Super+f` | pantalla completa |
+| `Super+Shift+Espacio` | alternar ventana flotante |
+| `Super+Espacio` | alternar foco entre flotantes y en mosaico |
+| `Super+a` | enfocar contenedor padre |
+| `Super+Shift+-` / `Super+-` | mandar al scratchpad / mostrar scratchpad |
+| `Super+r` | modo redimensionar (h/j/k/l, Enter o Esc para salir) |
+| `Super+arrastrar` | mover ventana flotante (clic der. redimensiona) |
+| `Print` | captura con flameshot |
+| `Shift+Print` | captura de región al portapapeles |
+
+## fzf en fish (`fish/.config/fish/config.fish`)
+
+| Atajo | Acción |
+|---|---|
+| `Ctrl+T` | buscar archivo y pegar su ruta en la línea actual |
+| `Ctrl+R` | buscar en todo el historial de comandos |
+| `Alt+C` | buscar carpeta y entrar en ella |
 
 ## fish (`fish/.config/fish/conf.d/aliases.fish`)
 
@@ -18,6 +59,14 @@ Referencia de todos los atajos de teclado, alias y funciones configurados en est
 | `zen [archivo] [opciones]` | `bookokrat` | lector EPUB/PDF/DJVU; también funciona sin archivo para abrir la biblioteca |
 | `cli-chess` | `cli-chess` | ajedrez en terminal, instalado con `uv tool` |
 | `rgf` | `rg --files \| rg` | filtrar listado de archivos con ripgrep |
+| `ff` | `fzf --preview 'bat ...'` | buscador interactivo de archivos con vista previa del contenido |
+| `eff` | `nvim (ff)` | buscar archivo con fzf y abrirlo en nvim |
+| `open <archivo>` | `xdg-open` en segundo plano | abrir con la app predeterminada sin bloquear la terminal |
+| `fip <host> <puertos>` | `ssh -f -N -L p:localhost:p host` | túnel SSH: trae puertos del servidor a localhost |
+| `lip` | `pgrep -af "ssh.*-L"` | listar túneles SSH activos |
+| `dip <puertos>` | `pkill -f "ssh.*-L p:..."` | cerrar túneles SSH |
+| `..` / `...` / `....` | `cd ..` / `cd ../..` / `cd ../../..` | subir 1, 2 o 3 carpetas |
+| `atajos` | `fzf` sobre SHORTCUTS.md | buscar entre todos los atajos y comandos |
 | `ls`, `lf` | `eza --group-directories-first --icons --git` | listado normal (fallback nativo `ls` si no hay `eza`) |
 | `la` | `eza -lah --group-directories-first --icons --git` | listado detallado + ocultos (fallback `ls -lah --color=auto`) |
 | `ll` | `eza -lh --group-directories-first --icons --git` | listado detallado (fallback `ls -lh --color=auto`) |
@@ -122,6 +171,7 @@ Plugins: `surround`, `quickscope` (mappings default propios, no listados).
 | Script | Uso |
 |---|---|
 | `docker-ps-visual.sh` | contenedores Docker en cajas ASCII coloreadas. `-a` incluye detenidos, `-r` modo resumen agrupado por estado. Invocado por los alias `dps`/`dpr`/`dpa`/`dpar` de fish. |
+| `atajos` | menú buscable con todas las tablas de este archivo y los alias de `GIT-ALIAS.md`. En terminal abre fzf; sin terminal imprime la lista (sway la pasa a fuzzel con `$mod+F1`). |
 | `calc-menu` | calculadora con resultado en vivo (rofi-calc, motor qalc): `2^10`, `20% de 150`, `5 km a millas`, `100 USD a EUR`. Enter copia el resultado al portapapeles. Bindeado a `$mod+c` en sway. |
 | `cliphist` (sway) | historial del portapapeles (texto e imágenes). `$mod+p` lo abre en fuzzel; Enter vuelve a copiar la entrada elegida. |
 | `toggle-kitty` | enfoca una instancia de kitty existente (vía socket `unix:/tmp/kitty-socket`) o lanza una nueva si no hay ninguna escuchando. Pensado para bindearse a un hotkey global del window manager (esa parte no vive en este repo). |

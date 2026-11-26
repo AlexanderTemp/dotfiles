@@ -7,6 +7,10 @@ if status is-interactive
     if type -q zoxide
         zoxide init fish --cmd cd | source
     end
+
+    if type -q fzf
+        fzf --fish | source
+    end
 end
 
 set -Ux fish_user_paths \
